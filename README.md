@@ -7,6 +7,9 @@ This is an IntelliJ plugin that adds support for the Gno programming language. I
 - Basic file recognition for Gno files
 - Integration with IntelliJ IDEA
 
+<img width="533" alt="image" src="https://github.com/user-attachments/assets/c362aed1-a7c6-42e0-a1a5-bdd032a4e5f4">
+
+
 ## To Implement
 - [ ] Syntax highlighting for `.gno` files
 - [ ] Code completion for `Gno keywords`
