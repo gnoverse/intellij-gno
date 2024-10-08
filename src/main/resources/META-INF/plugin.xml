@@ -1,0 +1,23 @@
+<idea-plugin>
+  <id>com.github.intellij.gno</id>
+  <name>Gno</name>
+  <version>1.0</version>
+  <vendor url="https://gno.land/">gnolang</vendor>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileType name="Gno File"
+              implementationClass="com.github.intellij.gno.services.GnoFileType"
+              extensions="gno"
+              language="Gno"
+    />
+  </extensions>
+
+
+  <applicationListeners>
+    <listener class="com.github.intellij.gno.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+  </applicationListeners>
+
+</idea-plugin>

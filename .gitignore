@@ -1,0 +1,17 @@
+# IntelliJ IDEA specific
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Gradle specific
+.gradle/
+build/
+
+# Log files
+*.log
+*.log.*
+
+# Generated files
+out/
+classes/
