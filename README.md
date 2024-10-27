@@ -11,11 +11,11 @@ This is an IntelliJ plugin that adds support for the Gno programming language. I
 
 
 ## To Implement
-- [ ] Syntax highlighting for `.gno` files
-- [ ] Code completion for `Gno keywords`
-- [ ] Code formatting for `Gno files`
+- [ ] Syntax highlighting for `.gno` files - **In Progress**
+- [ ] Code completion for `Gno keywords` - **In Progress**
+- [ ] Code formatting for `Gno files` - **In Progress**
 - [ ] Error highlighting and code analysis
-- [ ] Navigation support
+- [ ] Navigation support - **In Progress**
 
 ## Installation
 
