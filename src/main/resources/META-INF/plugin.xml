@@ -14,12 +14,18 @@
               language="Gno"
     />
     <lang.syntaxHighlighterFactory language="Gno"
-                                   implementationClass="com.github.intellij.gno.language.GnoSyntaxHighlighterFactory"
+                                   implementationClass="com.github.intellij.gno.language.highlighting.GnoSyntaxHighlighterFactory"
     />
-    <annotator language="Gno" implementationClass="com.github.intellij.gno.language.GnoAnnotator"/>
-    <lang.findUsagesProvider language="Gno"
-                             implementationClass="com.github.intellij.gno.language.GnoFindUsagesProvider"/>
-    <lang.foldingBuilder language="Gno" implementationClass="com.github.intellij.gno.language.GnoFoldingBuilder"/>
+
+<!--    New Implementation -->
+<!--    <projectService-->
+<!--            serviceImplementation="com.github.intellij.gno.language.project.GnoExcludedPathsSettings"-->
+<!--    />-->
+<!--    <projectService serviceInterface="com.github.intellij.gno.language.sdk.GnoSdkService"-->
+<!--                    serviceImplementation="com.github.intellij.gno.language.sdk.GnoSmallIDEsSdkService"-->
+<!--                    overrides="false"-->
+<!--    />-->
+
   </extensions>
 
 

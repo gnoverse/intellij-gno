@@ -34,6 +34,6 @@ public class GnoFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return GnoIcon.FILE;
+        return GnoIcon.ICON;
     }
 }
