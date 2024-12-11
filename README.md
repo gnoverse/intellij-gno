@@ -1,6 +1,8 @@
 
 # Gno IntelliJ Plugin
 
+> **WARNING**: This is a V.0 based on [go-lang-plugin-org](https://github.com/go-lang-plugin-org/go-lang-idea-plugin) (beta version)
+
 This is an IntelliJ plugin that adds support for the Gno programming language. It allows IntelliJ to recognize `.gno` files and provides basic functionality for working with Gno files in the IDE.
 
 ## Features
