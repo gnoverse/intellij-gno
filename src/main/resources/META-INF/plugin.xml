@@ -1,23 +1,385 @@
 <idea-plugin>
-  <id>com.github.intellij.gno</id>
-  <name>Gno</name>
-  <version>1.0</version>
-  <vendor url="https://gno.land/">gnolang</vendor>
-
   <depends>com.intellij.modules.platform</depends>
-  <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileType name="Gno File"
-              implementationClass="com.github.intellij.gno.services.GnoFileType"
-              extensions="gno"
-              language="Gno"
-    />
+    <moduleService serviceImplementation="com.github.intellij.gno.project.GoModuleLibrariesInitializer"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoAllPublicNamesIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoAllPrivateNamesIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoFunctionIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoTypesIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoPackagesIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoMethodIndex"/>
+    <stubIndex implementation="com.github.intellij.gno.stubs.index.GoMethodFingerprintIndex"/>
+    <stubElementTypeHolder class="com.github.intellij.gno.GoTypes"/>
+    <indexPatternBuilder implementation="com.github.intellij.gno.GoIndexPatternBuilder"/>
+
+    <internalFileTemplate name="Go Application"/>
+    <internalFileTemplate name="Go File"/>
+    <defaultTemplatePropertiesProvider implementation="com.github.intellij.gno.actions.file.GoTemplatePropertiesProvider"/>
+    <createFromTemplateHandler implementation="com.github.intellij.gno.actions.file.GoCreateFromTemplateHandler"/>
+
+    <!-- project -->
+    <project.converterProvider implementation="com.github.intellij.gno.project.migration.GoProjectModelConverterProvider"/>
+    <project.converterProvider implementation="com.github.intellij.gno.project.migration.GoBuildTagsSettingsConverterProvider"/>
+
+    <applicationService serviceImplementation="com.github.intellij.gno.project.GoApplicationLibrariesService"/>
+    <projectService serviceImplementation="com.github.intellij.gno.project.GoProjectLibrariesService"/>
+    <moduleService serviceImplementation="com.github.intellij.gno.project.GoModuleLibrariesService"/>
+    <projectConfigurable id="gno" groupId="language" provider="com.github.intellij.gno.configuration.GoConfigurableProvider"
+                         dynamic="true" bundle="com.github.intellij.gno.GoBundle"/>
+
+    <moduleService serviceImplementation="com.github.intellij.gno.project.GoModuleSettings"/>
+    <projectService serviceImplementation="com.github.intellij.gno.project.GoExcludedPathsSettings"/>
+    <applicationService serviceImplementation="com.github.intellij.gno.codeInsight.imports.GoCodeInsightSettings"/>
+
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoEverywhereContextType" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$File" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$Block" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$Type" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$Expression" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$Tag" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$TagLiteral" contextId="GO"/>
+    <liveTemplateContext implementation="com.github.intellij.gno.template.GoLiveTemplateContextType$Statement" contextId="GO"/>
+    <liveTemplateMacro implementation="com.github.intellij.gno.template.GoFieldNameMacro"/>
+
+    <lang.elementManipulator forClass="com.github.intellij.gno.psi.GoImportString"
+                             implementationClass="com.github.intellij.gno.psi.impl.manipulator.GoImportStringManipulator"/>
+
+    <extendWordSelectionHandler implementation="com.github.intellij.gno.editor.GoWordSelectioner"/>
+    <annotator language="go" implementationClass="com.github.intellij.gno.highlighting.GoHighlightingAnnotator"/>
+    <annotator language="go" implementationClass="com.github.intellij.gno.highlighting.GoAnnotator"/>
+
+    <lang.importOptimizer language="go" implementationClass="com.github.intellij.gno.codeInsight.imports.GoImportOptimizer"/>
+    <referenceImporter implementation="com.github.intellij.gno.psi.impl.imports.GoReferenceImporter"/>
+
+    <lang.parserDefinition language="go" implementationClass="com.github.intellij.gno.GoParserDefinition"/>
+<!--    <fileTypeFactory implementation="com.github.intellij.gno.GoFileTypeFactory"/>-->
+    <lang.syntaxHighlighterFactory language="go" implementationClass="com.github.intellij.gno.highlighting.GoSyntaxHighlighterFactory"/>
+    <lang.psiStructureViewFactory language="go" implementationClass="com.github.intellij.gno.tree.GoStructureViewFactory"/>
+    <colorSettingsPage implementation="com.github.intellij.gno.highlighting.GoColorsAndFontsPage"/>
+    <lang.braceMatcher language="go" implementationClass="com.github.intellij.gno.editor.GoBraceMatcher"/>
+    <quoteHandler fileType="Go" className="com.github.intellij.gno.editor.GoQuoteHandler"/>
+<!--    <editorTypedHandler implementationClass="com.github.intellij.gno.editor.GoTypedHandler"/>-->
+    <lang.commenter language="go" implementationClass="com.github.intellij.gno.GoCommenter"/>
+    <lang.elementManipulator forClass="com.github.intellij.gno.psi.impl.GoStringLiteralImpl"
+                             implementationClass="com.github.intellij.gno.psi.impl.manipulator.GoStringManipulator"/>
+
+    <languageInjector implementation="com.github.intellij.gno.regexp.GoRegexInjector"/>
+    <regExpLanguageHost forClass="com.github.intellij.gno.psi.GoStringLiteral" implementationClass="com.github.intellij.gno.regexp.GoRegexHost"/>
+    <lang.parserDefinition language="GoRegExp" implementationClass="com.github.intellij.gno.regexp.GoRegExpParserDefinition"/>
+
+    <completion.contributor language="go" implementationClass="com.github.intellij.gno.completion.GoCompletionContributor"/>
+    <completion.contributor language="go" implementationClass="com.github.intellij.gno.completion.GoKeywordCompletionContributor"/>
+    <completion.contributor language="go" order="last" implementationClass="com.github.intellij.gno.completion.GoAutoImportCompletionContributor"/>
+    <completion.confidence language="go" order="last" implementationClass="com.github.intellij.gno.completion.GoCompletionConfidence"/>
+    <lookup.charFilter implementation="com.github.intellij.gno.completion.GoCharFilter"/>
+    <lookup.actionProvider implementation="com.github.intellij.gno.codeInsight.imports.GoExcludePathLookupActionProvider"/>
+
+    <lang.refactoringSupport language="go" implementationClass="com.github.intellij.gno.refactor.GoRefactoringSupportProvider"/>
+    <spellchecker.support language="go" implementationClass="com.github.intellij.gno.inspections.GoSpellcheckingStrategy"/>
+    <elementDescriptionProvider implementation="com.github.intellij.gno.refactor.GoDescriptionProvider"/>
+    <lang.namesValidator language="go" implementationClass="com.github.intellij.gno.GoNamesValidator"/>
+    <lang.findUsagesProvider language="go" implementationClass="com.github.intellij.gno.usages.GoFindUsagesProvider"/>
+    <readWriteAccessDetector implementation="com.github.intellij.gno.usages.GoReadWriteAccessDetector" id="go"/>
+<!--    <fileStructureGroupRuleProvider implementation="com.github.intellij.gno.usages.GoFileStructureGroupRuleProvider"/>-->
+    <lang.documentationProvider language="go" implementationClass="com.github.intellij.gno.GoDocumentationProvider"/>
+    <lang.foldingBuilder language="go" implementationClass="com.github.intellij.gno.editor.GoFoldingBuilder"/>
+    <typeDeclarationProvider implementation="com.github.intellij.gno.editor.GoTypeDeclarationProvider"/>
+    <codeInsight.typeInfo language="go" implementationClass="com.github.intellij.gno.codeInsight.GoExpressionTypeProvider"/>
+    <codeInsight.parameterInfo language="go" implementationClass="com.github.intellij.gno.editor.GoParameterInfoHandler"/>
+    <lang.smartEnterProcessor language="go" implementationClass="com.github.intellij.gno.editor.smart.GoSmartEnterProcessor"/>
+    <highlightUsagesHandlerFactory implementation="com.github.intellij.gno.highlighting.exitpoint.GoHighlightExitPointsHandlerFactory"/>
+    <problemFileHighlightFilter implementation="com.github.intellij.gno.highlighting.GoProblemFileHighlightFilter"/>
+    <codeInsight.lineMarkerProvider language="go" implementationClass="com.github.intellij.gno.editor.marker.GoMethodSeparatorProvider"/>
+    <analyzeStacktraceFilter implementation="com.github.intellij.gno.runconfig.GoConsoleFilter"/>
+    <lang.implementationTextSelectioner language="go" implementationClass="com.github.intellij.gno.editor.GoImplementationTextSelectioner"/>
+    <lang.surroundDescriptor language="go" implementationClass="com.github.intellij.gno.editor.surround.GoExpressionSurroundDescriptor"/>
+    <lang.surroundDescriptor language="go" implementationClass="com.github.intellij.gno.editor.surround.GoStatementsSurroundDescriptor"/>
+    <iconProvider implementation="com.github.intellij.gno.GoIconProvider"/>
+    <codeInsight.lineMarkerProvider language="go" implementationClass="com.github.intellij.gno.marker.GoRecursiveCallMarkerProvider"/>
+    <statementUpDownMover implementation="com.github.intellij.gno.editor.GoStatementMover"/>
+
+    <lang.unwrapDescriptor language="go" implementationClass="com.github.intellij.gno.codeInsight.unwrap.GoUnwrapDescriptor"/>
+
+    <directoryProjectGenerator implementation="com.github.intellij.gno.GoProjectGenerator"/> <!-- for small IDEs-->
+
+    <renamePsiElementProcessor implementation="com.github.intellij.gno.refactor.GoRenameImportSpecProcessor"/>
+
+    <!--formatter-->
+<!--    <lang.formatter language="go" implementationClass="com.github.intellij.gno.formatter.GoFormattingModelBuilder"/>-->
+    <codeStyleSettingsProvider implementation="com.github.intellij.gno.formatter.settings.GoCodeStyleSettingsProvider"/>
+    <langCodeStyleSettingsProvider implementation="com.github.intellij.gno.formatter.settings.GoLanguageCodeStyleSettingsProvider"/>
+
+    <renamePsiElementProcessor implementation="com.github.intellij.gno.refactor.GoAnonymousFieldProcessor"/>
+
+    <gotoSymbolContributor implementation="com.github.intellij.gno.go.GoSymbolContributor"/>
+    <gotoClassContributor implementation="com.github.intellij.gno.go.GoTypeContributor"/>
+
+    <!-- sdk -->
+    <sdkType implementation="com.github.intellij.gno.sdk.GoSdkType"/>
+    <applicationService serviceImplementation="com.github.intellij.gno.sdk.GoEnvironmentGoPathModificationTracker"/>
+    <projectService serviceInterface="com.github.intellij.gno.sdk.GoSdkService" serviceImplementation="com.github.intellij.gno.sdk.GoSmallIDEsSdkService"
+                    overrides="false"/>
+    <library.presentationProvider implementation="com.github.intellij.gno.sdk.GoSdkLibraryPresentationProvider"/>
+    <editorNotificationProvider implementation="com.github.intellij.gno.inspections.WrongSdkConfigurationNotificationProvider"/>
+<!--    <editorNotificationProvider implementation="com.github.intellij.gno.inspections.GoFileIgnoredByBuildToolNotificationProvider"/>-->
+
+    <stepsBeforeRunProvider implementation="com.github.intellij.gno.runconfig.before.GoBeforeRunTaskProvider"/>
+    <!-- run single file -->
+    <configurationType implementation="com.github.intellij.gno.runconfig.file.GoRunFileConfigurationType"/>
+    <runConfigurationProducer implementation="com.github.intellij.gno.runconfig.file.GoRunFileConfigurationProducer"/>
+
+    <!-- run application -->
+<!--    <programRunner implementation="com.github.intellij.gno.runconfig.GoBuildingRunner" order="before goRunner"/>-->
+    <programRunner id="goRunner" implementation="com.github.intellij.gno.runconfig.GoRunner"/>
+    <runConfigurationProducer implementation="com.github.intellij.gno.runconfig.application.GoApplicationRunConfigurationProducer"/>
+    <configurationType implementation="com.github.intellij.gno.runconfig.application.GoApplicationRunConfigurationType"/>
+
+    <!-- test -->
+    <runConfigurationProducer implementation="com.github.intellij.gno.runconfig.testing.frameworks.gotest.GotestRunConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.github.intellij.gno.runconfig.testing.frameworks.gocheck.GocheckRunConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.github.intellij.gno.runconfig.testing.frameworks.gobench.GobenchRunConfigurationProducer"/>
+    <configurationType implementation="com.github.intellij.gno.runconfig.testing.GoTestRunConfigurationType"/>
+    <testFinder implementation="com.github.intellij.gno.runconfig.testing.GoTestFinder"/>
+    <runLineMarkerContributor language="go" implementationClass="com.github.intellij.gno.runconfig.testing.GoTestRunLineMarkerProvider"/>
+    <runLineMarkerContributor language="go" implementationClass="com.github.intellij.gno.runconfig.GoRunLineMarkerProvider"/>
+
+
+    <!-- debugger -->
+
+    <checkinHandlerFactory implementation="com.github.intellij.gno.actions.tool.GoFmtCheckinFactory" order="last"/>
+
+    <lang.inspectionSuppressor language="go" implementationClass="com.github.intellij.gno.inspections.suppression.GoInspectionSuppressor"/>
+
+    <!-- intentions -->
+    <intentionAction>
+      <bundleName>com.github.intellij.gno.GoBundle</bundleName>
+      <categoryKey>go.intentions.category</categoryKey>
+      <className>com.github.intellij.gno.intentions.GoAddFunctionBlockIntention</className>
+    </intentionAction>
+    <intentionAction>
+      <bundleName>com.github.intellij.gno.GoBundle</bundleName>
+      <categoryKey>go.intentions.category</categoryKey>
+      <className>com.github.intellij.gno.intentions.GoMoveToStructInitializationIntention</className>
+    </intentionAction>
+    <!-- unused inspections -->
+    <localInspection language="go" displayName="Unused import inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoUnusedImportInspection"/>
+    <localInspection language="go" displayName="Unused label inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedLabelInspection"/>
+    <localInspection language="go" displayName="Unused variable inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedVariableInspection"/>
+    <localInspection language="go" displayName="Unused constant inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedConstInspection"/>
+    <localInspection language="go" displayName="Unused global variable inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedGlobalVariableInspection"/>
+    <localInspection language="go" displayName="Unused exported function inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedExportedFunctionInspection"/>
+    <localInspection language="go" displayName="Unused function inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedFunctionInspection"/>
+    <localInspection language="go" displayName="Unused parameter inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnusedParameterInspection"/>
+    <localInspection language="go" displayName="Bool condition inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoBoolExpressionsInspection"/>
+
+    <localInspection language="go" displayName="Empty declaration inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoEmptyDeclarationInspection" cleanupTool="true"/>
+    <localInspection language="go" displayName="Redundant second index in slices inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoRedundantSecondIndexInSlicesInspection" cleanupTool="true"/>
+    <localInspection language="go" displayName="Redundant blank argument in range inspection" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoRedundantBlankArgInRangeInspection" cleanupTool="true"/>
+    <localInspection language="go" displayName="Redundant type declaration in composite literals" groupPath="Go"
+                     groupName="Declaration redundancy" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoRedundantTypeDeclInCompositeLit" cleanupTool="true"/>
+    <!-- /unused inspections -->
+
+    <!-- redeclare inspections -->
+    <localInspection language="go" displayName="Duplicate fields and methods inspection" groupPath="Go"
+                     groupName="Redeclared symbols" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDuplicateFieldsOrMethodsInspection"/>
+    <localInspection language="go" displayName="Duplicate functions and methods inspection" groupPath="Go"
+                     groupName="Redeclared symbols" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDuplicateFunctionOrMethodInspection"/>
+    <localInspection language="go" displayName="Duplicate argument" groupPath="Go"
+                     groupName="Redeclared symbols" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDuplicateArgumentInspection"/>
+    <localInspection language="go" displayName="Duplicate return argument" groupPath="Go"
+                     groupName="Redeclared symbols" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDuplicateReturnArgumentInspection"/>
+    <localInspection language="go" displayName="Redeclare import as function" groupPath="Go"
+                     groupName="Redeclared symbols" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoRedeclareImportAsFunctionInspection"/>
+    <!-- /redeclare inspections -->
+
+    <!-- code style issues -->
+    <localInspection language="go" displayName="Comment of exported element starts with incorrect name" groupPath="Go"
+                     groupName="Code style issues" enabledByDefault="false" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoCommentStartInspection"/>
+    <localInspection language="go" displayName="Exported element should have its own declaration" groupPath="Go"
+                     groupName="Code style issues" enabledByDefault="true" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoExportedOwnDeclarationInspection"/>
+    <localInspection language="go" displayName="Struct initialization without field names" groupPath="Go"
+                     groupName="Code style issues" enabledByDefault="true" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoStructInitializationInspection"/>
+    <localInspection language="go" displayName="Receiver has generic name" groupPath="Go"
+                     groupName="Code style issues" enabledByDefault="true" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoReceiverNamesInspection"/>
+    <!-- /code style issues -->
+
+    <!-- probable bugs -->
+    <localInspection language="go" displayName="Reserved word used as name" groupPath="Go"
+                     groupName="Probable bugs" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoReservedWordUsedAsNameInspection"/>
+    <localInspection language="go" displayName="Imported package name as name identifier" groupPath="Go"
+                     groupName="Probable bugs" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoImportUsedAsNameInspection"/>
+    <localInspection language="go" displayName="Malformed struct tag" groupPath="Go"
+                     groupName="Probable bugs" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoStructTagInspection"/>
+    <localInspection language="go" displayName="Printf/Logf placeholder handler" groupPath="Go"
+                     groupName="Probable bugs" enabledByDefault="true" level="WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoPlaceholderCountInspection"/>
+    <!-- /probable bugs -->
+
+    <!-- control flow issues -->
+    <localInspection language="go" displayName="Missing return at end of function" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoMissingReturnInspection"/>
+    <localInspection language="go" displayName="Used as value in condition" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoUsedAsValueInCondition"/>
+    <localInspection language="go" displayName="Infinite for loop" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoInfiniteForInspection"/>
+    <localInspection language="go" displayName="Defer in loop" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoDeferInLoopInspection"/>
+    <localInspection language="go" displayName="Range iteration on illegal type" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoRangeIterationOnIllegalTypeInspection"/>
+    <localInspection language="go" displayName="Assignment to receiver" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="WEAK WARNING"
+                     implementationClass="com.github.intellij.gno.inspections.GoAssignmentToReceiverInspection"/>
+    <localInspection language="go" displayName="Direct assignment to struct field in map" groupPath="Go"
+                     groupName="Control flow issues" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDirectAssignToStructFieldInMapInspection"/>
+    <!-- /control flow issues -->
+
+    <!-- general -->
+    <localInspection language="go" displayName="Unresolved reference inspection" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoUnresolvedReferenceInspection"/>
+    <localInspection language="go" displayName="Assignment to constant" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.unresolved.GoAssignmentToConstantInspection"/>
+    <localInspection language="go" displayName="Assignment nil without explicit type" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoAssignmentNilWithoutExplicitTypeInspection"/>
+    <localInspection language="go" displayName="Incorrect variadic parameter" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoFunctionVariadicParameterInspection"/>
+    <localInspection language="go" displayName="Incorrect variable declaration" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoVarDeclarationInspection"/>
+    <localInspection language="go" displayName="No new variables on left side of :=" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoNoNewVariablesInspection"/>
+    <localInspection language="go" displayName="Function call inspection" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoFunctionCallInspection"/>
+    <localInspection language="go" displayName="Defer/go statements check" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoDeferGoInspection"/>
+    <localInspection language="go" displayName="Multiple packages in directory declaration" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoMultiplePackagesInspection"/>
+    <localInspection language="go" displayName="Usage of cgo in tests is not supported" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoCgoInTestInspection"/>
+    <localInspection language="go" displayName="Wrong test declaration" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoTestSignaturesInspection"/>
+    <localInspection language="go" displayName="Self import" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoSelfImportInspection"/>
+    <localInspection language="go" displayName="Invalid package import" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoInvalidPackageImportInspection"/>
+    <localInspection language="go" displayName="Embedded interface pointer" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoEmbeddedInterfacePointerInspection"/>
+    <localInspection language="go" displayName="Need trailing comma before newline in composite literal" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoAddTrailingCommaInspection"/>
+    <localInspection language="go" displayName="Underscore used as value" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoUnderscoreUsedAsValueInspection"/>
+    <localInspection language="go" displayName="Invalid strings and runes" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoInvalidStringOrCharInspection"/>
+    <localInspection language="go" displayName="Invalid anonymous field definition type " groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoAnonymousFieldDefinitionTypeInspection"/>
+    <localInspection language="go" displayName="Mixed named and unnamed parameters" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoMixedNamedUnnamedParametersInspection"/>
+    <localInspection language="go" displayName="Mismatched types: byte and string" groupPath="Go"
+                     groupName="General" enabledByDefault="true" level="ERROR"
+                     implementationClass="com.github.intellij.gno.inspections.GoStringAndByteTypeMismatchInspection"/>
+    <!-- /general -->
+
+    <!-- color schemes -->
+    <bundledColorScheme path="colorscheme/Darcula - dlsniper"/>
+    <!-- /color schemes -->
+    <configurationType implementation="com.github.intellij.gno.appengine.run.GoAppEngineRunConfigurationType"/>
   </extensions>
+  <actions>
+    <action id="Go.NewGoFile" class="com.github.intellij.gno.actions.file.GoCreateFileAction"
+            text="Go File" description="Create new Go file">
+      <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+    </action>
+    <group id="GoTestGenerateGroup" class="com.github.intellij.gno.generate.GoGenerateTestMethodActionGroup">
+      <add-to-group group-id="GenerateGroup" anchor="first"/>
+    </group>
+    <group id="GoTools" text="Go Tools" description="Go External Tools" icon="/icon/gno-icon.svg" popup="true">
+      <action id="GoFmtFileAction" class="com.github.intellij.gno.actions.tool.GoFmtFileAction" text="Go fmt file"
+              description="Format selected file with go fmt util">
+        <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt F"/>
+      </action>
+      <action id="GoFmtProjectAction" class="com.github.intellij.gno.actions.tool.GoFmtProjectAction" text="Go fmt project"
+              description="Format project with go fmt util">
+        <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
+      </action>
+      <action id="GoImportsFileAction" class="com.github.intellij.gno.actions.tool.GoImportsFileAction" text="Goimports file"
+              description="Optimizes imports for selected file with goimports util">
+      </action>
+      <action id="GoTypeFileAction" class="com.github.intellij.gno.actions.tool.GoTypeFileAction" text="Gotype directory"
+              description="Analyze types for current directory with gotype util">
+      </action>
+      <action id="GoVetFileAction" class="com.github.intellij.gno.actions.tool.GoVetFileAction" text="Go vet file"
+              description="Lint selected file or directory with go vet tool">
+      </action>
+      <add-to-group group-id="CodeMenu" anchor="last"/>
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+      <add-to-group group-id="EditorLangPopupMenu" anchor="last"/>
+    </group>
+  </actions>
 
-
-  <applicationListeners>
-    <listener class="com.github.intellij.gno.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-  </applicationListeners>
-
+  <application-components>
+    <component>
+      <implementation-class>com.github.intellij.gno.ui.ProjectTutorialNotification</implementation-class>
+    </component>
+  </application-components>
 </idea-plugin>

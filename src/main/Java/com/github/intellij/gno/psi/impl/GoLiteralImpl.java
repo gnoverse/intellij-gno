@@ -1,0 +1,67 @@
+package com.github.intellij.gno.psi.impl;
+
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import static com.github.intellij.gno.GoTypes.*;
+import com.github.intellij.gno.psi.*;
+
+public class GoLiteralImpl extends GoExpressionImpl implements GoLiteral {
+
+    public GoLiteralImpl(ASTNode node) {
+        super(node);
+    }
+
+    public void accept(@NotNull GoVisitor visitor) {
+        visitor.visitLiteral(this);
+    }
+
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof GoVisitor) accept((GoVisitor)visitor);
+        else super.accept(visitor);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getChar() {
+        return findChildByType(CHAR);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getDecimali() {
+        return findChildByType(DECIMALI);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getFloat() {
+        return findChildByType(FLOAT);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getFloati() {
+        return findChildByType(FLOATI);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getHex() {
+        return findChildByType(HEX);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getInt() {
+        return findChildByType(INT);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getOct() {
+        return findChildByType(OCT);
+    }
+
+}

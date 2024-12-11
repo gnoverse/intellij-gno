@@ -1,0 +1,32 @@
+package com.github.intellij.gno.psi;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import com.github.intellij.gno.stubs.GoVarSpecStub;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
+
+public interface GoVarSpec extends GoCompositeElement, StubBasedPsiElement<GoVarSpecStub> {
+
+    @NotNull
+    List<GoExpression> getExpressionList();
+
+    @Nullable
+    GoType getType();
+
+    @NotNull
+    List<GoVarDefinition> getVarDefinitionList();
+
+    @Nullable
+    PsiElement getAssign();
+
+    boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
+
+    void deleteDefinition(GoVarDefinition definitionToDelete);
+
+    @NotNull
+    List<GoExpression> getRightExpressionsList();
+
+}

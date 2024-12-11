@@ -1,5 +1,4 @@
 plugins {
-//  id("org.jetbrains.kotlin.jvm") version "1.9.25"
   id("org.jetbrains.intellij") version "1.17.4"
   id("java")
 }
@@ -18,12 +17,8 @@ intellij {
   type.set("IC") // Target IDE Platform
   pluginName.set("Gno")
 
-  plugins.set(listOf(/* Plugin Dependencies */))
+  plugins.set(listOf())
 }
-
-//dependencies {
-//  implementation(kotlin("stdlib"))
-//}
 
 tasks {
   // Set the JVM compatibility versions
