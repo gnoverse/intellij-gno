@@ -9,15 +9,9 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileType name="Gno File"
-              implementationClass="com.github.intellij.gno.services.GnoFileType"
+              implementationClass="com.github.intellij.gno.language.GnoFileType"
               extensions="gno"
               language="Gno"
     />
   </extensions>
-
-
-  <applicationListeners>
-    <listener class="com.github.intellij.gno.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-  </applicationListeners>
-
 </idea-plugin>

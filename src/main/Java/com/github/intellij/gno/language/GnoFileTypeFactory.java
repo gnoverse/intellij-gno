@@ -1,4 +1,4 @@
-package com.github.intellij.gno.services;
+package com.github.intellij.gno.language;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.FileType;
@@ -10,18 +10,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.Charset;
 
-public abstract class GnoLanguageFileType implements FileType {
+public abstract class GnoFileTypeFactory implements FileType {
     protected static final @NotNull Language INSTANCE = new GnoLanguage();
     private final Language myLanguage;
     private final boolean mySecondary;
 
 
-    protected GnoLanguageFileType(@NotNull Language language) {
+    protected GnoFileTypeFactory(@NotNull Language language) {
         this(language, false);
     }
 
 
-    protected GnoLanguageFileType(@NotNull Language language, boolean secondary) {
+    protected GnoFileTypeFactory(@NotNull Language language, boolean secondary) {
         myLanguage = language;
         mySecondary = secondary;
     }
