@@ -8,10 +8,13 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileType name="Gno File"
-              implementationClass="com.github.intellij.gno.language.GnoFileType"
-              extensions="gno"
+    <fileType
+            name="Gno File"
+            extensions="gno"
+            implementationClass="com.github.intellij.gno.language.GnoFileType">
+    </fileType>
+      <lang.syntaxHighlighterFactory
               language="Gno"
-    />
+              implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
   </extensions>
 </idea-plugin>
