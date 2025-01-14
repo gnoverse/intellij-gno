@@ -168,7 +168,7 @@ public class GnoParser implements PsiParser, LightPsiParser {
   // PackageClause ImportList TopLevelDeclaration*
   static boolean File(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "File")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, PACKAGE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = PackageClause(b, l + 1);
@@ -247,28 +247,68 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IMPORT StringLiteral
+  // IMPORT VALUE
   public static boolean ImportDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImportDeclaration")) return false;
     if (!nextTokenIs(b, IMPORT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IMPORT, STRINGLITERAL);
+    r = consumeTokens(b, 0, IMPORT, VALUE);
     exit_section_(b, m, IMPORT_DECLARATION, r);
     return r;
   }
 
   /* ********************************************************** */
-  // ImportDeclaration*
+  // LPAREN (ImportDeclaration COMMA?)* RPAREN | ImportDeclaration
   public static boolean ImportList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImportList")) return false;
+    if (!nextTokenIs(b, "<import list>", IMPORT, LPAREN)) return false;
+    boolean r;
     Marker m = enter_section_(b, l, _NONE_, IMPORT_LIST, "<import list>");
+    r = ImportList_0(b, l + 1);
+    if (!r) r = ImportDeclaration(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LPAREN (ImportDeclaration COMMA?)* RPAREN
+  private static boolean ImportList_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportList_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LPAREN);
+    r = r && ImportList_0_1(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (ImportDeclaration COMMA?)*
+  private static boolean ImportList_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportList_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!ImportDeclaration(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "ImportList", c)) break;
+      if (!ImportList_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ImportList_0_1", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
+    return true;
+  }
+
+  // ImportDeclaration COMMA?
+  private static boolean ImportList_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportList_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ImportDeclaration(b, l + 1);
+    r = r && ImportList_0_1_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA?
+  private static boolean ImportList_0_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportList_0_1_0_1")) return false;
+    consumeToken(b, COMMA);
     return true;
   }
 
@@ -286,13 +326,13 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
+  // PACKAGE IDENTIFIER
   public static boolean PackageClause(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PackageClause")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    if (!nextTokenIs(b, PACKAGE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
+    r = consumeTokens(b, 0, PACKAGE, IDENTIFIER);
     exit_section_(b, m, PACKAGE_CLAUSE, r);
     return r;
   }

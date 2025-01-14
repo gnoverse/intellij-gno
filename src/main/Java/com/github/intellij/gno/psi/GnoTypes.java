@@ -31,7 +31,7 @@ public interface GnoTypes {
 
   IElementType ASSIGN = new GnoTokenType("=");
   IElementType CASE = new GnoTokenType("case");
-  IElementType COLON = new GnoTokenType("COLON");
+  IElementType COLON = new GnoTokenType(":");
   IElementType COMMA = new GnoTokenType(",");
   IElementType COMMENT = new GnoTokenType("//[^\\n]*|/\\\\*.*?\\\\*/");
   IElementType CONST = new GnoTokenType("const");
@@ -57,12 +57,13 @@ public interface GnoTypes {
   IElementType RETURN = new GnoTokenType("return");
   IElementType RPAREN = new GnoTokenType(")");
   IElementType SELECT = new GnoTokenType("select");
+  IElementType SEMICOLON = new GnoTokenType(";");
   IElementType SIGNATURE = new GnoTokenType("Signature");
   IElementType STRING = new GnoTokenType("\".*?\"");
-  IElementType STRINGLITERAL = new GnoTokenType("StringLiteral");
   IElementType STRUCT = new GnoTokenType("struct");
   IElementType SWITCH = new GnoTokenType("switch");
   IElementType TYPE = new GnoTokenType("Type");
+  IElementType VALUE = new GnoTokenType("VALUE");
   IElementType VAR = new GnoTokenType("var");
   IElementType VARDECLARATION = new GnoTokenType("VarDeclaration");
 

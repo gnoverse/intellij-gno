@@ -10,4 +10,7 @@ public interface GnoPackageClause extends PsiElement {
   @NotNull
   PsiElement getIdentifier();
 
+  @NotNull
+  PsiElement getPackage();
+
 }

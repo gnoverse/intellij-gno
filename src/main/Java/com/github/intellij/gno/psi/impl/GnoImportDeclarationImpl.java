@@ -35,8 +35,8 @@ public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements Gn
 
   @Override
   @NotNull
-  public PsiElement getStringLiteral() {
-    return findNotNullChildByType(STRINGLITERAL);
+  public PsiElement getValue() {
+    return findNotNullChildByType(VALUE);
   }
 
 }

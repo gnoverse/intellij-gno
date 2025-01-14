@@ -677,12 +677,9 @@ public class GnoLexer implements FlexLexer {
             { return INTERFACE;
             }
             case 34:
-            { return STRINGLITERAL;
-            }
-            case 35:
             { return VARDECLARATION;
             }
-            case 36:
+            case 35:
             { return IDENTIFIER;
             }
             default:

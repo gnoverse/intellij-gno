@@ -3,7 +3,6 @@
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
-
   elementTypeHolderClass='com.github.intellij.gno.psi.GnoTypes'
   elementTypeClass='com.github.intellij.gno.psi.GnoElementType'
   tokenTypeClass='com.github.intellij.gno.psi.GnoTokenType'
@@ -22,16 +21,20 @@
     RPAREN    = ')'
     COMMA     = ','
     ASSIGN    = '='
+    SEMICOLON = ';'
+    COLON     = ':'
     PLUS      = '+'
     MINUS     = '-'
     MUL       = '*'
     DIV       = '/'
     INT       = '[0-9]+'
     STRING    = '".*?"'
+    COMMENT   = '//[^\n]*|/\\*.*?\\*/'
+
+    // Keywords grouped under KEY
     IMPORT    = 'import'
     PACKAGE   = 'package'
     CONST     = 'const'
-    COMMENT   = '//[^\n]*|/\\*.*?\\*/'
     TYPE      = 'type'
     FUNC      = 'func'
     VAR       = 'var'
@@ -45,6 +48,7 @@
     MAP       = 'map'
     INTERFACE = 'interface'
     STRUCT    = 'struct'
+
     IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_]*'
   ]
 
@@ -52,9 +56,9 @@
 }
 
 File ::= PackageClause ImportList TopLevelDeclaration*
-PackageClause ::= IDENTIFIER
-ImportList ::= ImportDeclaration*
-ImportDeclaration ::= IMPORT StringLiteral
+PackageClause ::= PACKAGE IDENTIFIER
+ImportList ::= LPAREN (ImportDeclaration COMMA?)* RPAREN | ImportDeclaration
+ImportDeclaration ::= IMPORT VALUE
 
 TopLevelDeclaration ::=
     FunctionDeclaration

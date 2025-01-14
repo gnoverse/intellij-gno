@@ -11,6 +11,6 @@ public interface GnoImportDeclaration extends PsiElement {
   PsiElement getImport();
 
   @NotNull
-  PsiElement getStringLiteral();
+  PsiElement getValue();
 
 }

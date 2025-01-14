@@ -10,4 +10,10 @@ public interface GnoImportList extends PsiElement {
   @NotNull
   List<GnoImportDeclaration> getImportDeclarationList();
 
+  @Nullable
+  PsiElement getLparen();
+
+  @Nullable
+  PsiElement getRparen();
+
 }
