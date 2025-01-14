@@ -16,5 +16,8 @@
       <lang.syntaxHighlighterFactory
               language="Gno"
               implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
+      <lang.parserDefinition
+              language="Gno"
+              implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
   </extensions>
 </idea-plugin>

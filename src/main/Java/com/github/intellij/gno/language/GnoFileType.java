@@ -1,6 +1,5 @@
 package com.github.intellij.gno.language;
 
-import com.github.intellij.gno.services.GnoIcon;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

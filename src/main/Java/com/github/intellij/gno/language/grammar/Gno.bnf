@@ -1,0 +1,84 @@
+{
+  parserClass='com.github.intellij.gno.parser.GnoParser'
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+
+  elementTypeHolderClass='com.github.intellij.gno.psi.GnoTypes'
+  elementTypeClass='com.github.intellij.gno.psi.GnoElementType'
+  tokenTypeClass='com.github.intellij.gno.psi.GnoTokenType'
+
+  psiClassPrefix='Gno'
+  psiImplClassSuffix='Impl'
+  psiPackage='com.github.intellij.gno.psi'
+  psiImplPackage='com.github.intellij.gno.psi.impl'
+
+  tokens=[
+    LBRACE    = '{'
+    RBRACE    = '}'
+    LBRACK    = '['
+    RBRACK    = ']'
+    LPAREN    = '('
+    RPAREN    = ')'
+    COMMA     = ','
+    ASSIGN    = '='
+    PLUS      = '+'
+    MINUS     = '-'
+    MUL       = '*'
+    DIV       = '/'
+    INT       = '[0-9]+'
+    STRING    = '".*?"'
+    IMPORT    = 'import'
+    PACKAGE   = 'package'
+    CONST     = 'const'
+    COMMENT   = '//[^\n]*|/\\*.*?\\*/'
+    TYPE      = 'type'
+    FUNC      = 'func'
+    VAR       = 'var'
+    SWITCH    = 'switch'
+    CASE      = 'case'
+    SELECT    = 'select'
+    FOR       = 'for'
+    IF        = 'if'
+    ELSE      = 'else'
+    RETURN    = 'return'
+    MAP       = 'map'
+    INTERFACE = 'interface'
+    STRUCT    = 'struct'
+    IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_]*'
+  ]
+
+  generateTokenAccessors=true
+}
+
+File ::= PackageClause ImportList TopLevelDeclaration*
+PackageClause ::= IDENTIFIER
+ImportList ::= ImportDeclaration*
+ImportDeclaration ::= IMPORT StringLiteral
+
+TopLevelDeclaration ::=
+    FunctionDeclaration
+  | TypeDeclaration
+  | VarDeclaration
+
+FunctionDeclaration ::= FUNC IDENTIFIER Signature Block
+TypeDeclaration ::= TYPE IDENTIFIER StructType
+StructType ::= STRUCT LBRACE Fields? RBRACE
+Fields ::= FieldDeclaration*
+FieldDeclaration ::= IDENTIFIER Type
+
+Block ::= LBRACE Statement* RBRACE
+Statement ::= ExpressionStatement | Block | ControlStatement
+ExpressionStatement ::= Expression
+Expression ::= Literal | IDENTIFIER
+Literal ::= INT | STRING
+
+ControlStatement ::=
+    IfStatement
+  | ForStatement
+  | SwitchStatement
+IfStatement ::= IF Expression Block ELSE? Block?
+ForStatement ::= FOR Expression Block
+SwitchStatement ::= SWITCH Expression LBRACE CaseClauses RBRACE
+CaseClauses ::= CaseClause*
+CaseClause ::= CASE Expression COLON Statement*

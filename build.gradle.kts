@@ -21,6 +21,15 @@ intellij {
   plugins.set(listOf(/* Plugin Dependencies */))
 }
 
+// Include the generated files in the source set
+sourceSets {
+  main {
+    java {
+      srcDirs("src/main/java")
+    }
+  }
+}
+
 //dependencies {
 //  implementation(kotlin("stdlib"))
 //}
