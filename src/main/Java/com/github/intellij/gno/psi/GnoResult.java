@@ -5,15 +5,18 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoForStatement extends PsiElement {
-
-  @NotNull
-  GnoBlock getBlock();
+public interface GnoResult extends PsiElement {
 
   @Nullable
-  GnoExpression getExpression();
+  GnoParameters getParameters();
 
-  @NotNull
-  PsiElement getFor();
+  @Nullable
+  GnoTypeBody getTypeBody();
+
+  @Nullable
+  PsiElement getLparen();
+
+  @Nullable
+  PsiElement getRparen();
 
 }

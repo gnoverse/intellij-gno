@@ -7,7 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public class GnoVisitor extends PsiElementVisitor {
 
+  public void visitArguments(@NotNull GnoArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayType(@NotNull GnoArrayType o) {
+    visitPsiElement(o);
+  }
+
   public void visitBlock(@NotNull GnoBlock o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCallExpression(@NotNull GnoCallExpression o) {
     visitPsiElement(o);
   }
 
@@ -16,6 +28,10 @@ public class GnoVisitor extends PsiElementVisitor {
   }
 
   public void visitCaseClauses(@NotNull GnoCaseClauses o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConstDeclaration(@NotNull GnoConstDeclaration o) {
     visitPsiElement(o);
   }
 
@@ -47,6 +63,10 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFunctionType(@NotNull GnoFunctionType o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfStatement(@NotNull GnoIfStatement o) {
     visitPsiElement(o);
   }
@@ -63,7 +83,35 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMapType(@NotNull GnoMapType o) {
+    visitPsiElement(o);
+  }
+
   public void visitPackageClause(@NotNull GnoPackageClause o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameterDeclaration(@NotNull GnoParameterDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameters(@NotNull GnoParameters o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPointerType(@NotNull GnoPointerType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitResult(@NotNull GnoResult o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReturnStatement(@NotNull GnoReturnStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSignature(@NotNull GnoSignature o) {
     visitPsiElement(o);
   }
 
@@ -83,7 +131,19 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTypeBody(@NotNull GnoTypeBody o) {
+    visitPsiElement(o);
+  }
+
   public void visitTypeDeclaration(@NotNull GnoTypeDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeName(@NotNull GnoTypeName o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVarDeclaration(@NotNull GnoVarDeclaration o) {
     visitPsiElement(o);
   }
 

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface GnoExpression extends PsiElement {
 
   @Nullable
+  GnoCallExpression getCallExpression();
+
+  @Nullable
   GnoLiteral getLiteral();
 
   @Nullable

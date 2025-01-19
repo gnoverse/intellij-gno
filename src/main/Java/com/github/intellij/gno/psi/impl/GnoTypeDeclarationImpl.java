@@ -29,8 +29,8 @@ public class GnoTypeDeclarationImpl extends ASTWrapperPsiElement implements GnoT
 
   @Override
   @NotNull
-  public GnoStructType getStructType() {
-    return findNotNullChildByClass(GnoStructType.class);
+  public GnoTypeBody getTypeBody() {
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override

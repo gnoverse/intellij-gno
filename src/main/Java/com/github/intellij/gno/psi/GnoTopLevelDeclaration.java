@@ -8,12 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface GnoTopLevelDeclaration extends PsiElement {
 
   @Nullable
+  GnoConstDeclaration getConstDeclaration();
+
+  @Nullable
   GnoFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
   GnoTypeDeclaration getTypeDeclaration();
 
   @Nullable
-  PsiElement getVarDeclaration();
+  GnoVarDeclaration getVarDeclaration();
 
 }

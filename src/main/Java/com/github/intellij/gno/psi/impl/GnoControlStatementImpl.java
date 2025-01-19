@@ -41,6 +41,12 @@ public class GnoControlStatementImpl extends ASTWrapperPsiElement implements Gno
 
   @Override
   @Nullable
+  public GnoReturnStatement getReturnStatement() {
+    return findChildByClass(GnoReturnStatement.class);
+  }
+
+  @Override
+  @Nullable
   public GnoSwitchStatement getSwitchStatement() {
     return findChildByClass(GnoSwitchStatement.class);
   }

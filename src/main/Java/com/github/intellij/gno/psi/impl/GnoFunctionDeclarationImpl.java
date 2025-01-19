@@ -35,6 +35,12 @@ public class GnoFunctionDeclarationImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
+  public GnoSignature getSignature() {
+    return findNotNullChildByClass(GnoSignature.class);
+  }
+
+  @Override
+  @NotNull
   public PsiElement getFunc() {
     return findNotNullChildByType(FUNC);
   }
@@ -43,12 +49,6 @@ public class GnoFunctionDeclarationImpl extends ASTWrapperPsiElement implements 
   @NotNull
   public PsiElement getIdentifier() {
     return findNotNullChildByType(IDENTIFIER);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getSignature() {
-    return findNotNullChildByType(SIGNATURE);
   }
 
 }

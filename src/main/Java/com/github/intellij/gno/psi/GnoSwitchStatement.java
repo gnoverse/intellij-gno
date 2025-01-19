@@ -10,7 +10,7 @@ public interface GnoSwitchStatement extends PsiElement {
   @NotNull
   GnoCaseClauses getCaseClauses();
 
-  @NotNull
+  @Nullable
   GnoExpression getExpression();
 
   @NotNull

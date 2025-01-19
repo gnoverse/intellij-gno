@@ -14,6 +14,9 @@ public interface GnoControlStatement extends PsiElement {
   GnoIfStatement getIfStatement();
 
   @Nullable
+  GnoReturnStatement getReturnStatement();
+
+  @Nullable
   GnoSwitchStatement getSwitchStatement();
 
 }

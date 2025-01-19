@@ -21,68 +21,135 @@
     RPAREN    = ')'
     COMMA     = ','
     ASSIGN    = '='
-    SEMICOLON = ';'
     COLON     = ':'
+    SEMICOLON = ';'
+    DOT       = '.'
     PLUS      = '+'
     MINUS     = '-'
     MUL       = '*'
     DIV       = '/'
-    INT       = '[0-9]+'
-    STRING    = '".*?"'
-    COMMENT   = '//[^\n]*|/\\*.*?\\*/'
+    MODULO    = '%'
+    BIT_AND   = '&'
+    BIT_OR    = '|'
+    BIT_XOR   = '^'
+    SHIFT_LEFT  = '<<'
+    SHIFT_RIGHT = '>>'
+    EQUALS      = '=='
+    NOT_EQUALS  = '!='
+    LESS        = '<'
+    GREATER     = '>'
+    LESS_EQUAL  = '<='
+    GREATER_EQUAL = '>='
+    AND         = '&&'
+    OR          = '||'
+    NOT         = '!'
 
-    // Keywords grouped under KEY
-    IMPORT    = 'import'
-    PACKAGE   = 'package'
-    CONST     = 'const'
-    TYPE      = 'type'
-    FUNC      = 'func'
-    VAR       = 'var'
-    SWITCH    = 'switch'
-    CASE      = 'case'
-    SELECT    = 'select'
-    FOR       = 'for'
-    IF        = 'if'
-    ELSE      = 'else'
-    RETURN    = 'return'
-    MAP       = 'map'
-    INTERFACE = 'interface'
-    STRUCT    = 'struct'
+    IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+    INT        = 'regexp:[0-9]+'
+    STRING     = 'regexp:"([^"\\\n\r]|\\.)*"'
+    COMMENT    = 'regexp://[^\n]*|/\\*.*?\\*/'
 
-    IDENTIFIER = '[a-zA-Z_][a-zA-Z0-9_]*'
+
+    PACKAGE    = 'package'
+    IMPORT     = 'import'
+    CONST      = 'const'
+    VAR        = 'var'
+    FUNC       = 'func'
+    TYPE       = 'type'
+    STRUCT     = 'struct'
+    INTERFACE  = 'interface'
+    MAP        = 'map'
+    SELECT     = 'select'
+    SWITCH     = 'switch'
+    CASE       = 'case'
+    DEFAULT    = 'default'
+    FOR        = 'for'
+    IF         = 'if'
+    ELSE       = 'else'
+    RETURN     = 'return'
+    GO         = 'go'
+    DEFER      = 'defer'
+    CHAN       = 'chan'
   ]
 
   generateTokenAccessors=true
 }
 
-File ::= PackageClause ImportList TopLevelDeclaration*
-PackageClause ::= PACKAGE IDENTIFIER
-ImportList ::= LPAREN (ImportDeclaration COMMA?)* RPAREN | ImportDeclaration
-ImportDeclaration ::= IMPORT VALUE
+File ::= PackageClause ImportList? TopLevelDeclaration*
+
+PackageClause ::= PACKAGE IDENTIFIER {pin=1}
+
+ImportList ::= LPAREN ImportDeclaration* RPAREN | ImportDeclaration
+
+ImportDeclaration ::= IMPORT STRING
 
 TopLevelDeclaration ::=
     FunctionDeclaration
   | TypeDeclaration
   | VarDeclaration
+  | ConstDeclaration
+
+VarDeclaration ::= VAR IDENTIFIER TypeBody (ASSIGN Expression)? {pin=1}
+ConstDeclaration ::= CONST IDENTIFIER (ASSIGN Expression) {pin=1}
 
 FunctionDeclaration ::= FUNC IDENTIFIER Signature Block
-TypeDeclaration ::= TYPE IDENTIFIER StructType
+
+Signature ::= LPAREN Parameters? RPAREN Result?
+
+Result ::= LPAREN Parameters RPAREN | TypeBody
+
+Parameters ::= ParameterDeclaration (COMMA ParameterDeclaration)* COMMA?
+
+ParameterDeclaration ::= IDENTIFIER TypeBody {pin=1}
+
+TypeDeclaration ::= TYPE IDENTIFIER TypeBody
+
+TypeBody ::= TypeName | StructType | MapType | ArrayType | PointerType | FunctionType
+
+TypeName ::= IDENTIFIER {pin=1}
+
 StructType ::= STRUCT LBRACE Fields? RBRACE
-Fields ::= FieldDeclaration*
-FieldDeclaration ::= IDENTIFIER Type
+
+Fields ::= FieldDeclaration (SEMICOLON FieldDeclaration)* SEMICOLON?
+
+FieldDeclaration ::= IDENTIFIER TypeBody
+
+MapType ::= MAP LBRACK TypeBody RBRACK TypeBody {pin=1}
+
+ArrayType ::= LBRACK INT? RBRACK TypeBody {pin=1}
+
+PointerType ::= MUL TypeBody {pin=1}
+
+FunctionType ::= FUNC Signature {pin=1}
 
 Block ::= LBRACE Statement* RBRACE
+
 Statement ::= ExpressionStatement | Block | ControlStatement
+
 ExpressionStatement ::= Expression
-Expression ::= Literal | IDENTIFIER
+
+Expression ::= Literal | IDENTIFIER | CallExpression
+
 Literal ::= INT | STRING
+
+CallExpression ::= IDENTIFIER LPAREN Arguments? RPAREN {pin=2}
+
+Arguments ::= Expression (COMMA Expression)* COMMA?
 
 ControlStatement ::=
     IfStatement
   | ForStatement
   | SwitchStatement
+  | ReturnStatement
+
 IfStatement ::= IF Expression Block ELSE? Block?
-ForStatement ::= FOR Expression Block
-SwitchStatement ::= SWITCH Expression LBRACE CaseClauses RBRACE
+
+ForStatement ::= FOR Expression? Block
+
+SwitchStatement ::= SWITCH Expression? LBRACE CaseClauses RBRACE
+
 CaseClauses ::= CaseClause*
+
 CaseClause ::= CASE Expression COLON Statement*
+
+ReturnStatement ::= RETURN Expression?

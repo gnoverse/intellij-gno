@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoTopLevelDeclarationImpl extends ASTWrapperPsiElement implements GnoTopLevelDeclaration {
+public class GnoTypeBodyImpl extends ASTWrapperPsiElement implements GnoTypeBody {
 
-  public GnoTopLevelDeclarationImpl(@NotNull ASTNode node) {
+  public GnoTypeBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitTopLevelDeclaration(this);
+    visitor.visitTypeBody(this);
   }
 
   @Override
@@ -29,26 +29,38 @@ public class GnoTopLevelDeclarationImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public GnoConstDeclaration getConstDeclaration() {
-    return findChildByClass(GnoConstDeclaration.class);
+  public GnoArrayType getArrayType() {
+    return findChildByClass(GnoArrayType.class);
   }
 
   @Override
   @Nullable
-  public GnoFunctionDeclaration getFunctionDeclaration() {
-    return findChildByClass(GnoFunctionDeclaration.class);
+  public GnoFunctionType getFunctionType() {
+    return findChildByClass(GnoFunctionType.class);
   }
 
   @Override
   @Nullable
-  public GnoTypeDeclaration getTypeDeclaration() {
-    return findChildByClass(GnoTypeDeclaration.class);
+  public GnoMapType getMapType() {
+    return findChildByClass(GnoMapType.class);
   }
 
   @Override
   @Nullable
-  public GnoVarDeclaration getVarDeclaration() {
-    return findChildByClass(GnoVarDeclaration.class);
+  public GnoPointerType getPointerType() {
+    return findChildByClass(GnoPointerType.class);
+  }
+
+  @Override
+  @Nullable
+  public GnoStructType getStructType() {
+    return findChildByClass(GnoStructType.class);
+  }
+
+  @Override
+  @Nullable
+  public GnoTypeName getTypeName() {
+    return findChildByClass(GnoTypeName.class);
   }
 
 }

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface GnoTypeDeclaration extends PsiElement {
 
   @NotNull
-  GnoStructType getStructType();
+  GnoTypeBody getTypeBody();
 
   @NotNull
   PsiElement getIdentifier();

@@ -29,6 +29,12 @@ public class GnoExpressionImpl extends ASTWrapperPsiElement implements GnoExpres
 
   @Override
   @Nullable
+  public GnoCallExpression getCallExpression() {
+    return findChildByClass(GnoCallExpression.class);
+  }
+
+  @Override
+  @Nullable
   public GnoLiteral getLiteral() {
     return findChildByClass(GnoLiteral.class);
   }

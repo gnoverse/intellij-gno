@@ -29,14 +29,14 @@ public class GnoFieldDeclarationImpl extends ASTWrapperPsiElement implements Gno
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public GnoTypeBody getTypeBody() {
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getType() {
-    return findNotNullChildByType(TYPE);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

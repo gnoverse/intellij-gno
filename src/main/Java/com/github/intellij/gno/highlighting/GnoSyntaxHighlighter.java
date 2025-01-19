@@ -78,6 +78,7 @@ public class GnoSyntaxHighlighter extends SyntaxHighlighterBase {
                 tokenType.equals(GnoTypes.RETURN) ||
                 tokenType.equals(GnoTypes.MAP) ||
                 tokenType.equals(GnoTypes.INTERFACE) ||
-                tokenType.equals(GnoTypes.STRUCT);
+                tokenType.equals(GnoTypes.STRUCT) ||
+                tokenType.equals(GnoTypes.STRING);
     }
 }

@@ -34,9 +34,9 @@ public class GnoSwitchStatementImpl extends ASTWrapperPsiElement implements GnoS
   }
 
   @Override
-  @NotNull
+  @Nullable
   public GnoExpression getExpression() {
-    return findNotNullChildByClass(GnoExpression.class);
+    return findChildByClass(GnoExpression.class);
   }
 
   @Override
