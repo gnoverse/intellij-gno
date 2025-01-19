@@ -126,23 +126,22 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER LPAREN Arguments? RPAREN
-  public static boolean CallExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "CallExpression")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, CALL_EXPRESSION, null);
-    r = consumeTokens(b, 2, IDENTIFIER, LPAREN);
-    p = r; // pin = 2
-    r = r && report_error_(b, CallExpression_2(b, l + 1));
-    r = p && consumeToken(b, RPAREN) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+  // LPAREN Arguments? RPAREN
+  public static boolean CallSuffix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CallSuffix")) return false;
+    if (!nextTokenIs(b, LPAREN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LPAREN);
+    r = r && CallSuffix_1(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, CALL_SUFFIX, r);
+    return r;
   }
 
   // Arguments?
-  private static boolean CallExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "CallExpression_2")) return false;
+  private static boolean CallSuffix_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CallSuffix_1")) return false;
     Arguments(b, l + 1);
     return true;
   }
@@ -230,14 +229,12 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Literal | IDENTIFIER | CallExpression
+  // PrimaryExpression
   public static boolean Expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION, "<expression>");
-    r = Literal(b, l + 1);
-    if (!r) r = consumeToken(b, IDENTIFIER);
-    if (!r) r = CallExpression(b, l + 1);
+    r = PrimaryExpression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -310,7 +307,7 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PackageClause ImportList? TopLevelDeclaration*
+  // PackageClause ImportDeclaration* TopLevelDeclaration*
   static boolean File(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "File")) return false;
     if (!nextTokenIs(b, PACKAGE)) return false;
@@ -323,10 +320,14 @@ public class GnoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ImportList?
+  // ImportDeclaration*
   private static boolean File_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "File_1")) return false;
-    ImportList(b, l + 1);
+    while (true) {
+      int c = current_position_(b);
+      if (!ImportDeclaration(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "File_1", c)) break;
+    }
     return true;
   }
 
@@ -363,17 +364,26 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FUNC IDENTIFIER Signature Block
+  // FUNC Receiver? IDENTIFIER Signature Block
   public static boolean FunctionDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionDeclaration")) return false;
     if (!nextTokenIs(b, FUNC)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, FUNC, IDENTIFIER);
+    r = consumeToken(b, FUNC);
+    r = r && FunctionDeclaration_1(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     r = r && Signature(b, l + 1);
     r = r && Block(b, l + 1);
     exit_section_(b, m, FUNCTION_DECLARATION, r);
     return r;
+  }
+
+  // Receiver?
+  private static boolean FunctionDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FunctionDeclaration_1")) return false;
+    Receiver(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -421,51 +431,77 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IMPORT STRING
+  // IMPORT ( ImportSpec
+  //                              | LPAREN ImportSpecList? RPAREN )
   public static boolean ImportDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImportDeclaration")) return false;
     if (!nextTokenIs(b, IMPORT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IMPORT, STRING);
+    r = consumeToken(b, IMPORT);
+    r = r && ImportDeclaration_1(b, l + 1);
     exit_section_(b, m, IMPORT_DECLARATION, r);
     return r;
   }
 
-  /* ********************************************************** */
-  // LPAREN ImportDeclaration* RPAREN | ImportDeclaration
-  public static boolean ImportList(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ImportList")) return false;
-    if (!nextTokenIs(b, "<import list>", IMPORT, LPAREN)) return false;
+  // ImportSpec
+  //                              | LPAREN ImportSpecList? RPAREN
+  private static boolean ImportDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportDeclaration_1")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, IMPORT_LIST, "<import list>");
-    r = ImportList_0(b, l + 1);
-    if (!r) r = ImportDeclaration(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = ImportSpec(b, l + 1);
+    if (!r) r = ImportDeclaration_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
-  // LPAREN ImportDeclaration* RPAREN
-  private static boolean ImportList_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ImportList_0")) return false;
+  // LPAREN ImportSpecList? RPAREN
+  private static boolean ImportDeclaration_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportDeclaration_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
-    r = r && ImportList_0_1(b, l + 1);
+    r = r && ImportDeclaration_1_1_1(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ImportDeclaration*
-  private static boolean ImportList_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ImportList_0_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!ImportDeclaration(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "ImportList_0_1", c)) break;
-    }
+  // ImportSpecList?
+  private static boolean ImportDeclaration_1_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportDeclaration_1_1_1")) return false;
+    ImportSpecList(b, l + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // STRING
+  public static boolean ImportSpec(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportSpec")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, IMPORT_SPEC, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ImportSpec+
+  public static boolean ImportSpecList(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportSpecList")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ImportSpec(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!ImportSpec(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ImportSpecList", c)) break;
+    }
+    exit_section_(b, m, IMPORT_SPEC_LIST, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -582,6 +618,75 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (IDENTIFIER | Literal)
+  //   (SelectorSuffix | CallSuffix)*
+  public static boolean PrimaryExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PRIMARY_EXPRESSION, "<primary expression>");
+    r = PrimaryExpression_0(b, l + 1);
+    r = r && PrimaryExpression_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // IDENTIFIER | Literal
+  private static boolean PrimaryExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_0")) return false;
+    boolean r;
+    r = consumeToken(b, IDENTIFIER);
+    if (!r) r = Literal(b, l + 1);
+    return r;
+  }
+
+  // (SelectorSuffix | CallSuffix)*
+  private static boolean PrimaryExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!PrimaryExpression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "PrimaryExpression_1", c)) break;
+    }
+    return true;
+  }
+
+  // SelectorSuffix | CallSuffix
+  private static boolean PrimaryExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_1_0")) return false;
+    boolean r;
+    r = SelectorSuffix(b, l + 1);
+    if (!r) r = CallSuffix(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LPAREN ReceiverParameter RPAREN
+  public static boolean Receiver(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Receiver")) return false;
+    if (!nextTokenIs(b, LPAREN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LPAREN);
+    r = r && ReceiverParameter(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, RECEIVER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER TypeBody
+  public static boolean ReceiverParameter(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ReceiverParameter")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && TypeBody(b, l + 1);
+    exit_section_(b, m, RECEIVER_PARAMETER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // LPAREN Parameters RPAREN | TypeBody
   public static boolean Result(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Result")) return false;
@@ -623,6 +728,18 @@ public class GnoParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "ReturnStatement_1")) return false;
     Expression(b, l + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // '.' IDENTIFIER
+  public static boolean SelectorSuffix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SelectorSuffix")) return false;
+    if (!nextTokenIs(b, DOT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, DOT, IDENTIFIER);
+    exit_section_(b, m, SELECTOR_SUFFIX, r);
+    return r;
   }
 
   /* ********************************************************** */

@@ -1,6 +1,8 @@
 // This is a generated file. Not intended for manual editing.
 package com.github.intellij.gno.psi;
 
+import com.github.intellij.gno.psi.impl.GnoCallExpressionImpl;
+import com.github.intellij.gno.psi.impl.GnoImportListImpl;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
@@ -19,7 +21,7 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitCallExpression(@NotNull GnoCallExpression o) {
+  public void visitCallSuffix(@NotNull GnoCallSuffix o) {
     visitPsiElement(o);
   }
 
@@ -75,7 +77,11 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitImportList(@NotNull GnoImportList o) {
+  public void visitImportSpec(@NotNull GnoImportSpec o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportSpecList(@NotNull GnoImportSpecList o) {
     visitPsiElement(o);
   }
 
@@ -103,11 +109,27 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitPrimaryExpression(@NotNull GnoPrimaryExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReceiver(@NotNull GnoReceiver o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReceiverParameter(@NotNull GnoReceiverParameter o) {
+    visitPsiElement(o);
+  }
+
   public void visitResult(@NotNull GnoResult o) {
     visitPsiElement(o);
   }
 
   public void visitReturnStatement(@NotNull GnoReturnStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectorSuffix(@NotNull GnoSelectorSuffix o) {
     visitPsiElement(o);
   }
 
@@ -151,4 +173,11 @@ public class GnoVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
+  public void visitImportList(GnoImportListImpl gnoImportList) {
+
+  }
+
+  public void visitCallExpression(GnoCallExpressionImpl gnoCallExpression) {
+
+  }
 }

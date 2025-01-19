@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements GnoImportDeclaration {
+public class GnoReceiverParameterImpl extends ASTWrapperPsiElement implements GnoReceiverParameter {
 
-  public GnoImportDeclarationImpl(@NotNull ASTNode node) {
+  public GnoReceiverParameterImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitImportDeclaration(this);
+    visitor.visitReceiverParameter(this);
   }
 
   @Override
@@ -28,33 +28,15 @@ public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements Gn
   }
 
   @Override
-  @Nullable
-  public GnoImportSpec getImportSpec() {
-    return findChildByClass(GnoImportSpec.class);
-  }
-
-  @Override
-  @Nullable
-  public GnoImportSpecList getImportSpecList() {
-    return findChildByClass(GnoImportSpecList.class);
+  @NotNull
+  public GnoTypeBody getTypeBody() {
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getImport() {
-    return findNotNullChildByType(IMPORT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getLparen() {
-    return findChildByType(LPAREN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getRparen() {
-    return findChildByType(RPAREN);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

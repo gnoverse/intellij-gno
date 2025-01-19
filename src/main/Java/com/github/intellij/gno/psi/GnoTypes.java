@@ -11,7 +11,7 @@ public interface GnoTypes {
   IElementType ARGUMENTS = new GnoElementType("ARGUMENTS");
   IElementType ARRAY_TYPE = new GnoElementType("ARRAY_TYPE");
   IElementType BLOCK = new GnoElementType("BLOCK");
-  IElementType CALL_EXPRESSION = new GnoElementType("CALL_EXPRESSION");
+  IElementType CALL_SUFFIX = new GnoElementType("CALL_SUFFIX");
   IElementType CASE_CLAUSE = new GnoElementType("CASE_CLAUSE");
   IElementType CASE_CLAUSES = new GnoElementType("CASE_CLAUSES");
   IElementType CONST_DECLARATION = new GnoElementType("CONST_DECLARATION");
@@ -25,15 +25,20 @@ public interface GnoTypes {
   IElementType FUNCTION_TYPE = new GnoElementType("FUNCTION_TYPE");
   IElementType IF_STATEMENT = new GnoElementType("IF_STATEMENT");
   IElementType IMPORT_DECLARATION = new GnoElementType("IMPORT_DECLARATION");
-  IElementType IMPORT_LIST = new GnoElementType("IMPORT_LIST");
+  IElementType IMPORT_SPEC = new GnoElementType("IMPORT_SPEC");
+  IElementType IMPORT_SPEC_LIST = new GnoElementType("IMPORT_SPEC_LIST");
   IElementType LITERAL = new GnoElementType("LITERAL");
   IElementType MAP_TYPE = new GnoElementType("MAP_TYPE");
   IElementType PACKAGE_CLAUSE = new GnoElementType("PACKAGE_CLAUSE");
   IElementType PARAMETERS = new GnoElementType("PARAMETERS");
   IElementType PARAMETER_DECLARATION = new GnoElementType("PARAMETER_DECLARATION");
   IElementType POINTER_TYPE = new GnoElementType("POINTER_TYPE");
+  IElementType PRIMARY_EXPRESSION = new GnoElementType("PRIMARY_EXPRESSION");
+  IElementType RECEIVER = new GnoElementType("RECEIVER");
+  IElementType RECEIVER_PARAMETER = new GnoElementType("RECEIVER_PARAMETER");
   IElementType RESULT = new GnoElementType("RESULT");
   IElementType RETURN_STATEMENT = new GnoElementType("RETURN_STATEMENT");
+  IElementType SELECTOR_SUFFIX = new GnoElementType("SELECTOR_SUFFIX");
   IElementType SIGNATURE = new GnoElementType("SIGNATURE");
   IElementType STATEMENT = new GnoElementType("STATEMENT");
   IElementType STRUCT_TYPE = new GnoElementType("STRUCT_TYPE");
@@ -111,8 +116,8 @@ public interface GnoTypes {
       else if (type == BLOCK) {
         return new GnoBlockImpl(node);
       }
-      else if (type == CALL_EXPRESSION) {
-        return new GnoCallExpressionImpl(node);
+      else if (type == CALL_SUFFIX) {
+        return new GnoCallSuffixImpl(node);
       }
       else if (type == CASE_CLAUSE) {
         return new GnoCaseClauseImpl(node);
@@ -153,8 +158,11 @@ public interface GnoTypes {
       else if (type == IMPORT_DECLARATION) {
         return new GnoImportDeclarationImpl(node);
       }
-      else if (type == IMPORT_LIST) {
-        return new GnoImportListImpl(node);
+      else if (type == IMPORT_SPEC) {
+        return new GnoImportSpecImpl(node);
+      }
+      else if (type == IMPORT_SPEC_LIST) {
+        return new GnoImportSpecListImpl(node);
       }
       else if (type == LITERAL) {
         return new GnoLiteralImpl(node);
@@ -174,11 +182,23 @@ public interface GnoTypes {
       else if (type == POINTER_TYPE) {
         return new GnoPointerTypeImpl(node);
       }
+      else if (type == PRIMARY_EXPRESSION) {
+        return new GnoPrimaryExpressionImpl(node);
+      }
+      else if (type == RECEIVER) {
+        return new GnoReceiverImpl(node);
+      }
+      else if (type == RECEIVER_PARAMETER) {
+        return new GnoReceiverParameterImpl(node);
+      }
       else if (type == RESULT) {
         return new GnoResultImpl(node);
       }
       else if (type == RETURN_STATEMENT) {
         return new GnoReturnStatementImpl(node);
+      }
+      else if (type == SELECTOR_SUFFIX) {
+        return new GnoSelectorSuffixImpl(node);
       }
       else if (type == SIGNATURE) {
         return new GnoSignatureImpl(node);

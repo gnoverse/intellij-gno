@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements GnoImportDeclaration {
+public class GnoImportSpecImpl extends ASTWrapperPsiElement implements GnoImportSpec {
 
-  public GnoImportDeclarationImpl(@NotNull ASTNode node) {
+  public GnoImportSpecImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitImportDeclaration(this);
+    visitor.visitImportSpec(this);
   }
 
   @Override
@@ -28,33 +28,9 @@ public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements Gn
   }
 
   @Override
-  @Nullable
-  public GnoImportSpec getImportSpec() {
-    return findChildByClass(GnoImportSpec.class);
-  }
-
-  @Override
-  @Nullable
-  public GnoImportSpecList getImportSpecList() {
-    return findChildByClass(GnoImportSpecList.class);
-  }
-
-  @Override
   @NotNull
-  public PsiElement getImport() {
-    return findNotNullChildByType(IMPORT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getLparen() {
-    return findChildByType(LPAREN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getRparen() {
-    return findChildByType(RPAREN);
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
   }
 
 }

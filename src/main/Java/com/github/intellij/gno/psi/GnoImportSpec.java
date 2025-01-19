@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoExpression extends PsiElement {
+public interface GnoImportSpec extends PsiElement {
 
   @NotNull
-  GnoPrimaryExpression getPrimaryExpression();
+  PsiElement getString();
 
 }

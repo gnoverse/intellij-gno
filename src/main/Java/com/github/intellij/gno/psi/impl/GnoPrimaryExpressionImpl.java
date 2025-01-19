@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements GnoImportDeclaration {
+public class GnoPrimaryExpressionImpl extends ASTWrapperPsiElement implements GnoPrimaryExpression {
 
-  public GnoImportDeclarationImpl(@NotNull ASTNode node) {
+  public GnoPrimaryExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitImportDeclaration(this);
+    visitor.visitPrimaryExpression(this);
   }
 
   @Override
@@ -28,33 +28,27 @@ public class GnoImportDeclarationImpl extends ASTWrapperPsiElement implements Gn
   }
 
   @Override
-  @Nullable
-  public GnoImportSpec getImportSpec() {
-    return findChildByClass(GnoImportSpec.class);
+  @NotNull
+  public List<GnoCallSuffix> getCallSuffixList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoCallSuffix.class);
   }
 
   @Override
   @Nullable
-  public GnoImportSpecList getImportSpecList() {
-    return findChildByClass(GnoImportSpecList.class);
+  public GnoLiteral getLiteral() {
+    return findChildByClass(GnoLiteral.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getImport() {
-    return findNotNullChildByType(IMPORT);
+  public List<GnoSelectorSuffix> getSelectorSuffixList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoSelectorSuffix.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getLparen() {
-    return findChildByType(LPAREN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getRparen() {
-    return findChildByType(RPAREN);
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
   }
 
 }

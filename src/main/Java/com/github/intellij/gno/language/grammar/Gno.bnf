@@ -75,13 +75,16 @@
   generateTokenAccessors=true
 }
 
-File ::= PackageClause ImportList? TopLevelDeclaration*
+File ::= PackageClause ImportDeclaration* TopLevelDeclaration*
 
 PackageClause ::= PACKAGE IDENTIFIER {pin=1}
 
-ImportList ::= LPAREN ImportDeclaration* RPAREN | ImportDeclaration
+ImportDeclaration ::= IMPORT ( ImportSpec
+                             | LPAREN ImportSpecList? RPAREN )
 
-ImportDeclaration ::= IMPORT STRING
+ImportSpecList ::= ImportSpec+
+ImportSpec     ::= STRING
+
 
 TopLevelDeclaration ::=
     FunctionDeclaration
@@ -92,7 +95,9 @@ TopLevelDeclaration ::=
 VarDeclaration ::= VAR IDENTIFIER TypeBody (ASSIGN Expression)? {pin=1}
 ConstDeclaration ::= CONST IDENTIFIER (ASSIGN Expression) {pin=1}
 
-FunctionDeclaration ::= FUNC IDENTIFIER Signature Block
+FunctionDeclaration ::= FUNC Receiver? IDENTIFIER Signature Block
+Receiver ::= LPAREN ReceiverParameter RPAREN
+ReceiverParameter ::= IDENTIFIER TypeBody
 
 Signature ::= LPAREN Parameters? RPAREN Result?
 
@@ -128,12 +133,15 @@ Statement ::= ExpressionStatement | Block | ControlStatement
 
 ExpressionStatement ::= Expression
 
-Expression ::= Literal | IDENTIFIER | CallExpression
+Expression ::= PrimaryExpression
 
+PrimaryExpression ::=
+  (IDENTIFIER | Literal)
+  (SelectorSuffix | CallSuffix)*
+
+SelectorSuffix ::= '.' IDENTIFIER
+CallSuffix    ::= LPAREN Arguments? RPAREN
 Literal ::= INT | STRING
-
-CallExpression ::= IDENTIFIER LPAREN Arguments? RPAREN {pin=2}
-
 Arguments ::= Expression (COMMA Expression)* COMMA?
 
 ControlStatement ::=

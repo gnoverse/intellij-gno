@@ -5,21 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoImportDeclaration extends PsiElement {
-
-  @Nullable
-  GnoImportSpec getImportSpec();
-
-  @Nullable
-  GnoImportSpecList getImportSpecList();
+public interface GnoReceiver extends PsiElement {
 
   @NotNull
-  PsiElement getImport();
+  GnoReceiverParameter getReceiverParameter();
 
-  @Nullable
+  @NotNull
   PsiElement getLparen();
 
-  @Nullable
+  @NotNull
   PsiElement getRparen();
 
 }
