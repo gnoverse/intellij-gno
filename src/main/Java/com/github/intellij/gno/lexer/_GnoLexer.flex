@@ -1,11 +1,11 @@
-package com.github.intellij.gno.lexer;
+package fleet.com.github.intellij.gno.lexer;
 
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
+import fleet.com.intellij.lexer.FlexLexer;
+import fleet.com.intellij.psi.tree.IElementType;
 
-import static com.intellij.psi.TokenType.BAD_CHARACTER;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static com.github.intellij.gno.psi.GnoTypes.*;
+import static fleet.com.intellij.psi.TokenType.BAD_CHARACTER;
+import static fleet.com.intellij.psi.TokenType.WHITE_SPACE;
+import static fleet.com.github.intellij.gno.psi.GnoTypes.*;
 
 %%
 
@@ -21,9 +21,6 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 %function advance
 %type IElementType
 %unicode
-
-EOL=\R
-WHITE_SPACE=\s+
 
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 INT=[0-9]+

@@ -123,7 +123,9 @@ TopLevelDeclaration ::=
 
 PropertyDeclaration ::= IDENTIFIER VAR_ASSIGN Expression
 {
-  methods=[getKey getValue getName]
+   mixin="com.github.intellij.gno.psi.impl.GnoNamedElementImpl"
+   implements="com.github.intellij.gno.psi.GnoNamedElement"
+   methods=[getKey getValue getName setName getNameIdentifier getPresentation]
 }
 
 ShortVarDeclaration ::= VarDefinitionList VAR_ASSIGN ExpressionList {pin=2}

@@ -200,7 +200,7 @@ public class GnoVisitor extends PsiElementVisitor {
   }
 
   public void visitPropertyDeclaration(@NotNull GnoPropertyDeclaration o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitQualifiedIdentifier(@NotNull GnoQualifiedIdentifier o) {
@@ -316,6 +316,10 @@ public class GnoVisitor extends PsiElementVisitor {
   }
 
   public void visitVarSpecList(@NotNull GnoVarSpecList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull GnoNamedElement o) {
     visitPsiElement(o);
   }
 

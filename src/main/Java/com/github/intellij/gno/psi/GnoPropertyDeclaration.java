@@ -4,8 +4,9 @@ package com.github.intellij.gno.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
 
-public interface GnoPropertyDeclaration extends PsiElement {
+public interface GnoPropertyDeclaration extends GnoNamedElement {
 
   @NotNull
   GnoExpression getExpression();
@@ -21,5 +22,11 @@ public interface GnoPropertyDeclaration extends PsiElement {
   String getValue();
 
   String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
+
+  ItemPresentation getPresentation();
 
 }

@@ -31,10 +31,11 @@
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.java</depends>
+  <depends>com.intellij.modules.ultimate</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <fileType
-            name="Gno File"
+            name="Gno"
             extensions="gno"
             language="Gno"
             fieldName="INSTANCE"
@@ -49,5 +50,9 @@
     <annotator
             language="Gno"
             implementationClass="com.github.intellij.gno.language.GnoAnnotator"/>
+    <gotoSymbolContributor
+            implementation="com.github.intellij.gno.language.GnoChooseByNameContributor"/>
+    <platform.lsp.serverSupportProvider implementation="com.github.intellij.gno.lsp.GnoLspProvider"/>
+
   </extensions>
 </idea-plugin>
