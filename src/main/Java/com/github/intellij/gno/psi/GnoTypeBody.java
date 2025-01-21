@@ -20,9 +20,21 @@ public interface GnoTypeBody extends PsiElement {
   GnoPointerType getPointerType();
 
   @Nullable
+  GnoQualifiedIdentifier getQualifiedIdentifier();
+
+  @Nullable
   GnoStructType getStructType();
 
   @Nullable
+  GnoTypeBody getTypeBody();
+
+  @Nullable
   GnoTypeName getTypeName();
+
+  @Nullable
+  PsiElement getLparen();
+
+  @Nullable
+  PsiElement getRparen();
 
 }

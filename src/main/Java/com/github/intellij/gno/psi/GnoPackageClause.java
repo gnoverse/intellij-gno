@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoPackageClause extends PsiElement {
 
-  @Nullable
+  @NotNull
   PsiElement getIdentifier();
 
   @NotNull

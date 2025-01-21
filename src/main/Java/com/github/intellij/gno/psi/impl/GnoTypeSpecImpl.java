@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoPrimaryExpressionImpl extends ASTWrapperPsiElement implements GnoPrimaryExpression {
+public class GnoTypeSpecImpl extends ASTWrapperPsiElement implements GnoTypeSpec {
 
-  public GnoPrimaryExpressionImpl(@NotNull ASTNode node) {
+  public GnoTypeSpecImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitPrimaryExpression(this);
+    visitor.visitTypeSpec(this);
   }
 
   @Override
@@ -29,26 +29,14 @@ public class GnoPrimaryExpressionImpl extends ASTWrapperPsiElement implements Gn
 
   @Override
   @NotNull
-  public List<GnoCallSuffix> getCallSuffixList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoCallSuffix.class);
-  }
-
-  @Override
-  @Nullable
-  public GnoLiteral getLiteral() {
-    return findChildByClass(GnoLiteral.class);
+  public GnoTypeBody getTypeBody() {
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override
   @NotNull
-  public List<GnoSelectorSuffix> getSelectorSuffixList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoSelectorSuffix.class);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

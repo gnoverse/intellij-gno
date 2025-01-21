@@ -5,18 +5,24 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoControlStatement extends PsiElement {
+public interface GnoCompareOp extends PsiElement {
 
   @Nullable
-  GnoForStatement getForStatement();
+  PsiElement getEq();
 
   @Nullable
-  GnoIfStatement getIfStatement();
+  PsiElement getGreater();
 
   @Nullable
-  GnoReturnStatement getReturnStatement();
+  PsiElement getGreaterOrEqual();
 
   @Nullable
-  GnoSwitchStatement getSwitchStatement();
+  PsiElement getLess();
+
+  @Nullable
+  PsiElement getLessOrEqual();
+
+  @Nullable
+  PsiElement getNotEq();
 
 }

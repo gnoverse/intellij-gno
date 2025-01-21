@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.intellij.gno"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
   mavenCentral()
@@ -18,7 +18,7 @@ intellij {
   type.set("IC") // Target IDE Platform
   pluginName.set("Gno")
 
-  plugins.set(listOf(/* Plugin Dependencies */))
+  plugins.set(listOf("com.intellij.java"))
 }
 
 // Include the generated files in the source set

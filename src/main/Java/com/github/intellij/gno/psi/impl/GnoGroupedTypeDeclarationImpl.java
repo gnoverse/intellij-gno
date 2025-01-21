@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoCallExpressionImpl extends ASTWrapperPsiElement implements GnoCallExpression {
+public class GnoGroupedTypeDeclarationImpl extends ASTWrapperPsiElement implements GnoGroupedTypeDeclaration {
 
-  public GnoCallExpressionImpl(@NotNull ASTNode node) {
+  public GnoGroupedTypeDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitCallExpression(this);
+    visitor.visitGroupedTypeDeclaration(this);
   }
 
   @Override
@@ -28,15 +28,15 @@ public class GnoCallExpressionImpl extends ASTWrapperPsiElement implements GnoCa
   }
 
   @Override
-  @Nullable
-  public GnoArguments getArguments() {
-    return findChildByClass(GnoArguments.class);
+  @NotNull
+  public GnoTypeSpecList getTypeSpecList() {
+    return findNotNullChildByClass(GnoTypeSpecList.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public PsiElement getEol() {
+    return findNotNullChildByType(EOL);
   }
 
   @Override
@@ -46,9 +46,9 @@ public class GnoCallExpressionImpl extends ASTWrapperPsiElement implements GnoCa
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getRparen() {
-    return findChildByType(RPAREN);
+    return findNotNullChildByType(RPAREN);
   }
 
 }

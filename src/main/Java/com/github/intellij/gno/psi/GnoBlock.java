@@ -13,7 +13,7 @@ public interface GnoBlock extends PsiElement {
   @NotNull
   PsiElement getLbrace();
 
-  @NotNull
+  @Nullable
   PsiElement getRbrace();
 
 }

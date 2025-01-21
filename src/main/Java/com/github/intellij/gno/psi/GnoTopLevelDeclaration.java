@@ -14,6 +14,9 @@ public interface GnoTopLevelDeclaration extends PsiElement {
   GnoFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
+  GnoPropertyDeclaration getPropertyDeclaration();
+
+  @Nullable
   GnoTypeDeclaration getTypeDeclaration();
 
   @Nullable

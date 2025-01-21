@@ -43,6 +43,7 @@ public class GnoSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+        System.out.println("🔍 Token analysé : " + tokenType);
         if (tokenType.equals(GnoTypes.COLON) || tokenType.equals(GnoTypes.ASSIGN)) {
             return SEPARATOR_KEYS;
         }

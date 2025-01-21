@@ -34,9 +34,9 @@ public class GnoMapTypeImpl extends ASTWrapperPsiElement implements GnoMapType {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getLbrack() {
-    return findChildByType(LBRACK);
+    return findNotNullChildByType(LBRACK);
   }
 
   @Override
@@ -46,9 +46,9 @@ public class GnoMapTypeImpl extends ASTWrapperPsiElement implements GnoMapType {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getRbrack() {
-    return findChildByType(RBRACK);
+    return findNotNullChildByType(RBRACK);
   }
 
 }

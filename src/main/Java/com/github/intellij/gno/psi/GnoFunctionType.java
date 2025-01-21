@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoFunctionType extends PsiElement {
 
-  @Nullable
+  @NotNull
   GnoSignature getSignature();
 
   @NotNull

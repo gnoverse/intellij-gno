@@ -35,6 +35,12 @@ public class GnoLiteralImpl extends ASTWrapperPsiElement implements GnoLiteral {
 
   @Override
   @Nullable
+  public PsiElement getNil() {
+    return findChildByType(NIL);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getString() {
     return findChildByType(STRING);
   }

@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface GnoExpression extends PsiElement {
 
   @NotNull
-  GnoPrimaryExpression getPrimaryExpression();
+  GnoOrExpr getOrExpr();
 
 }

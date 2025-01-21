@@ -10,4 +10,7 @@ public interface GnoArguments extends PsiElement {
   @NotNull
   List<GnoExpression> getExpressionList();
 
+  @Nullable
+  PsiElement getEol();
+
 }

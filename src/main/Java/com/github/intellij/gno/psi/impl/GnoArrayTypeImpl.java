@@ -28,9 +28,9 @@ public class GnoArrayTypeImpl extends ASTWrapperPsiElement implements GnoArrayTy
   }
 
   @Override
-  @Nullable
+  @NotNull
   public GnoTypeBody getTypeBody() {
-    return findChildByClass(GnoTypeBody.class);
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override
@@ -46,9 +46,9 @@ public class GnoArrayTypeImpl extends ASTWrapperPsiElement implements GnoArrayTy
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getRbrack() {
-    return findChildByType(RBRACK);
+    return findNotNullChildByType(RBRACK);
   }
 
 }

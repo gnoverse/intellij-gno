@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface GnoFieldDeclaration extends PsiElement {
 
   @NotNull
-  GnoTypeBody getTypeBody();
+  GnoFieldType getFieldType();
 
   @NotNull
-  PsiElement getIdentifier();
+  GnoIdentifierList getIdentifierList();
 
 }

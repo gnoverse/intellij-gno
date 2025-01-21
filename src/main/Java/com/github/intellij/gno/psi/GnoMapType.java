@@ -10,13 +10,13 @@ public interface GnoMapType extends PsiElement {
   @NotNull
   List<GnoTypeBody> getTypeBodyList();
 
-  @Nullable
+  @NotNull
   PsiElement getLbrack();
 
   @NotNull
   PsiElement getMap();
 
-  @Nullable
+  @NotNull
   PsiElement getRbrack();
 
 }

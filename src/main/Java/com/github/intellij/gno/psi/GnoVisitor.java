@@ -1,19 +1,37 @@
 // This is a generated file. Not intended for manual editing.
 package com.github.intellij.gno.psi;
 
-import com.github.intellij.gno.psi.impl.GnoCallExpressionImpl;
-import com.github.intellij.gno.psi.impl.GnoImportListImpl;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 
 public class GnoVisitor extends PsiElementVisitor {
 
+  public void visitAddExpr(@NotNull GnoAddExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAddOp(@NotNull GnoAddOp o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAndExpr(@NotNull GnoAndExpr o) {
+    visitPsiElement(o);
+  }
+
   public void visitArguments(@NotNull GnoArguments o) {
     visitPsiElement(o);
   }
 
   public void visitArrayType(@NotNull GnoArrayType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAssignOp(@NotNull GnoAssignOp o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAssignStatement(@NotNull GnoAssignStatement o) {
     visitPsiElement(o);
   }
 
@@ -33,15 +51,35 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCompareExpr(@NotNull GnoCompareExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCompareOp(@NotNull GnoCompareOp o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCompositeLiteral(@NotNull GnoCompositeLiteral o) {
+    visitPsiElement(o);
+  }
+
   public void visitConstDeclaration(@NotNull GnoConstDeclaration o) {
     visitPsiElement(o);
   }
 
-  public void visitControlStatement(@NotNull GnoControlStatement o) {
+  public void visitConstSpec(@NotNull GnoConstSpec o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConstSpecList(@NotNull GnoConstSpecList o) {
     visitPsiElement(o);
   }
 
   public void visitExpression(@NotNull GnoExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExpressionList(@NotNull GnoExpressionList o) {
     visitPsiElement(o);
   }
 
@@ -50,6 +88,18 @@ public class GnoVisitor extends PsiElementVisitor {
   }
 
   public void visitFieldDeclaration(@NotNull GnoFieldDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFieldLiteral(@NotNull GnoFieldLiteral o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFieldLiteralList(@NotNull GnoFieldLiteralList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFieldType(@NotNull GnoFieldType o) {
     visitPsiElement(o);
   }
 
@@ -69,11 +119,31 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitGroupedConstDeclaration(@NotNull GnoGroupedConstDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGroupedTypeDeclaration(@NotNull GnoGroupedTypeDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGroupedVarDeclaration(@NotNull GnoGroupedVarDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIdentifierList(@NotNull GnoIdentifierList o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfStatement(@NotNull GnoIfStatement o) {
     visitPsiElement(o);
   }
 
   public void visitImportDeclaration(@NotNull GnoImportDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportList(@NotNull GnoImportList o) {
     visitPsiElement(o);
   }
 
@@ -85,11 +155,27 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIncDecStatement(@NotNull GnoIncDecStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitLiteral(@NotNull GnoLiteral o) {
     visitPsiElement(o);
   }
 
   public void visitMapType(@NotNull GnoMapType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMulExpr(@NotNull GnoMulExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMulOp(@NotNull GnoMulOp o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOrExpr(@NotNull GnoOrExpr o) {
     visitPsiElement(o);
   }
 
@@ -109,7 +195,15 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitPrimaryExpression(@NotNull GnoPrimaryExpression o) {
+  public void visitPrimaryExpr(@NotNull GnoPrimaryExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPropertyDeclaration(@NotNull GnoPropertyDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitQualifiedIdentifier(@NotNull GnoQualifiedIdentifier o) {
     visitPsiElement(o);
   }
 
@@ -133,7 +227,23 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitShiftExpr(@NotNull GnoShiftExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitShiftOp(@NotNull GnoShiftOp o) {
+    visitPsiElement(o);
+  }
+
+  public void visitShortVarDeclaration(@NotNull GnoShortVarDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitSignature(@NotNull GnoSignature o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSimpleStatement(@NotNull GnoSimpleStatement o) {
     visitPsiElement(o);
   }
 
@@ -153,7 +263,19 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTypeAnnotation(@NotNull GnoTypeAnnotation o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeAssertionSuffix(@NotNull GnoTypeAssertionSuffix o) {
+    visitPsiElement(o);
+  }
+
   public void visitTypeBody(@NotNull GnoTypeBody o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeConversion(@NotNull GnoTypeConversion o) {
     visitPsiElement(o);
   }
 
@@ -165,7 +287,35 @@ public class GnoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTypeSpec(@NotNull GnoTypeSpec o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeSpecList(@NotNull GnoTypeSpecList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUnaryExpr(@NotNull GnoUnaryExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUnaryOp(@NotNull GnoUnaryOp o) {
+    visitPsiElement(o);
+  }
+
   public void visitVarDeclaration(@NotNull GnoVarDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVarDefinitionList(@NotNull GnoVarDefinitionList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVarSpec(@NotNull GnoVarSpec o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVarSpecList(@NotNull GnoVarSpecList o) {
     visitPsiElement(o);
   }
 
@@ -173,11 +323,4 @@ public class GnoVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
-  public void visitImportList(GnoImportListImpl gnoImportList) {
-
-  }
-
-  public void visitCallExpression(GnoCallExpressionImpl gnoCallExpression) {
-
-  }
 }

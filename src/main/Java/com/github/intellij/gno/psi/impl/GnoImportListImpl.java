@@ -33,16 +33,4 @@ public class GnoImportListImpl extends ASTWrapperPsiElement implements GnoImport
     return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoImportDeclaration.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getLparen() {
-    return findChildByType(LPAREN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getRparen() {
-    return findChildByType(RPAREN);
-  }
-
 }

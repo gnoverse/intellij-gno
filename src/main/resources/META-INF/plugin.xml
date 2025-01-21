@@ -1,23 +1,56 @@
 <idea-plugin>
   <id>com.github.intellij.gno</id>
   <name>Gno</name>
-  <version>1.0</version>
+  <version>0.0.1</version>
   <vendor url="https://gno.land/">gnolang</vendor>
+
+  <!-- The "Overview" tab: -->
+  <description>
+    <![CDATA[
+    <a href="https://gno.land/">gno.land</a>
+    <br/>
+    A Gno plugin providing syntax highlighting, code completion, etc.<br/><br/>
+    <b>Main Features:</b>
+    <ul>
+      <li>Parsing Gno code</li>
+      <li>Inspections and refactoring</li>
+    </ul>
+  ]]>
+  </description>
+
+  <!-- The "What’s New" tab: -->
+  <change-notes>
+    <![CDATA[
+    <ul>
+      <li>Added multi-file support</li>
+      <li>Fixed short var declaration bugs</li>
+    </ul>
+  ]]>
+  </change-notes>
 
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.java</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <fileType
             name="Gno File"
             extensions="gno"
+            language="Gno"
+            fieldName="INSTANCE"
             implementationClass="com.github.intellij.gno.language.GnoFileType">
     </fileType>
-      <lang.syntaxHighlighterFactory
-              language="Gno"
-              implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
-      <lang.parserDefinition
-              language="Gno"
-              implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
+    <lang.syntaxHighlighterFactory
+            language="Gno"
+            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
+    <lang.parserDefinition
+            language="Gno"
+            implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
+    <lang.foldingBuilder
+            language="Gno"
+            implementationClass="com.github.intellij.gno.language.GnoFoldingBuilder"/>
+    <annotator
+            language="Gno"
+            implementationClass="com.github.intellij.gno.language.GnoAnnotator"/>
   </extensions>
 </idea-plugin>

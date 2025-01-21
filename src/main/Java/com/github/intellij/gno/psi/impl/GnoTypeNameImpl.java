@@ -27,10 +27,4 @@ public class GnoTypeNameImpl extends ASTWrapperPsiElement implements GnoTypeName
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
-  }
-
 }

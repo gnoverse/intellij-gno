@@ -28,9 +28,9 @@ public class GnoFunctionTypeImpl extends ASTWrapperPsiElement implements GnoFunc
   }
 
   @Override
-  @Nullable
+  @NotNull
   public GnoSignature getSignature() {
-    return findChildByClass(GnoSignature.class);
+    return findNotNullChildByClass(GnoSignature.class);
   }
 
   @Override

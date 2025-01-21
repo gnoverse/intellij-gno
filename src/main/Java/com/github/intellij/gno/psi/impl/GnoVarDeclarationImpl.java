@@ -29,26 +29,14 @@ public class GnoVarDeclarationImpl extends ASTWrapperPsiElement implements GnoVa
 
   @Override
   @Nullable
-  public GnoExpression getExpression() {
-    return findChildByClass(GnoExpression.class);
+  public GnoGroupedVarDeclaration getGroupedVarDeclaration() {
+    return findChildByClass(GnoGroupedVarDeclaration.class);
   }
 
   @Override
   @Nullable
-  public GnoTypeBody getTypeBody() {
-    return findChildByClass(GnoTypeBody.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getAssign() {
-    return findChildByType(ASSIGN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+  public GnoVarSpec getVarSpec() {
+    return findChildByClass(GnoVarSpec.class);
   }
 
   @Override

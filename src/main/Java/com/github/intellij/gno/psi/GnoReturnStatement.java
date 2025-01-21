@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface GnoReturnStatement extends PsiElement {
 
   @Nullable
-  GnoExpression getExpression();
+  GnoExpressionList getExpressionList();
 
   @NotNull
   PsiElement getReturn();

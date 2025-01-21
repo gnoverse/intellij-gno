@@ -11,6 +11,9 @@ public interface GnoLiteral extends PsiElement {
   PsiElement getInt();
 
   @Nullable
+  PsiElement getNil();
+
+  @Nullable
   PsiElement getString();
 
 }

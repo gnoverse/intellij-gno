@@ -41,6 +41,12 @@ public class GnoTopLevelDeclarationImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public GnoPropertyDeclaration getPropertyDeclaration() {
+    return findChildByClass(GnoPropertyDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public GnoTypeDeclaration getTypeDeclaration() {
     return findChildByClass(GnoTypeDeclaration.class);
   }

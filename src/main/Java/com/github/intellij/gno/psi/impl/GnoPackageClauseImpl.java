@@ -28,9 +28,9 @@ public class GnoPackageClauseImpl extends ASTWrapperPsiElement implements GnoPac
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+    return findNotNullChildByType(IDENTIFIER);
   }
 
   @Override

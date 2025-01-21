@@ -29,26 +29,20 @@ public class GnoConstDeclarationImpl extends ASTWrapperPsiElement implements Gno
 
   @Override
   @Nullable
-  public GnoExpression getExpression() {
-    return findChildByClass(GnoExpression.class);
+  public GnoConstSpec getConstSpec() {
+    return findChildByClass(GnoConstSpec.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getAssign() {
-    return findChildByType(ASSIGN);
+  public GnoGroupedConstDeclaration getGroupedConstDeclaration() {
+    return findChildByClass(GnoGroupedConstDeclaration.class);
   }
 
   @Override
   @NotNull
   public PsiElement getConst() {
     return findNotNullChildByType(CONST);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
   }
 
 }

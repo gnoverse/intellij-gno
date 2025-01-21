@@ -29,8 +29,8 @@ public class GnoReturnStatementImpl extends ASTWrapperPsiElement implements GnoR
 
   @Override
   @Nullable
-  public GnoExpression getExpression() {
-    return findChildByClass(GnoExpression.class);
+  public GnoExpressionList getExpressionList() {
+    return findChildByClass(GnoExpressionList.class);
   }
 
   @Override

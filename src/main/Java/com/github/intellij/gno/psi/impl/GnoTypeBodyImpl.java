@@ -53,14 +53,38 @@ public class GnoTypeBodyImpl extends ASTWrapperPsiElement implements GnoTypeBody
 
   @Override
   @Nullable
+  public GnoQualifiedIdentifier getQualifiedIdentifier() {
+    return findChildByClass(GnoQualifiedIdentifier.class);
+  }
+
+  @Override
+  @Nullable
   public GnoStructType getStructType() {
     return findChildByClass(GnoStructType.class);
   }
 
   @Override
   @Nullable
+  public GnoTypeBody getTypeBody() {
+    return findChildByClass(GnoTypeBody.class);
+  }
+
+  @Override
+  @Nullable
   public GnoTypeName getTypeName() {
     return findChildByClass(GnoTypeName.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getLparen() {
+    return findChildByType(LPAREN);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getRparen() {
+    return findChildByType(RPAREN);
   }
 
 }

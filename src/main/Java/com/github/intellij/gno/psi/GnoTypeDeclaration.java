@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoTypeDeclaration extends PsiElement {
 
-  @NotNull
-  GnoTypeBody getTypeBody();
+  @Nullable
+  GnoGroupedTypeDeclaration getGroupedTypeDeclaration();
 
-  @NotNull
-  PsiElement getIdentifier();
+  @Nullable
+  GnoTypeSpec getTypeSpec();
 
   @NotNull
   PsiElement getType();

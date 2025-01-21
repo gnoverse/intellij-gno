@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoParameterDeclaration extends PsiElement {
 
-  @Nullable
+  @NotNull
   GnoTypeBody getTypeBody();
 
-  @NotNull
+  @Nullable
   PsiElement getIdentifier();
 
 }

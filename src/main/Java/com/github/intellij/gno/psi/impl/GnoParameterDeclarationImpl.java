@@ -28,15 +28,15 @@ public class GnoParameterDeclarationImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
+  @NotNull
   public GnoTypeBody getTypeBody() {
-    return findChildByClass(GnoTypeBody.class);
+    return findNotNullChildByClass(GnoTypeBody.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+    return findChildByType(IDENTIFIER);
   }
 
 }

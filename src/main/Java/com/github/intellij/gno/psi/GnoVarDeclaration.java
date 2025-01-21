@@ -8,16 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface GnoVarDeclaration extends PsiElement {
 
   @Nullable
-  GnoExpression getExpression();
+  GnoGroupedVarDeclaration getGroupedVarDeclaration();
 
   @Nullable
-  GnoTypeBody getTypeBody();
-
-  @Nullable
-  PsiElement getAssign();
-
-  @Nullable
-  PsiElement getIdentifier();
+  GnoVarSpec getVarSpec();
 
   @NotNull
   PsiElement getVar();

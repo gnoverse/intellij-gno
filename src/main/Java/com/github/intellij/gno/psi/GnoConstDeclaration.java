@@ -8,15 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface GnoConstDeclaration extends PsiElement {
 
   @Nullable
-  GnoExpression getExpression();
+  GnoConstSpec getConstSpec();
 
   @Nullable
-  PsiElement getAssign();
+  GnoGroupedConstDeclaration getGroupedConstDeclaration();
 
   @NotNull
   PsiElement getConst();
-
-  @Nullable
-  PsiElement getIdentifier();
 
 }

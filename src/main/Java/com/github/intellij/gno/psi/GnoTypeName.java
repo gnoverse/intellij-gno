@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoTypeName extends PsiElement {
 
-  @NotNull
-  PsiElement getIdentifier();
-
 }

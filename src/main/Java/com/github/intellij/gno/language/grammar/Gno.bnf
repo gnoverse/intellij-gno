@@ -11,43 +11,64 @@
   psiImplClassSuffix='Impl'
   psiPackage='com.github.intellij.gno.psi'
   psiImplPackage='com.github.intellij.gno.psi.impl'
+  psiImplUtilClass='com.github.intellij.gno.psi.impl.GnoPsiImplUtil'
 
   tokens=[
-    LBRACE    = '{'
-    RBRACE    = '}'
-    LBRACK    = '['
-    RBRACK    = ']'
-    LPAREN    = '('
-    RPAREN    = ')'
-    COMMA     = ','
-    ASSIGN    = '='
-    COLON     = ':'
-    SEMICOLON = ';'
-    DOT       = '.'
-    PLUS      = '+'
-    MINUS     = '-'
-    MUL       = '*'
-    DIV       = '/'
-    MODULO    = '%'
-    BIT_AND   = '&'
-    BIT_OR    = '|'
-    BIT_XOR   = '^'
-    SHIFT_LEFT  = '<<'
-    SHIFT_RIGHT = '>>'
-    EQUALS      = '=='
-    NOT_EQUALS  = '!='
-    LESS        = '<'
-    GREATER     = '>'
-    LESS_EQUAL  = '<='
-    GREATER_EQUAL = '>='
-    AND         = '&&'
-    OR          = '||'
-    NOT         = '!'
+    LBRACE               =  '{'
+    RBRACE               =  '}'
+    LBRACK               =  '['
+    RBRACK               =  ']'
+    LPAREN               =  '('
+    RPAREN               =  ')'
+    COLON                =  ':'
+    SEMICOLON            =  ';'
+    COMMA                =  ','
+    EQ                   =  '=='
+    ASSIGN               =  '='
+    NOT_EQ               =  '!='
+    NOT                  =  '!'
+    PLUS_PLUS            =  '++'
+    PLUS_ASSIGN          =  '+='
+    PLUS                 =  '+'
+    MINUS_MINUS          =  '--'
+    MINUS_ASSIGN         =  '-='
+    MINUS                =  '-'
+    COND_OR              =  '||'
+    BIT_OR_ASSIGN        =  '|='
+    BIT_CLEAR_ASSIGN     =  '&^='
+    BIT_CLEAR            =  '&^'
+    COND_AND             =  '&&'
+    BIT_AND_ASSIGN       =  '&='
+    BIT_AND              =  '&'
+    BIT_OR               =  '|'
+    SHIFT_LEFT_ASSIGN    =  '<<='
+    SHIFT_LEFT           =  '<<'
+    SEND_CHANNEL         =  '<-'
+    LESS_OR_EQUAL        =  '<='
+    LESS                 =  '<'
+    BIT_XOR_ASSIGN       =  '^='
+    BIT_XOR              =  '^'
+    MUL_ASSIGN           =  '*='
+    MUL                  =  '*'
+    QUOTIENT_ASSIGN      =  '/='
+    QUOTIENT             =  '/'
+    REMAINDER_ASSIGN     =  '%='
+    REMAINDER            =  '%'
+    SHIFT_RIGHT_ASSIGN   =  '>>='
+    SHIFT_RIGHT          =  '>>'
+    GREATER_OR_EQUAL     =  '>='
+    GREATER              =  '>'
+    VAR_ASSIGN           =  ':='
+    TRIPLE_DOT           =  '...'
+    DOT                  =  '.'
 
     IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
     INT        = 'regexp:[0-9]+'
     STRING     = 'regexp:"([^"\\\n\r]|\\.)*"'
     COMMENT    = 'regexp://[^\n]*|/\\*.*?\\*/'
+    WHITE_SPACE = 'regexp:[ \t]+'
+    EOL        = 'regexp:\r?\n+'
+
 
 
     PACKAGE    = 'package'
@@ -70,19 +91,26 @@
     GO         = 'go'
     DEFER      = 'defer'
     CHAN       = 'chan'
+    NIL        = 'nil'
   ]
-
   generateTokenAccessors=true
 }
 
-File ::= PackageClause ImportDeclaration* TopLevelDeclaration*
 
-PackageClause ::= PACKAGE IDENTIFIER {pin=1}
+File ::= (EOL | COMMENT)* PackageClause (EOL | COMMENT)* ImportList? (EOL | COMMENT)* TopLevelDeclaration* (EOL | COMMENT)*
 
-ImportDeclaration ::= IMPORT ( ImportSpec
-                             | LPAREN ImportSpecList? RPAREN )
+PackageClause ::= PACKAGE IDENTIFIER (EOL | COMMENT)*
+ImportDeclaration ::= IMPORT ( ImportSpec | LPAREN ImportSpecList? RPAREN ) (EOL | COMMENT)*
 
-ImportSpecList ::= ImportSpec+
+
+ImportList ::= (EOL | COMMENT)* ImportDeclaration*
+
+
+ImportSpecList ::=
+    ( EOL )* ImportSpec
+    ( ( EOL )+ ImportSpec )*
+    ( EOL )*
+
 ImportSpec     ::= STRING
 
 
@@ -91,9 +119,34 @@ TopLevelDeclaration ::=
   | TypeDeclaration
   | VarDeclaration
   | ConstDeclaration
+  | PropertyDeclaration
 
-VarDeclaration ::= VAR IDENTIFIER TypeBody (ASSIGN Expression)? {pin=1}
-ConstDeclaration ::= CONST IDENTIFIER (ASSIGN Expression) {pin=1}
+PropertyDeclaration ::= IDENTIFIER VAR_ASSIGN Expression
+{
+  methods=[getKey getValue getName]
+}
+
+ShortVarDeclaration ::= VarDefinitionList VAR_ASSIGN ExpressionList {pin=2}
+VarDefinitionList ::= IDENTIFIER ( COMMA IDENTIFIER )*
+ExpressionList    ::= Expression ( COMMA Expression )*
+VarDeclaration ::= VAR (VarSpec | GroupedVarDeclaration)
+
+GroupedVarDeclaration ::= LPAREN EOL VarSpecList RPAREN
+
+VarSpec ::= IDENTIFIER TypeBody (ASSIGN Expression)?
+
+VarSpecList ::= (EOL | COMMENT)* VarSpec (EOL | COMMENT)* (VarSpec (EOL | COMMENT)*)*
+
+ConstDeclaration ::= CONST (ConstSpec | GroupedConstDeclaration)
+
+GroupedConstDeclaration ::= LPAREN EOL ConstSpecList RPAREN
+
+ConstSpec ::= IDENTIFIER TypeAnnotation? ASSIGN Expression
+
+ConstSpecList ::= (EOL | COMMENT)* ConstSpec (EOL | COMMENT)* (ConstSpec (EOL | COMMENT)*)*
+
+TypeAnnotation ::= TypeBody
+
 
 FunctionDeclaration ::= FUNC Receiver? IDENTIFIER Signature Block
 Receiver ::= LPAREN ReceiverParameter RPAREN
@@ -105,50 +158,133 @@ Result ::= LPAREN Parameters RPAREN | TypeBody
 
 Parameters ::= ParameterDeclaration (COMMA ParameterDeclaration)* COMMA?
 
-ParameterDeclaration ::= IDENTIFIER TypeBody {pin=1}
+ParameterDeclaration ::= (IDENTIFIER TypeBody) | TypeBody
 
-TypeDeclaration ::= TYPE IDENTIFIER TypeBody
+TypeDeclaration ::= TYPE (TypeSpec | GroupedTypeDeclaration)
 
-TypeBody ::= TypeName | StructType | MapType | ArrayType | PointerType | FunctionType
+GroupedTypeDeclaration ::= LPAREN EOL TypeSpecList RPAREN
 
-TypeName ::= IDENTIFIER {pin=1}
+TypeSpec ::= IDENTIFIER TypeBody
+
+TypeSpecList ::= (EOL | COMMENT)* TypeSpec (EOL | COMMENT)* (TypeSpec (EOL | COMMENT)*)*
+
+
+TypeBody ::=
+    '(' TypeBody ')'
+  | PointerType
+  | StructType
+  | MapType
+  | ArrayType
+  | FunctionType
+  | QualifiedIdentifier
+  | TypeName
+
+QualifiedIdentifier ::= IDENTIFIER '.' IDENTIFIER
+
+
+TypeName ::= IDENTIFIER ('.' IDENTIFIER )*
 
 StructType ::= STRUCT LBRACE Fields? RBRACE
 
-Fields ::= FieldDeclaration (SEMICOLON FieldDeclaration)* SEMICOLON?
+Fields ::=
+    ( EOL )*
+    FieldDeclaration
+    ( (EOL | SEMICOLON)+ FieldDeclaration )*
+    ( EOL | SEMICOLON )*
 
-FieldDeclaration ::= IDENTIFIER TypeBody
 
-MapType ::= MAP LBRACK TypeBody RBRACK TypeBody {pin=1}
 
-ArrayType ::= LBRACK INT? RBRACK TypeBody {pin=1}
+FieldDeclaration ::= IdentifierList FieldType
+FieldType ::= TypeBody
+IdentifierList ::= IDENTIFIER ( COMMA IDENTIFIER )*
 
-PointerType ::= MUL TypeBody {pin=1}
+MapType ::= MAP LBRACK TypeBody RBRACK TypeBody
 
-FunctionType ::= FUNC Signature {pin=1}
+ArrayType ::= LBRACK INT? RBRACK TypeBody
 
-Block ::= LBRACE Statement* RBRACE
+PointerType ::= MUL TypeName
 
-Statement ::= ExpressionStatement | Block | ControlStatement
+FunctionType ::= FUNC Signature
 
-ExpressionStatement ::= Expression
+Block ::= LBRACE (EOL | Statement)* RBRACE {pin=1}
 
-Expression ::= PrimaryExpression
 
-PrimaryExpression ::=
-  (IDENTIFIER | Literal)
-  (SelectorSuffix | CallSuffix)*
 
-SelectorSuffix ::= '.' IDENTIFIER
-CallSuffix    ::= LPAREN Arguments? RPAREN
-Literal ::= INT | STRING
-Arguments ::= Expression (COMMA Expression)* COMMA?
-
-ControlStatement ::=
-    IfStatement
+Statement ::=
+    Block
+  | EOL
+  | IfStatement
   | ForStatement
   | SwitchStatement
   | ReturnStatement
+  | SimpleStatement
+
+AssignStatement ::= Expression AssignOp Expression
+IncDecStatement ::= Expression (PLUS_PLUS | MINUS_MINUS)
+AssignOp ::= ASSIGN        // =
+           | PLUS_ASSIGN   // +=
+           | MINUS_ASSIGN  // -=
+           | MUL_ASSIGN    // *=
+           | QUOTIENT_ASSIGN // /=
+           | REMAINDER_ASSIGN // %=
+           | BIT_AND_ASSIGN   // &=
+           | BIT_OR_ASSIGN    // |=
+           | BIT_XOR_ASSIGN   // ^=
+           | SHIFT_LEFT_ASSIGN // <<=
+           | SHIFT_RIGHT_ASSIGN // >>=
+           | BIT_CLEAR_ASSIGN // &^=
+
+SimpleStatement ::=
+    ShortVarDeclaration
+  | IncDecStatement
+  | AssignStatement
+  | ExpressionStatement
+
+
+ExpressionStatement ::= Expression
+
+
+Expression ::= OrExpr {pin=1}
+OrExpr ::= AndExpr ( COND_OR AndExpr )*
+AndExpr ::= CompareExpr ( COND_AND CompareExpr )*
+CompareExpr ::= ShiftExpr ( CompareOp ShiftExpr )*
+CompareOp ::= EQ | NOT_EQ | LESS | LESS_OR_EQUAL | GREATER | GREATER_OR_EQUAL
+ShiftExpr ::= AddExpr ( ShiftOp AddExpr )*
+ShiftOp ::= SHIFT_LEFT | SHIFT_RIGHT | BIT_CLEAR
+AddExpr ::= MulExpr ( AddOp MulExpr )*
+AddOp ::= PLUS | MINUS | BIT_OR | BIT_XOR
+MulExpr ::= UnaryExpr ( MulOp UnaryExpr )*
+MulOp ::= MUL | QUOTIENT | REMAINDER | BIT_AND
+UnaryExpr ::= ( UnaryOp )* PrimaryExpr {pin=1}
+UnaryOp ::= PLUS    // +
+          | MINUS   // -
+          | NOT     // !
+          | BIT_AND // &
+          | BIT_XOR // ^
+
+PrimaryExpr ::=
+    CompositeLiteral
+  | TypeConversion
+  | (IDENTIFIER | Literal)
+    (SelectorSuffix | CallSuffix | TypeAssertionSuffix)*
+  | LPAREN Expression RPAREN
+
+TypeConversion ::= LPAREN MUL? TypeName RPAREN LPAREN Expression RPAREN
+
+TypeAssertionSuffix ::= '.' LPAREN TypeBody RPAREN
+
+CompositeLiteral ::= TypeName LBRACE (EOL | FieldLiteralList)? RBRACE {pin=1}
+
+FieldLiteralList ::= FieldLiteral ( COMMA FieldLiteral )* (EOL | COMMA)?
+
+FieldLiteral ::= IDENTIFIER (COLON Expression)?
+
+
+
+SelectorSuffix ::= '.' IDENTIFIER
+CallSuffix     ::= LPAREN Arguments? RPAREN
+Literal        ::= INT | STRING | NIL
+Arguments ::= (EOL | Expression (COMMA Expression)*)? COMMA?
 
 IfStatement ::= IF Expression Block ELSE? Block?
 
@@ -160,4 +296,4 @@ CaseClauses ::= CaseClause*
 
 CaseClause ::= CASE Expression COLON Statement*
 
-ReturnStatement ::= RETURN Expression?
+ReturnStatement ::= RETURN ExpressionList?

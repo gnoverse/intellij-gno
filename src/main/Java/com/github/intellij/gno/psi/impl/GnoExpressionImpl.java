@@ -29,8 +29,8 @@ public class GnoExpressionImpl extends ASTWrapperPsiElement implements GnoExpres
 
   @Override
   @NotNull
-  public GnoPrimaryExpression getPrimaryExpression() {
-    return findNotNullChildByClass(GnoPrimaryExpression.class);
+  public GnoOrExpr getOrExpr() {
+    return findNotNullChildByClass(GnoOrExpr.class);
   }
 
 }

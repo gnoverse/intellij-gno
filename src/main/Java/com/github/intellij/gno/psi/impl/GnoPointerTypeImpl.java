@@ -28,9 +28,9 @@ public class GnoPointerTypeImpl extends ASTWrapperPsiElement implements GnoPoint
   }
 
   @Override
-  @Nullable
-  public GnoTypeBody getTypeBody() {
-    return findChildByClass(GnoTypeBody.class);
+  @NotNull
+  public GnoTypeName getTypeName() {
+    return findNotNullChildByClass(GnoTypeName.class);
   }
 
   @Override

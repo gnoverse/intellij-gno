@@ -33,4 +33,10 @@ public class GnoArgumentsImpl extends ASTWrapperPsiElement implements GnoArgumen
     return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoExpression.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getEol() {
+    return findChildByType(EOL);
+  }
+
 }

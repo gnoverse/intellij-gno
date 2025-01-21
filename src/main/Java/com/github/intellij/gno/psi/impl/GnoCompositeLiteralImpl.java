@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoControlStatementImpl extends ASTWrapperPsiElement implements GnoControlStatement {
+public class GnoCompositeLiteralImpl extends ASTWrapperPsiElement implements GnoCompositeLiteral {
 
-  public GnoControlStatementImpl(@NotNull ASTNode node) {
+  public GnoCompositeLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitControlStatement(this);
+    visitor.visitCompositeLiteral(this);
   }
 
   @Override
@@ -29,26 +29,32 @@ public class GnoControlStatementImpl extends ASTWrapperPsiElement implements Gno
 
   @Override
   @Nullable
-  public GnoForStatement getForStatement() {
-    return findChildByClass(GnoForStatement.class);
+  public GnoFieldLiteralList getFieldLiteralList() {
+    return findChildByClass(GnoFieldLiteralList.class);
+  }
+
+  @Override
+  @NotNull
+  public GnoTypeName getTypeName() {
+    return findNotNullChildByClass(GnoTypeName.class);
   }
 
   @Override
   @Nullable
-  public GnoIfStatement getIfStatement() {
-    return findChildByClass(GnoIfStatement.class);
+  public PsiElement getEol() {
+    return findChildByType(EOL);
   }
 
   @Override
   @Nullable
-  public GnoReturnStatement getReturnStatement() {
-    return findChildByClass(GnoReturnStatement.class);
+  public PsiElement getLbrace() {
+    return findChildByType(LBRACE);
   }
 
   @Override
   @Nullable
-  public GnoSwitchStatement getSwitchStatement() {
-    return findChildByClass(GnoSwitchStatement.class);
+  public PsiElement getRbrace() {
+    return findChildByType(RBRACE);
   }
 
 }

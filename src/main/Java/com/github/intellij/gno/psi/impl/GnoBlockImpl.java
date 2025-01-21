@@ -40,9 +40,9 @@ public class GnoBlockImpl extends ASTWrapperPsiElement implements GnoBlock {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getRbrace() {
-    return findNotNullChildByType(RBRACE);
+    return findChildByType(RBRACE);
   }
 
 }

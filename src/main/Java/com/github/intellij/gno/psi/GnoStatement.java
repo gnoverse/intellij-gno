@@ -11,9 +11,21 @@ public interface GnoStatement extends PsiElement {
   GnoBlock getBlock();
 
   @Nullable
-  GnoControlStatement getControlStatement();
+  GnoForStatement getForStatement();
 
   @Nullable
-  GnoExpressionStatement getExpressionStatement();
+  GnoIfStatement getIfStatement();
+
+  @Nullable
+  GnoReturnStatement getReturnStatement();
+
+  @Nullable
+  GnoSimpleStatement getSimpleStatement();
+
+  @Nullable
+  GnoSwitchStatement getSwitchStatement();
+
+  @Nullable
+  PsiElement getEol();
 
 }

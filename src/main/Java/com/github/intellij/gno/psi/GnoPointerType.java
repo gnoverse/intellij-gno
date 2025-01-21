@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoPointerType extends PsiElement {
 
-  @Nullable
-  GnoTypeBody getTypeBody();
+  @NotNull
+  GnoTypeName getTypeName();
 
   @NotNull
   PsiElement getMul();

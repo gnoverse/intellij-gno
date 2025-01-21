@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface GnoArrayType extends PsiElement {
 
-  @Nullable
+  @NotNull
   GnoTypeBody getTypeBody();
 
   @Nullable
@@ -16,7 +16,7 @@ public interface GnoArrayType extends PsiElement {
   @NotNull
   PsiElement getLbrack();
 
-  @Nullable
+  @NotNull
   PsiElement getRbrack();
 
 }
