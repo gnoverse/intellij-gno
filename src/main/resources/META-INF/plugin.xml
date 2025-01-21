@@ -46,9 +46,6 @@
     <lang.parserDefinition
             language="Gno"
             implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
-    <lang.foldingBuilder
-            language="Gno"
-            implementationClass="com.github.intellij.gno.language.GnoFoldingBuilder"/>
     <annotator
             language="Gno"
             implementationClass="com.github.intellij.gno.language.GnoAnnotator"/>
