@@ -12,8 +12,8 @@
     A Gno plugin providing syntax highlighting, code completion, etc.<br/><br/>
     <b>Main Features:</b>
     <ul>
-      <li>Parsing Gno code</li>
-      <li>Inspections and refactoring</li>
+      <li>Test</li>
+      <li>Test</li>
     </ul>
   ]]>
   </description>
@@ -22,8 +22,8 @@
   <change-notes>
     <![CDATA[
     <ul>
-      <li>Added multi-file support</li>
-      <li>Fixed short var declaration bugs</li>
+      <li>1</li>
+      <li>2</li>
     </ul>
   ]]>
   </change-notes>
