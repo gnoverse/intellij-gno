@@ -12,10 +12,10 @@ repositories {
 
 intellij {
   version.set("2024.3.2")
-  type.set("IU")
+  type.set("IU") // change for Ultimate version for use LSP
   pluginName.set("Gno")
 
-  plugins.set(listOf("java"))
+  plugins.set(listOf("com.intellij.java"))
 
 }
 
