@@ -37,9 +37,7 @@
     <server id="gnopls"
             name="Gno Language Server"
             factoryClass="com.github.intellij.gno.lsp.GnoLanguageServerFactory">
-      <description><![CDATA[
-            Intégration de Gno Language Server dans IntelliJ.
-            ]]></description>
+      <description><![CDATA[ Integration of Gno Language Server into IntelliJ ]]></description>
     </server>
 
 
