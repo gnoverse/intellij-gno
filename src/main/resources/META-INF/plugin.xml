@@ -33,26 +33,66 @@
   <depends>com.intellij.java</depends>
   <depends>com.intellij.modules.ultimate</depends>
 
+  <!-- The "Overview" tab: -->
+  <description>
+    <![CDATA[
+    <a href="https://gno.land/">gno.land</a>
+    <br/>
+    A Gno plugin providing syntax highlighting, code completion, etc.<br/><br/>
+    <b>Main Features:</b>
+    <ul>
+      <li>Test</li>
+      <li>Test</li>
+    </ul>
+  ]]>
+  </description>
+
+  <!-- The "What’s New" tab: -->
+  <change-notes>
+    <![CDATA[
+    <ul>
+      <li>1</li>
+      <li>2</li>
+    </ul>
+  ]]>
+  </change-notes>
+
+  <depends>com.redhat.devtools.lsp4ij</depends>
+
+  <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+    <server id="gnopls"
+            name="Gno Language Server"
+            factoryClass="com.github.intellij.gno.lsp.GnoLanguageServerFactory">
+      <description><![CDATA[ Integration of Gno Language Server into IntelliJ ]]></description>
+    </server>
+
+
+    <languageMapping language="Gno"
+                     serverId="gnopls"
+                     languageId="gno"/>
+
+
+    <fileTypeMapping fileType="Gno"
+                     serverId="gnopls"
+                     languageId="gno"/>
+
+
+    <fileNamePatternMapping patterns="*.gno"
+                            serverId="gnopls"
+                            languageId="gno"/>
+  </extensions>
+
   <extensions defaultExtensionNs="com.intellij">
-    <fileType
-            name="Gno"
-            extensions="gno"
-            language="Gno"
-            fieldName="INSTANCE"
-            implementationClass="com.github.intellij.gno.language.GnoFileType">
-    </fileType>
+    <fileType name="Gno File"
+              implementationClass="com.github.intellij.gno.language.GnoFileType"
+              fieldName="INSTANCE"
+              extensions="gno"
+              language="Gno"
+    />
+    
     <lang.syntaxHighlighterFactory
             language="Gno"
-            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
-    <lang.parserDefinition
-            language="Gno"
-            implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
-    <annotator
-            language="Gno"
-            implementationClass="com.github.intellij.gno.language.GnoAnnotator"/>
-    <gotoSymbolContributor
-            implementation="com.github.intellij.gno.language.GnoChooseByNameContributor"/>
-    <platform.lsp.serverSupportProvider implementation="com.github.intellij.gno.lsp.GnoLspProvider"/>
-
+            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>    
   </extensions>
+
 </idea-plugin>
