@@ -1,4 +1,4 @@
-package com.github.intellij.gno.services;
+package com.github.intellij.gno.language;
 
 import com.intellij.lang.Language;
 

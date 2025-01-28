@@ -1,32 +1,36 @@
 plugins {
-//  id("org.jetbrains.kotlin.jvm") version "1.9.25"
+  id("org.jetbrains.kotlin.jvm") version "1.9.25"
   id("org.jetbrains.intellij") version "1.17.4"
   id("java")
 }
 
+sourceSets["main"].java.srcDirs("src/main/java")
+
 group = "com.github.intellij.gno"
-version = "1.0-SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
   mavenCentral()
+  gradlePluginPortal()
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
+
 intellij {
-  version.set("2023.1")
-  type.set("IC") // Target IDE Platform
+  version.set(providers.gradleProperty("platformVersion").orNull ?: "2023.2")
+  type.set(providers.gradleProperty("platformType").orNull ?: "IC")
   pluginName.set("Gno")
 
-  plugins.set(listOf(/* Plugin Dependencies */))
+  plugins.set(
+    providers.gradleProperty("platformPlugins")
+      .map { it.split(',') + "com.intellij.java" }
+  )
 }
 
-//dependencies {
-//  implementation(kotlin("stdlib"))
-//}
+dependencies {
+  implementation("org.jetbrains.kotlin:kotlin-stdlib")
+}
 
 tasks {
-  // Set the JVM compatibility versions
   withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"
