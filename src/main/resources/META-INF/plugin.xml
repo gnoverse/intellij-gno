@@ -31,7 +31,6 @@
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.java</depends>
-  <depends>com.intellij.modules.ultimate</depends>
 
   <!-- The "Overview" tab: -->
   <description>
@@ -92,7 +91,10 @@
     
     <lang.syntaxHighlighterFactory
             language="Gno"
-            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>    
+            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
+    <lang.parserDefinition
+            language="Gno"
+            implementationClass="com.github.intellij.gno.language.GnoParserDefinition"/>
   </extensions>
 
 </idea-plugin>

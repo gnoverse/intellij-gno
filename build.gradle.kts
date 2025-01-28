@@ -16,7 +16,7 @@ repositories {
 
 
 intellij {
-  version.set(providers.gradleProperty("platformVersion").orNull ?: "2023.2")
+  version.set(providers.gradleProperty("platformVersion").orNull ?: "2024.2")
   type.set(providers.gradleProperty("platformType").orNull ?: "IC")
   pluginName.set("Gno")
 
@@ -37,7 +37,7 @@ tasks {
   }
 
   patchPluginXml {
-    sinceBuild.set("241.0")
+    sinceBuild.set("242.0")
     untilBuild.set("243.*")
   }
 
