@@ -1,0 +1,429 @@
+{
+  parserClass='com.github.intellij.gno.parser.GnoParser'
+  classHeader='copyrightHeader.java'
+
+  implements='com.github.intellij.gno.psi.GnoCompositeElement'
+  extends='com.github.intellij.gno.psi.impl.GnoCompositeElementImpl'
+  
+  elementTypeHolderClass='com.github.intellij.gno.GnoTypes'
+  elementTypeClass='com.github.intellij.gno.psi.GnoCompositeElementType'
+  tokenTypeClass='com.github.intellij.gno.psi.GnoTokenType'
+  psiTreeUtilClass='com.github.intellij.gno.psi.GnoPsiTreeUtil'
+  
+  psiClassPrefix='Gno'
+  psiImplClassSuffix='Impl'
+  psiPackage='com.github.intellij.gno.psi'
+  psiImplPackage='com.github.intellij.gno.psi.impl'
+  psiImplUtilClass="com.github.intellij.gno.psi.impl.GnoPsiImplUtil"
+  parserUtilClass="com.github.intellij.gno.parser.GnoParserUtil"
+
+  tokens=[
+    LBRACE               =  '{'
+    RBRACE               =  '}'
+    LBRACK               =  '['
+    RBRACK               =  ']'
+    LPAREN               =  '('
+    RPAREN               =  ')'
+    COLON                =  ':'
+    SEMICOLON            =  ';'
+    COMMA                =  ','
+    EQ                   =  '=='
+    ASSIGN               =  '='
+    NOT_EQ               =  '!='
+    NOT                  =  '!'
+    PLUS_PLUS            =  '++'
+    PLUS_ASSIGN          =  '+='
+    PLUS                 =  '+'
+    MINUS_MINUS          =  '--'
+    MINUS_ASSIGN         =  '-='
+    MINUS                =  '-'
+    COND_OR              =  '||'
+    BIT_OR_ASSIGN        =  '|='
+    BIT_CLEAR_ASSIGN     =  '&^='
+    BIT_CLEAR            =  '&^'
+    COND_AND             =  '&&'
+    BIT_AND_ASSIGN       =  '&='
+    BIT_AND              =  '&'
+    BIT_OR               =  '|'
+    SHIFT_LEFT_ASSIGN    =  '<<='
+    SHIFT_LEFT           =  '<<'
+    SEND_CHANNEL         =  '<-'
+    LESS_OR_EQUAL        =  '<='
+    LESS                 =  '<'
+    BIT_XOR_ASSIGN       =  '^='
+    BIT_XOR              =  '^'
+    MUL_ASSIGN           =  '*='
+    MUL                  =  '*'
+    QUOTIENT_ASSIGN      =  '/='
+    QUOTIENT             =  '/'
+    REMAINDER_ASSIGN     =  '%='
+    REMAINDER            =  '%'
+    SHIFT_RIGHT_ASSIGN   =  '>>='
+    SHIFT_RIGHT          =  '>>'
+    GREATER_OR_EQUAL     =  '>='
+    GREATER              =  '>'
+    VAR_ASSIGN           =  ':='
+    TRIPLE_DOT           =  '...'
+    DOT                  =  '.'
+    SEMICOLON_SYNTHETIC  = '<NL>'
+    TYPE_                = 'type'
+    raw_string           = 'raw_string'
+  ]
+
+  extends("(Or|And|Add|Conversion|Mul|Selector|Conditional)Expr")=BinaryExpr
+  extends(".*(Expr|Literal|Lit|OperandName)")=Expression
+
+  implements("(Type|Import)Spec|(Var|Const|Param|(Anonymous)?Field|Label)Definition|Receiver")="com.github.intellij.gno.psi.GnoNamedElement"
+  implements("FunctionLit")="com.github.intellij.gno.psi.GnoSignatureOwner"
+  implements("MethodSpec")="com.github.intellij.gno.psi.GnoNamedSignatureOwner"
+  implements("(Function|Method)Declaration")="com.github.intellij.gno.psi.GnoFunctionOrMethodDeclaration"
+  implements("(Const|Type|Var)Declaration")="com.github.intellij.gno.psi.GnoTopLevelDeclaration"
+  implements(".*ReferenceExpression|FieldName")="com.github.intellij.gno.psi.GnoReferenceExpressionBase"
+  extends("(Function|Method)Declaration")="com.github.intellij.gno.psi.impl.GnoFunctionOrMethodDeclarationImpl<?>"
+  extends("(Type|Import|Method)Spec|(Var|Const|Param|(Anonymous)?Field|Label)Definition|Receiver")="com.github.intellij.gno.psi.impl.GnoNamedElementImpl<?>"
+  extends("PackageClause|Parameters|Signature|ParameterDeclaration|Result|Type|(Const|Var|Import)Spec")="com.github.intellij.gno.psi.impl.GnoStubbedElementImpl<?>"
+  elementTypeFactory("PackageClause|(Function|Method|Parameter)Declaration|(Type|Import|Method|Const|Var)Spec|RangeClause|RecvStatement|ShortVarDeclaration|(Var|Const|Param|(Anonymous)?Field|Label)Definition|Receiver|Parameters|Signature|Result|.*Type|TypeList.*")='com.github.intellij.gno.stubs.GnoElementTypeFactory.stubFactory'
+  pin(".*Statement")=1
+  extends(".*Statement")=Statement
+  extends(".*Type|TypeList")=Type
+  
+  pin('.*List(?:_\d.*)?')=1
+
+  generateTokenAccessors=true
+}
+
+File ::= PackageClause semi ImportList TopLevelDeclaration* {pin(".*")=1}
+ImportList ::= (ImportDeclaration semi)+|<<emptyImportList>> {
+  methods=[addImport]
+}
+private semi ::= '<NL>' | ';' | <<eof>>
+
+PackageClause ::= package identifier {pin=1 methods=[getName] stubClass="com.github.intellij.gno.stubs.GnoPackageClauseStub"}
+
+ImportDeclaration ::= import ( ImportSpec | '(' ImportSpecs? ')' ) {
+  pin(".*")=1
+  methods=[addImportSpec]
+}
+private ImportSpecs ::= ImportSpec (semi ImportSpec)* semi? {pin=1}
+ImportSpec ::= [ '.' | identifier ] ImportString {
+  stubClass="com.github.intellij.gno.stubs.GnoImportSpecStub"
+  methods=[getAlias getLocalPackageName shouldGnoDeeper isForSideEffects isDot getPath getName isCImport]
+}
+ImportString ::= StringLiteral {methods=[getReferences resolve getPath getPathTextRange]}
+
+Type ::= TypeName | TypeLit | ParType {stubClass="com.github.intellij.gno.stubs.GnoTypeStub" methods=[getUnderlyingType shouldGnoDeeper]}
+ParType ::= '(' Type ')' {methods=[getActualType]}
+private TypeName ::= TypeReferenceExpression QualifiedTypeReferenceExpression?
+TypeReferenceExpression ::= identifier { methods=[getReference getQualifier resolve resolveType] }
+left QualifiedTypeReferenceExpression ::= '.' identifier {elementType=TypeReferenceExpression}
+
+private TypeLit ::=
+    ArrayOrSliceType
+  | StructType
+  | PointerType
+  | FunctionType
+  | InterfaceType
+  | MapType
+  | ChannelType
+
+ArrayOrSliceType ::= '[' ('...'|Expression?) ']' Type {pin=1}
+
+StructType ::= struct '{' Fields? '}' {pin=1}
+private Fields ::= FieldDeclaration (semi FieldDeclaration)* semi? {pin=1}
+FieldDeclaration ::= (FieldDefinitionList Type | AnonymousFieldDefinition) Tag?
+Tag ::= StringLiteral
+private FieldDefinitionList ::= FieldDefinition (',' FieldDefinition)*
+FieldDefinition ::= identifier {
+  stubClass="com.github.intellij.gno.stubs.GnoFieldDefinitionStub"
+}
+
+AnonymousFieldDefinition ::= Type {
+  stubClass="com.github.intellij.gno.stubs.GnoAnonymousFieldDefinitionStub"
+  methods=[getIdentifier getName getTypeReferenceExpression getGnoTypeInner]
+}
+
+PointerType ::= '*' Type {pin=1}
+
+FunctionType ::= func Signature {pin=1 implements="com.github.intellij.gno.psi.GnoSignatureOwner"}
+Signature ::= Parameters Result? {
+  pin=1
+  stubClass="com.github.intellij.gno.stubs.GnoSignatureStub"
+}
+Result ::= '(' TypeListNoPin ')' | Type | Parameters { // todo: reorder and pin (
+  stubClass="com.github.intellij.gno.stubs.GnoResultStub"
+  methods=[isVoid]
+}
+Parameters ::= '(' [ (ParameterList ','?| TypeListNoPin) ] ')' {
+  pin=1
+  stubClass="com.github.intellij.gno.stubs.GnoParametersStub"
+}
+private ParameterList ::= ParameterDeclaration (',' (ParameterDeclaration | &')'))* {pin(".*")=1}
+ParameterDeclaration ::= ParamDefinitionListNoPin? '...'? Type | Type { // todo: use left rule
+  stubClass="com.github.intellij.gno.stubs.GnoParameterDeclarationStub"
+  methods = [isVariadic]
+}
+private ParamDefinitionListNoPin ::= ParamDefinition &(!('.' | ')')) (',' ParamDefinition)* // todo
+ParamDefinition ::= identifier {
+  stubClass="com.github.intellij.gno.stubs.GnoParamDefinitionStub"
+  methods = [isVariadic]
+}
+
+InterfaceType ::= interface '{' MethodSpecs? '}' {
+  pin(".*")=1
+  methods=[getMethods getBaseTypesReferences]
+}
+private MethodSpecs ::= MethodSpec (semi MethodSpec)* semi? {pin=1}
+MethodSpec ::= TypeName &(!'(') | identifier Signature {
+  stubClass="com.github.intellij.gno.stubs.GnoMethodSpecStub"
+  methods=[getGnoTypeInner getName]
+}
+
+MapType ::= map '[' Type ']' Type {
+  pin=1
+  methods = [
+    keyType="Type[0]"
+    valueType="Type[1]"
+  ]
+}
+ChannelType ::= ChanTypePrefix Type {pin=1}
+private ChanTypePrefix ::= chan '<-'? | '<-' chan {pin(".*")=1}
+
+BlockWithConsume ::= <<consumeBlock>> | BlockInner {elementType=Block} 
+Block ::= BlockInner {methods=[processDeclarations]} 
+private BlockInner ::= '{' ('}' | (<<withOff Statements "BLOCK?" "PAR">> | (!() Statements)) '}') {pin(".*")=1}
+private Statements ::= StatementWithSemi*
+
+private StatementWithSemi ::= Statement (semi|&'}') { pin=1 recoverWhile=StatementRecover }
+Statement ::=
+    ConstDeclaration
+  | TypeDeclaration
+  | VarDeclaration
+  | LabeledStatement
+  | SimpleStatement
+  | GnoStatement
+  | ReturnStatement
+  | BreakStatement
+  | ContinueStatement
+  | GnotoStatement
+  | FallthroughStatement
+  | Block
+  | IfStatement
+  | SwitchStatement
+  | SelectStatement
+  | ForStatement
+  | DeferStatement {methods=[processDeclarations]}
+
+private StatementRecover ::= !('!' | '&' | '(' | '*' | '+' | '-' | ';' | '<-' | '^' | 'type' | '{' | '|' | '|=' | '||' | '}' | break | case | char | const | continue | decimali | default | defer | else | fallthrough | float | floati | for | func | go | goto | hex | identifier | if | int | interface | map | oct | return | select | string | raw_string | struct | switch | var)
+
+SimpleStatement ::=
+    ShortVarDeclaration
+  | IncDecStatement
+  | (LeftHandExprList [AssignmentStatement | SendStatement]) {pin(".*")=LeftHandExprList}
+
+private TopLevelDeclaration ::= !<<eof>> TopDeclaration semi {pin=1 recoverWhile=TopLevelDeclarationRecover}
+private TopDeclaration ::=
+    ConstDeclaration
+  | TypeDeclaration
+  | VarDeclaration
+  | FunctionDeclaration
+  | MethodDeclaration
+private TopLevelDeclarationRecover ::= !(';' |'type' | const | func | var)
+
+ConstDeclaration ::= const ( ConstSpec | '(' ConstSpecs? ')' ) {pin(".*")=1 methods=[addSpec deleteSpec]}
+private ConstSpecs ::= ConstSpec (semi ConstSpec)* semi? {pin=1}
+ConstSpec ::= ConstDefinitionList [ ('=' ExpressionList | Type '=' ExpressionList) ] {
+  pin(".*")=1 
+  stubClass="com.github.intellij.gno.stubs.GnoConstSpecStub"
+  methods=[deleteDefinition]
+}
+private ConstDefinitionList ::= ConstDefinition ( ',' ConstDefinition )*
+ConstDefinition ::= identifier {
+  stubClass="com.github.intellij.gno.stubs.GnoConstDefinitionStub"
+  methods=[getGnoTypeInner getValue]
+}
+
+LeftHandExprList ::= ExpressionList
+private ExpressionArgList ::= ExpressionOrTypeWithRecover2 (',' (ExpressionOrTypeWithRecover2 | &')'))* {pin(".*")=1}
+private ExpressionOrTypeWithRecover2 ::= <<withOn "PAR" ExpressionOrTypeWithRecover>> | (!() ExpressionOrLiteralTypeExpr) {recoverWhile=ExpressionListRecover}
+private ExpressionOrTypeWithRecover ::= ExpressionOrLiteralTypeExpr {recoverWhile=ExpressionListRecover}
+private ExpressionOrLiteralTypeExpr ::= Expression | LiteralTypeExpr
+
+private ExpressionList ::= ExpressionWithRecover (',' (ExpressionWithRecover | &')'))* {pin(".*")=1}
+private ExpressionWithRecover ::= Expression {recoverWhile=ExpressionListRecover}
+private ExpressionListRecover ::= !('!' | '!=' | '%' | '%=' | '&&' | '&' | '&=' | '&^' | '&^=' | '(' | ')' | '*' | '*=' | '+' | '++' | '+=' | ',' | '-' | '--' | '-=' | '...' | '/' | '/=' | ':' | ';' | '<' | '<-' | '<<' | '<<=' | '<=' | '<NL>' | '=' | '==' | '>' | '>=' | '>>' | '>>=' | '[' | ']' | '^' | '^=' | 'type' | '{' | '|' | '|=' | '||' | '}' | break | case | chan | char | const | continue | decimali | default | defer | else | fallthrough | float | floati | for | func | go | goto | hex | identifier | if | int | interface | map | oct | return | select | string | raw_string | struct | switch | var)
+
+TypeDeclaration ::= 'type' ( TypeSpec | '(' TypeSpecs? ')' ) {pin(".*")=1}
+private TypeSpecs ::= TypeSpec (semi TypeSpec)* semi? {pin=1}
+TypeSpec ::= SpecType {
+  methods=[getGnoTypeInner getMethods shouldGnoDeeper identifier="SpecType/identifier"]
+  stubClass="com.github.intellij.gno.stubs.GnoTypeSpecStub"
+}
+SpecType ::= identifier Type {pin=1 stubClass="com.github.intellij.gno.stubs.GnoTypeStub" extends="com.github.intellij.gno.psi.impl.GnoTypeImpl" implements=Type}
+
+VarDeclaration ::= var ( VarSpec | '(' VarSpecs? ')' ) {pin(".*")=1 methods=[addSpec deleteSpec]}
+private VarSpecs ::= VarSpec (semi VarSpec)* semi? {pin=1}
+VarSpec ::= VarDefinitionList ( Type [ '=' ExpressionList ] | '=' ExpressionList ) {
+  pin(".*")=1
+  methods=[processDeclarations deleteDefinition getRightExpressionsList]
+  stubClass="com.github.intellij.gno.stubs.GnoVarSpecStub"
+}
+private VarDefinitionList ::= VarDefinition ( ',' VarDefinition )*
+VarDefinition ::= identifier {
+  methods=[getGnoTypeInner getReference getValue]
+  stubClass="com.github.intellij.gno.stubs.GnoVarDefinitionStub"
+}
+
+ShortVarDeclaration ::= VarDefinitionList ':=' ExpressionList {pin=2 extends=VarSpec}
+
+FunctionDeclaration ::= func identifier Signature BlockWithConsume? {
+  pin=2
+  stubClass="com.github.intellij.gno.stubs.GnoFunctionDeclarationStub"
+}
+MethodDeclaration ::= func Receiver identifier Signature BlockWithConsume? {
+  pin=1
+  stubClass="com.github.intellij.gno.stubs.GnoMethodDeclarationStub"
+  methods=[getReceiverType]
+}
+Receiver ::= '(' (identifier ReceiverTail | ReceiverTail) ')' {
+  methods=[getGnoTypeInner]
+  pin=1
+  stubClass="com.github.intellij.gno.stubs.GnoReceiverStub"
+}
+private ReceiverTail ::= Type ','?
+
+Literal ::=
+    int
+  | float
+  | floati
+  | decimali
+  | hex
+  | oct
+  | StringLiteral
+  | char
+
+StringLiteral ::= string | raw_string {
+  implements = "com.intellij.psi.PsiLanguageInjectionHost"
+  methods = [isValidHost updateText createLiteralTextEscaper getDecodedText]
+}
+OperandName ::= ReferenceExpression QualifiedReferenceExpression? {elementType=ReferenceExpression}
+
+left QualifiedReferenceExpression ::= '.' identifier {elementType=ReferenceExpression}
+ReferenceExpression ::= identifier { methods=[getReference getQualifier resolve getReadWriteAccess] extends=Expression}
+
+CompositeLit ::= (LiteralTypeExprInner LiteralValue | TypeName LiteralValue) {pin(".*")="LiteralTypeExprInner"} // the brackets are valuable
+private LiteralTypeExprInner ::= StructType | ArrayOrSliceType | MapType
+  
+LiteralTypeExpr ::= LiteralTypeExprInner | TypeName
+
+LiteralValue ::= (<<isModeOff "BLOCK?">> | <<isModeOn "PAR">> | <<prevIsType>>) '{' ElementList? '}' {pin=2}
+private ElementList  ::= E ( ',' E? )*
+private E ::= <<withOn "PAR" Element>> | (!() Element) {recoverWhile=E_recover}
+private E_recover ::= !('}'|',')
+Element ::= First [':' Value]  {pin(".*")=1}
+private First ::= Key | <<keyOrValueExpression>>
+Key ::= (FieldName &':') | !() Expression // nullability hack for key without reference inside
+FieldName ::= identifier { methods=[getReference getQualifier resolve] }
+Value ::= Expression | LiteralValue
+
+FunctionLit ::= func Signature Block {pin=1 methods=[processDeclarations]}
+
+Expression ::=
+    OrExpr
+  | AndExpr
+  | ConditionalExpr
+  | AddExpr
+  | MulExpr
+  | UnaryExpr
+  | ConversionExpr
+  | MaxGroup
+  | ParenthesesExpr {methods=[getGnoType] implements="com.github.intellij.gno.psi.GnoTypeOwner"}
+
+fake BinaryExpr ::= Expression+ {
+  methods=[left="Expression[0]" right="Expression[1]" getOperator]
+}
+
+OrExpr ::= Expression '||' Expression
+AndExpr ::= Expression '&&' Expression
+UnaryExpr ::=  UnaryOp Expression {methods=[getOperator]}
+ConditionalExpr ::= Expression RelOp Expression
+AddExpr ::= Expression AddOp Expression
+MulExpr ::= Expression MulOp Expression
+ParenthesesExpr ::= '(' <<enterMode "PAR">> Expression <<exitModeSafe "PAR">>')' {pin=1}
+
+BuiltinCallExpr ::= ReferenceExpression <<isBuiltin>> BuiltinArgumentList {pin=2}
+BuiltinArgumentList ::= '(' [ BuiltinArgsInner ','? ] ')' {pin=1 extends=ArgumentList}
+private BuiltinArgsInner ::= Type [ ',' BuiltinArgsTail ] | BuiltinArgsTail
+private BuiltinArgsTail ::= ExpressionList '...'?
+
+private MaxGroup ::=
+    CompositeLit
+  | OperandName
+  | BuiltinCallExpr
+  | CallExpr
+  | TypeAssertionExpr
+  | SelectorExpr
+  | IndexOrSliceExpr
+  | Literal
+  | FunctionLit
+
+private RelOp ::= '==' | '!=' | '<' | '<=' | '>' | '>='
+private AddOp ::= '+' | '-' | '|' | '^'
+private MulOp ::= '*' | '/' | '%' | '<<' | '>>' | '&' | '&^'
+private UnaryOp ::= '+' | '-' | '!' | '^' | '*' | '&' | '<-'
+
+SelectorExpr ::= Expression '.' !('(' 'type') Expression
+IndexOrSliceExpr ::= Expression '[' <<enterMode "PAR">> (SliceExprBody | IndexExprBody) <<exitModeSafe "PAR">> ']' {pin=2 methods = [getExpression getIndices]}
+private IndexExprBody ::= Expression SliceExprBodyInner?
+private inner SliceExprBodyInner ::= SliceExprBody
+private SliceExprBody ::= &':' (':' Expression ':' Expression) | (':' Expression?)
+TypeAssertionExpr ::= Expression '.' '(' &(!'type') Type ')'
+CallExpr ::= Expression ArgumentList
+ArgumentList ::= '(' [ ExpressionArgList '...'? ','? ] ')' {pin=1}
+ConversionExpr ::= &ConversionPredicate Type ConversionTail
+private ConversionPredicate ::= ConversionStart | '(' ConversionStart
+private ConversionTail ::= '(' Expression ','? ')' {pin=1}
+private ConversionStart ::= '*' | '<-' | '[' | chan | func | interface | map | struct
+
+LabeledStatement ::= LabelDefinition ':' Statement? {pin=2}
+LabelDefinition ::= identifier {
+  stubClass="com.github.intellij.gno.stubs.GnoLabelDefinitionStub" // todo: remove when you'll have some spare time 
+}
+left SendStatement ::= '<-' Expression {pin=1 methods=[getSendExpression]}
+left AssignmentStatement ::= assign_op ExpressionList {pin=1}
+IncDecStatement ::= Expression ('++' | '--') {pin=2}
+assign_op ::= '=' | '+=' | '-=' | '|=' | '^=' | '*=' | '/=' | '%=' | '<<=' | '>>=' | '&=' | '&^='
+IfStatement ::= if Condition Block ElseStatement?
+ElseStatement ::= else (IfStatement | Block)
+SwitchStatement ::= SwitchStart (TypeSwitchStatement | ExprSwitchStatement)
+SwitchStart ::= switch
+left ExprSwitchStatement ::= Condition '{' ExprCaseClause* '}' {pin=2 extends=SwitchStatement}
+
+private Condition ::= <<enterMode "BLOCK?">> SimpleStatementOpt Expression? <<exitModeSafe "BLOCK?">>
+private SimpleStatementOpt ::= [SimpleStatement ';'?] // todo: remove ?
+
+ExprCaseClause ::= !'}' ExprSwitchCase ':' Statements? {pin=1 implements="com.github.intellij.gno.psi.GnoCaseClause"}
+private ExprSwitchCase ::= case ExpressionList | default {pin(".*")=1} 
+left TypeSwitchStatement ::= (TypeSwitchGuard | SimpleStatement ';'? TypeSwitchGuard) '{' ( TypeCaseClause )* '}' {pin=1 extends=SwitchStatement}
+TypeSwitchGuard ::= [ VarDefinition ':=' ] Expression '.' TypeGuard
+TypeGuard ::= '(' 'type' ')' {pin=2}
+TypeCaseClause ::= !'}' TypeSwitchCase ':' Statements? {pin=1 implements="com.github.intellij.gno.psi.GnoCaseClause"}
+private TypeSwitchCase ::= case TypeList | default {pin(".*")=1}
+TypeList ::= Type ( ',' Type )* ','?
+TypeListNoPin ::= Type ( ',' Type )* ','? {elementType=TypeList}
+ForStatement ::= for <<enterMode "BLOCK?">> (ForOrRangeClause Block | Block | Expression Block) <<exitModeSafe "BLOCK?">> {pin(".*")="for|ForOrRangeClause"}
+private ForOrRangeClause ::= (ForClause | RangeClause)
+ForClause ::= SimpleStatement? ';' Expression? ';' SimpleStatement? {methods=[processDeclarations]}
+RangeClause ::= range Expression | ExpressionsOrVariables range Expression {pin(".*")=1 extends=VarSpec methods=[getRangeExpression getLeftExpressionsList getRightExpressionsList]}
+private ExpressionsOrVariables ::= ExpressionList '=' | VarDefinitionList ':='
+GnoStatement ::= go Expression
+SelectStatement ::= select '{' CommClause* '}'
+CommClause ::= CommCase ':' Statements? {pin=1}
+CommCase ::= case ( Expression SendStatement | RecvStatement ) | default {pin(".*")="case"}
+RecvStatement ::= ExpressionsOrVariables? Expression {pin=0 extends=VarSpec methods=[getRecvExpression getLeftExpressionsList getRightExpressionsList]}
+ReturnStatement ::= return ExpressionList?
+LabelRef ::= identifier { methods=[getReference] }
+BreakStatement ::= break LabelRef?
+ContinueStatement ::= continue LabelRef?
+GnotoStatement ::= goto LabelRef
+FallthroughStatement ::= fallthrough
+DeferStatement ::= defer Expression
