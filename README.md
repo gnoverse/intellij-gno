@@ -39,6 +39,8 @@ with the following [features](https://github.com/gnolang/gnopls/tree/main/doc/fe
    - **Completion**
    - **Code Transformation**
 
+‼️ To use gnopls, the [lsp4ij](https://github.com/redhat-developer/lsp4ij/tree/main) extension will be installed automatically when the `gno` plugin is installed.
+
 ## Development
 
 To contribute or modify this plugin, follow these steps:
