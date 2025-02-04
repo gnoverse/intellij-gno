@@ -6,6 +6,7 @@
 
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
+  <depends optional="false">com.redhat.devtools.lsp4ij</depends>
 
   <!-- The "Overview" tab: -->
   <description>
@@ -30,8 +31,6 @@
     </ul>
   ]]>
   </change-notes>
-
-  <depends>com.redhat.devtools.lsp4ij</depends>
 
   <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
     <server id="gnopls"
