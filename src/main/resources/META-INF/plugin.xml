@@ -62,6 +62,13 @@
               extensions="gno"
               language="Gno"
     />
+    <lang.parserDefinition
+            language="Gno"
+            implementationClass="com.github.intellij.gno.parser.GnoParserDefinition"/>
+
+    <lang.syntaxHighlighterFactory
+            language="Gno"
+            implementationClass="com.github.intellij.gno.highlighting.GnoSyntaxHighlighterFactory"/>
   </extensions>
 
 </idea-plugin>
