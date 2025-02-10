@@ -33,7 +33,7 @@
 
   <depends>com.redhat.devtools.lsp4ij</depends>
 
-  <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+<extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
     <server id="gnopls"
             name="Gno Language Server"
             factoryClass="com.github.intellij.gno.lsp.GnoLanguageServerFactory">
@@ -54,7 +54,7 @@
     <fileNamePatternMapping patterns="*.gno"
                             serverId="gnopls"
                             languageId="gno"/>
-  </extensions>
+</extensions>
 
   <extensions defaultExtensionNs="com.intellij">
     <fileType name="Gno File"

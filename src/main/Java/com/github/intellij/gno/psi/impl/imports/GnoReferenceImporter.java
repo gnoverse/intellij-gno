@@ -34,8 +34,7 @@ import java.util.List;
 public class GnoReferenceImporter implements ReferenceImporter {
   @Override
   public boolean autoImportReferenceAtCursor(@NotNull Editor editor, @NotNull PsiFile file) {
-    if (!file.getViewProvider().getLanguages().contains(GnoLanguage.INSTANCE) ||
-        !DaemonListeners.canChangeFileSilently(file)) {
+    if (!file.getViewProvider().getLanguages().contains(GnoLanguage.INSTANCE)) {
       return false;
     }
 

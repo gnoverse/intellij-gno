@@ -185,7 +185,7 @@ public class GnoImportPackageQuickFix extends LocalQuickFixAndIntentionActionOnP
         // autoimport on trying to fix
         if (packagesToImport.size() == 1) {
             if (GnoCodeInsightSettings.getInstance().isAddUnambiguousImportsOnTheFly() && !LaterInvocator.isInModalContext() &&
-                    (ApplicationManager.getApplication().isUnitTestMode() || DaemonListeners.canChangeFileSilently(file))) {
+                    (ApplicationManager.getApplication().isUnitTestMode())) {
                 CommandProcessor.getInstance().runUndoTransparentAction(() -> perform(file, firstPackageToImport));
                 return true;
             }

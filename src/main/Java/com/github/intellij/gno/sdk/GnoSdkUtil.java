@@ -62,11 +62,15 @@ public class GnoSdkUtil {
     }
 
     @Nullable
-    private static VirtualFile getInnerSdkSrcDir(@NotNull GnoSdkService sdkService, @Nullable Module module) {
+    private static VirtualFile getInnerSdkSrcDir(@Nullable GnoSdkService sdkService, @Nullable Module module) {
+        if (sdkService == null) {
+            return null;
+        }
         String sdkHomePath = sdkService.getSdkHomePath(module);
         String sdkVersionString = sdkService.getSdkVersion(module);
         return sdkHomePath != null && sdkVersionString != null ? getSdkSrcDir(sdkHomePath, sdkVersionString) : null;
     }
+
 
     @Nullable
     private static VirtualFile getSdkSrcDir(@NotNull String sdkPath, @NotNull String sdkVersion) {

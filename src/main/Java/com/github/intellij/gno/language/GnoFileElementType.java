@@ -43,7 +43,6 @@ public class GnoFileElementType extends IStubFileElementType<GnoFileStub> {
 
     @Override
     public void indexStub(@NotNull GnoFileStub stub, @NotNull IndexSink sink) {
-        super.indexStub(stub, sink);
         String packageName = stub.getPackageName();
         if (StringUtil.isNotEmpty(packageName)) {
             sink.occurrence(GnoPackagesIndex.KEY, packageName);
