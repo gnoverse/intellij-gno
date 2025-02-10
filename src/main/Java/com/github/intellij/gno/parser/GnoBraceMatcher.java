@@ -15,19 +15,10 @@ public final class GnoBraceMatcher implements PairedBraceMatcher, GnoTypes {
     }
 
     public BracePair @NotNull [] getPairs() {
-        BracePair[] var10000 = PAIRS;
-        if (var10000 == null) {
-            $$$reportNull$$$0(0);
-        }
-
-        return var10000;
+        return PAIRS;
     }
 
     public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
-        if (lbraceType == null) {
-            $$$reportNull$$$0(1);
-        }
-
         return true;
     }
 

@@ -13,25 +13,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoElseStatementImpl extends GnoStatementImpl implements GnoElseStatement {
     public GnoElseStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitElseStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -42,29 +33,21 @@ public class GnoElseStatementImpl extends GnoStatementImpl implements GnoElseSta
     }
 
     public @Nullable GnoEndStatement getEndStatement() {
-        return (GnoEndStatement)this.findChildByClass(GnoEndStatement.class);
+        return this.findChildByClass(GnoEndStatement.class);
     }
 
     public @Nullable GnoStatementList getStatementList() {
-        return (GnoStatementList)this.findChildByClass(GnoStatementList.class);
+        return this.findChildByClass(GnoStatementList.class);
     }
 
     public @NotNull PsiElement getElse() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.ELSE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.ELSE);
     }
 
     public @NotNull PsiElement getLdoubleBrace() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
     }
 
     public @Nullable PsiElement getRdoubleBrace() {

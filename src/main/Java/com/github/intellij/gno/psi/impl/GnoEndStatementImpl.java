@@ -11,25 +11,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoEndStatementImpl extends GnoStatementImpl implements GnoEndStatement {
     public GnoEndStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitEndStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -40,21 +31,13 @@ public class GnoEndStatementImpl extends GnoStatementImpl implements GnoEndState
     }
 
     public @NotNull PsiElement getEnd() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.END);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.END);
     }
 
     public @NotNull PsiElement getLdoubleBrace() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
     }
 
     public @Nullable PsiElement getRdoubleBrace() {

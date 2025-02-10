@@ -9,9 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoNamedElementImpl extends ASTWrapperPsiElement implements GnoNamedElement {
     public GnoNamedElementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
@@ -26,9 +23,6 @@ public class GnoNamedElementImpl extends ASTWrapperPsiElement implements GnoName
     }
 
     public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        if (name == null) {
-            $$$reportNull$$$0(1);
-        }
 
         PsiElement element = this.getNameIdentifier();
         if (element != null) {

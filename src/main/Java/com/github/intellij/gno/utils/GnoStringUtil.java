@@ -181,10 +181,10 @@ public final class GnoStringUtil {
                             }
 
                             try {
-                                int v = Integer.parseInt(chars.substring(index, index + 8), 16);
+                                int w = Integer.parseInt(chars.substring(index, index + 8), 16);
                                 c = chars.charAt(index);
                                 if (c != '+' && c != '-') {
-                                    outChars.append((char)v);
+                                    outChars.append((char)w);
                                     index += 8;
                                     break;
                                 }
@@ -217,10 +217,10 @@ public final class GnoStringUtil {
                             }
 
                             try {
-                                int v = Integer.parseInt(chars.substring(index, index + 4), 16);
+                                int z = Integer.parseInt(chars.substring(index, index + 4), 16);
                                 c = chars.charAt(index);
                                 if (c != '+' && c != '-') {
-                                    outChars.append((char)v);
+                                    outChars.append((char)z);
                                     index += 4;
                                     break;
                                 }
@@ -238,8 +238,8 @@ public final class GnoStringUtil {
                             }
 
                             try {
-                                int v = Integer.parseInt(chars.substring(index, index + 2), 16);
-                                outChars.append((char)v);
+                                int y = Integer.parseInt(chars.substring(index, index + 2), 16);
+                                outChars.append((char)y);
                                 index += 2;
                                 break;
                             } catch (Exception var7) {

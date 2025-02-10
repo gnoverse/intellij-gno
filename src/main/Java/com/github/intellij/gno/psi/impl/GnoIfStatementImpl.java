@@ -15,25 +15,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoIfStatementImpl extends GnoStatementImpl implements GnoIfStatement {
     public GnoIfStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitIfStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -44,37 +35,29 @@ public class GnoIfStatementImpl extends GnoStatementImpl implements GnoIfStateme
     }
 
     public @Nullable GnoPipeline getPipeline() {
-        return (GnoPipeline)this.findChildByClass(GnoPipeline.class);
+        return this.findChildByClass(GnoPipeline.class);
     }
 
     public @Nullable GnoStatement getStatement() {
-        return (GnoStatement)this.findChildByClass(GnoStatement.class);
+        return this.findChildByClass(GnoStatement.class);
     }
 
     public @Nullable GnoStatementList getStatementList() {
-        return (GnoStatementList)this.findChildByClass(GnoStatementList.class);
+        return this.findChildByClass(GnoStatementList.class);
     }
 
     public @Nullable GnoVarDeclaration getVarDeclaration() {
-        return (GnoVarDeclaration)this.findChildByClass(GnoVarDeclaration.class);
+        return this.findChildByClass(GnoVarDeclaration.class);
     }
 
     public @NotNull PsiElement getIf() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.IF);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.IF);
     }
 
     public @NotNull PsiElement getLdoubleBrace() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
     }
 
     public @Nullable PsiElement getRdoubleBrace() {

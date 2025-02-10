@@ -13,25 +13,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoLiteralImpl extends ASTWrapperPsiElement implements GnoLiteral {
     public GnoLiteralImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitLiteral(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -42,7 +33,7 @@ public class GnoLiteralImpl extends ASTWrapperPsiElement implements GnoLiteral {
     }
 
     public @Nullable GnoStringLiteral getStringLiteral() {
-        return (GnoStringLiteral)this.findChildByClass(GnoStringLiteral.class);
+        return this.findChildByClass(GnoStringLiteral.class);
     }
 
     public @Nullable PsiElement getAt() {

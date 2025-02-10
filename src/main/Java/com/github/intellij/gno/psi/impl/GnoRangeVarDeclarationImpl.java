@@ -15,25 +15,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoRangeVarDeclarationImpl extends GnoVarDeclarationImpl implements GnoRangeVarDeclaration {
     public GnoRangeVarDeclarationImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitRangeVarDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -44,21 +35,13 @@ public class GnoRangeVarDeclarationImpl extends GnoVarDeclarationImpl implements
     }
 
     public @NotNull GnoPipeline getPipeline() {
-        GnoPipeline var10000 = (GnoPipeline)this.findNotNullChildByClass(GnoPipeline.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByClass(GnoPipeline.class);
     }
 
     public @NotNull List<GnoVarDefinition> getVarDefinitionList() {
-        List var10000 = PsiTreeUtil.getChildrenOfTypeAsList(this, GnoVarDefinition.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoVarDefinition.class);
     }
 
     public @Nullable PsiElement getComma() {

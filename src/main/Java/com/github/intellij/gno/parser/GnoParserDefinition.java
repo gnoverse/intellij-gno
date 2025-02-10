@@ -30,12 +30,7 @@ public final class GnoParserDefinition implements ParserDefinition {
     }
 
     public @NotNull IFileElementType getFileNodeType() {
-        IFileElementType var10000 = GnoFileElementType.INSTANCE;
-        if (var10000 == null) {
-            $$$reportNull$$$0(0);
-        }
-
-        return var10000;
+        return GnoFileElementType.INSTANCE;
     }
 
     public @NotNull TokenSet getWhitespaceTokens() {
@@ -43,42 +38,23 @@ public final class GnoParserDefinition implements ParserDefinition {
         if (var10000 == null) {
             $$$reportNull$$$0(1);
         }
-
+        assert var10000 != null;
         return var10000;
     }
 
     public @NotNull TokenSet getCommentTokens() {
-        TokenSet var10000 = GnoTokenSets.COMMENTS;
-        if (var10000 == null) {
-            $$$reportNull$$$0(2);
-        }
-
-        return var10000;
+        return GnoTokenSets.COMMENTS;
     }
 
     public @NotNull TokenSet getStringLiteralElements() {
-        TokenSet var10000 = GnoTokenSets.STRINGS;
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
-
-        return var10000;
+        return GnoTokenSets.STRINGS;
     }
 
     public @NotNull PsiElement createElement(ASTNode node) {
-        PsiElement var10000 = GnoTypes.Factory.createElement(node);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
-
-        return var10000;
+        return GnoTypes.Factory.createElement(node);
     }
 
     public @NotNull PsiFile createFile(@NotNull FileViewProvider provider) {
-        if (provider == null) {
-            $$$reportNull$$$0(5);
-        }
-
         return new GnoFile(provider);
     }
 }

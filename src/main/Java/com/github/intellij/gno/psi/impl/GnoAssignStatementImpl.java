@@ -9,25 +9,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoAssignStatementImpl extends GnoStatementImpl implements GnoAssignStatement {
     public GnoAssignStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitAssignStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -42,30 +33,18 @@ public class GnoAssignStatementImpl extends GnoStatementImpl implements GnoAssig
     }
 
     public @NotNull GnoVariableExpr getVariableExpr() {
-        GnoVariableExpr var10000 = this.findNotNullChildByClass(GnoVariableExpr.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByClass(GnoVariableExpr.class);
     }
 
     public @NotNull PsiElement getAssign() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.ASSIGN);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.ASSIGN);
     }
 
     public @NotNull PsiElement getLdoubleBrace() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(5);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
     }
 
     public @Nullable PsiElement getRdoubleBrace() {

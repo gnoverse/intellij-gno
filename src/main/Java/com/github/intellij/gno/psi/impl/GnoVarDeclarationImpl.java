@@ -14,25 +14,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoVarDeclarationImpl extends ASTWrapperPsiElement implements GnoVarDeclaration {
     public GnoVarDeclarationImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitVarDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -43,24 +34,16 @@ public class GnoVarDeclarationImpl extends ASTWrapperPsiElement implements GnoVa
     }
 
     public @Nullable GnoPipeline getPipeline() {
-        return (GnoPipeline)this.findChildByClass(GnoPipeline.class);
+        return this.findChildByClass(GnoPipeline.class);
     }
 
     public @NotNull GnoVarDefinition getVarDefinition() {
-        GnoVarDefinition var10000 = (GnoVarDefinition)this.findNotNullChildByClass(GnoVarDefinition.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByClass(GnoVarDefinition.class);
     }
 
     public @NotNull PsiElement getVarAssign() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.VAR_ASSIGN);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.VAR_ASSIGN);
     }
 }

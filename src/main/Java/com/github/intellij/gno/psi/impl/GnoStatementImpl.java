@@ -14,26 +14,14 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoStatementImpl extends ASTWrapperPsiElement implements GnoStatement {
     public GnoStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
-
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
-
         visitor.visitStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
-
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
         } else {
@@ -43,18 +31,6 @@ public class GnoStatementImpl extends ASTWrapperPsiElement implements GnoStateme
     }
 
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
-        if (processor == null) {
-            $$$reportNull$$$0(3);
-        }
-
-        if (state == null) {
-            $$$reportNull$$$0(4);
-        }
-
-        if (place == null) {
-            $$$reportNull$$$0(5);
-        }
-
         return GnoImplUtil.processDeclarations(this, processor, state, lastParent, place);
     }
 }
