@@ -33,6 +33,7 @@ To install this plugin in IntelliJ IDEA, follow these steps:
 
 Once the plugin has been installed, IntelliJ IDEA will automatically recognize `.gno` files. You can create new `.gno` files or open existing ones, and the plugin will provide syntax highlighting and basic language support. You'll also get `gnopls` implementations, which will be automatically installed if you don't have the binary. 
 with the following [features](https://github.com/gnolang/gnopls/tree/main/doc/features):
+   - **SyntaxHighlighting**
    - **Passive**
    - **Diagnostic**
    - **Navigation**
