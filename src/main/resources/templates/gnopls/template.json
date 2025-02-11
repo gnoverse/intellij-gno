@@ -1,0 +1,47 @@
+{
+  "id": "gnopls",
+  "name": "Gno Language Server",
+  "programArgs": {
+    "default": "sh -c gnopls -mode=stdio",
+    "windows": "gnopls -mode=stdio"
+  },
+  "fileTypeMappings": [
+    {
+      "fileType": {
+        "name": "Gno",
+        "patterns": [
+          "*.gno"
+        ]
+      },
+      "languageId": "gno"
+    },
+    {
+      "fileType": {
+        "name": "Gno Module File",
+        "patterns": [
+          "gno.mod"
+        ]
+      },
+      "languageId": "gno.mod"
+    },
+    {
+      "fileType": {
+        "name": "Gno Work File",
+        "patterns": [
+          "gno.work"
+        ]
+      },
+      "languageId": "gno.work"
+    },
+    {
+      "fileType": {
+        "name": "Gno Template File",
+        "patterns": [
+          ".tmpl",
+          ".gnotmpl"
+        ]
+      },
+      "languageId": "gnotmpl"
+    }
+  ]
+}
