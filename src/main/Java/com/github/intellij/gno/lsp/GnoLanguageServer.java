@@ -2,9 +2,12 @@ package com.github.intellij.gno.lsp;
 
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
@@ -88,5 +91,11 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
 
         return null; // Go non trouvé
+    }
+    @Override
+    public Object getInitializationOptions(VirtualFile rootUri) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("ui.semanticTokens", true);
+        return options;
     }
 }

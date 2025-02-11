@@ -6,7 +6,7 @@
 
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
-  <depends optional="false">com.redhat.devtools.lsp4ij</depends>
+  <depends>com.redhat.devtools.lsp4ij</depends>
 
   <!-- The "Overview" tab: -->
   <description>
@@ -53,6 +53,18 @@
     <fileNamePatternMapping patterns="*.gno"
                             serverId="gnopls"
                             languageId="gno"/>
+    <fileNamePatternMapping patterns="gno.mod"
+                            serverId="gnopls"
+                            languageId="gno.mod"/>
+    <fileNamePatternMapping patterns="gno.work"
+                            serverId="gnopls"
+                            languageId="gno.work"/>
+    <fileNamePatternMapping patterns=".tmpl;gnotmpl"
+                            serverId="gnopls"
+                            languageId="gnotmpl"/>
+
+    <semanticTokensColorsProvider class="com.github.intellij.gno.colors.GnoSemanticTokensColorsProvider"
+                                  serverId="gnopls"/>
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -63,5 +75,4 @@
               language="Gno"
     />
   </extensions>
-
 </idea-plugin>
