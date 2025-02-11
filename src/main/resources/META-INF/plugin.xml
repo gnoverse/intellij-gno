@@ -7,7 +7,6 @@
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
   <depends>com.redhat.devtools.lsp4ij</depends>
-  <depends>org.jetbrains.plugins.textmate</depends>
 
   <!-- The "Overview" tab: -->
   <description>
