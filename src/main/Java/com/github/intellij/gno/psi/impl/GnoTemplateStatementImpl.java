@@ -14,25 +14,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class GnoTemplateStatementImpl extends GnoStatementImpl implements GnoTemplateStatement {
     public GnoTemplateStatementImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitTemplateStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -43,24 +34,20 @@ public class GnoTemplateStatementImpl extends GnoStatementImpl implements GnoTem
     }
 
     public @Nullable GnoPipeline getPipeline() {
-        return (GnoPipeline)this.findChildByClass(GnoPipeline.class);
+        return this.findChildByClass(GnoPipeline.class);
     }
 
     public @Nullable GnoStringLiteral getStringLiteral() {
-        return (GnoStringLiteral)this.findChildByClass(GnoStringLiteral.class);
+        return this.findChildByClass(GnoStringLiteral.class);
     }
 
     public @Nullable GnoVarDeclaration getVarDeclaration() {
-        return (GnoVarDeclaration)this.findChildByClass(GnoVarDeclaration.class);
+        return this.findChildByClass(GnoVarDeclaration.class);
     }
 
     public @NotNull PsiElement getLdoubleBrace() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.LDOUBLE_BRACE);
     }
 
     public @Nullable PsiElement getRdoubleBrace() {
@@ -68,11 +55,7 @@ public class GnoTemplateStatementImpl extends GnoStatementImpl implements GnoTem
     }
 
     public @NotNull PsiElement getTemplate() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.TEMPLATE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.TEMPLATE);
     }
 }

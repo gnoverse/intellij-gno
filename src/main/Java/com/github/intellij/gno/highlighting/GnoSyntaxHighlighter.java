@@ -1,5 +1,6 @@
 package com.github.intellij.gno.highlighting;
 
+import com.github.intellij.gno.lexer.GnoLexer;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -48,7 +49,7 @@ public final class GnoSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public @NotNull Lexer getHighlightingLexer() {
-        return null;
+        return new GnoLexer();
     }
 
     @Override

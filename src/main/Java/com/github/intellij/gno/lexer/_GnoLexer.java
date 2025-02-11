@@ -63,7 +63,7 @@ public class _GnoLexer implements FlexLexer {
 
             while(true) {
                 result[j++] = value;
-                if (count <= 0) {
+                if (count == 0) {
                     break;
                 }
             }
@@ -110,7 +110,7 @@ public class _GnoLexer implements FlexLexer {
 
             while(true) {
                 result[j++] = value;
-                if (count <= 0) {
+                if (count == 0) {
                     break;
                 }
             }
@@ -137,7 +137,7 @@ public class _GnoLexer implements FlexLexer {
 
             while(true) {
                 result[j++] = value;
-                if (count <= 0) {
+                if (count == 0) {
                     break;
                 }
             }
@@ -226,15 +226,14 @@ public class _GnoLexer implements FlexLexer {
     }
 
     private void zzScanError(int errorCode) {
-        String message;
-        try {
-            message = ZZ_ERROR_MSG[errorCode];
-        } catch (ArrayIndexOutOfBoundsException var4) {
-            message = ZZ_ERROR_MSG[0];
+        if (errorCode < 0 || errorCode >= ZZ_ERROR_MSG.length) {
+            errorCode = 0;
         }
 
+        String message = ZZ_ERROR_MSG[errorCode];
         throw new Error(message);
     }
+
 
     public void yypushback(int number) {
         if (number > this.yylength()) {
@@ -263,10 +262,7 @@ public class _GnoLexer implements FlexLexer {
 
             int zzInput;
             while(true) {
-                if (zzCurrentPosL < zzEndReadL) {
-                    zzInput = Character.codePointAt(zzBufferL, zzCurrentPosL);
-                    zzCurrentPosL += Character.charCount(zzInput);
-                } else {
+                if (zzCurrentPosL >= zzEndReadL) {
                     if (this.zzAtEOF) {
                         zzInput = -1;
                         break;
@@ -284,9 +280,9 @@ public class _GnoLexer implements FlexLexer {
                         break;
                     }
 
-                    zzInput = Character.codePointAt(zzBufferL, zzCurrentPosL);
-                    zzCurrentPosL += Character.charCount(zzInput);
                 }
+                zzInput = Character.codePointAt(zzBufferL, zzCurrentPosL);
+                zzCurrentPosL += Character.charCount(zzInput);
 
                 int zzNext = zzTransL[zzRowMapL[this.zzState] + ZZ_CMAP(zzInput)];
                 if (zzNext == -1) {

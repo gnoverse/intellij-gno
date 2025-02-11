@@ -22,24 +22,10 @@ public final class GnoImplUtil {
     }
 
     public static boolean processDeclarations(@NotNull GnoStatementList o, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
-        if (o == null) {
-            $$$reportNull$$$0(0);
-        }
 
-        if (processor == null) {
-            $$$reportNull$$$0(1);
-        }
-
-        if (state == null) {
-            $$$reportNull$$$0(2);
-        }
-
-        if (place == null) {
-            $$$reportNull$$$0(3);
-        }
 
         if (lastParent instanceof GnoStatement statement) {
-            while((statement = (GnoStatement)PsiTreeUtil.getPrevSiblingOfType(statement, GnoStatement.class)) != null) {
+            while((statement = PsiTreeUtil.getPrevSiblingOfType(statement, GnoStatement.class)) != null) {
                 if (!statement.processDeclarations(processor, state, lastParent, place)) {
                     return false;
                 }
@@ -50,75 +36,41 @@ public final class GnoImplUtil {
     }
 
     public static @Nullable GnoExpression getQualifier(@NotNull GnoFieldChainExpr chain) {
-        if (chain == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return (GnoExpression)ObjectUtils.tryCast(chain.getDot().getPrevSibling(), GnoExpression.class);
+        return ObjectUtils.tryCast(chain.getDot().getPrevSibling(), GnoExpression.class);
     }
 
     public static @NotNull PsiElement getDot(@NotNull GnoFieldChainExpr chain) {
-        if (chain == null) {
-            $$$reportNull$$$0(5);
-        }
 
-        PsiElement var10000 = ((ASTNode)Objects.requireNonNull(chain.getNode().findChildByType(GnoTypes.DOT))).getPsi();
+        PsiElement var10000 = Objects.requireNonNull(chain.getNode().findChildByType(GnoTypes.DOT)).getPsi();
         if (var10000 == null) {
-            $$$reportNull$$$0(6);
+            throw new NullPointerException("WHITESPACES is null");
         }
-
         return var10000;
     }
 
     public static @NotNull PsiElement getIdentifier(@NotNull GnoFieldChainExpr chain) {
-        if (chain == null) {
-            $$$reportNull$$$0(7);
-        }
 
-        PsiElement var10000 = ((ASTNode)Objects.requireNonNull(chain.getNode().findChildByType(GnoTypes.IDENTIFIER))).getPsi();
+        PsiElement var10000 = (Objects.requireNonNull(chain.getNode().findChildByType(GnoTypes.IDENTIFIER))).getPsi();
         if (var10000 == null) {
-            $$$reportNull$$$0(8);
+            throw new NullPointerException("WHITESPACES is null");
         }
-
         return var10000;
     }
 
     public static @NotNull List<GnoExpression> getExpressionList(@NotNull GnoPipeline pipeline) {
-        if (pipeline == null) {
-            $$$reportNull$$$0(9);
-        }
 
-        List var10000 = PsiTreeUtil.getChildrenOfTypeAsList(pipeline, GnoExpression.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(10);
-        }
-
-        return var10000;
+        return PsiTreeUtil.getChildrenOfTypeAsList(pipeline, GnoExpression.class);
     }
 
     public static boolean processDeclarations(@NotNull GnoStatement o, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
-        if (o == null) {
-            $$$reportNull$$$0(11);
-        }
-
-        if (processor == null) {
-            $$$reportNull$$$0(12);
-        }
-
-        if (state == null) {
-            $$$reportNull$$$0(13);
-        }
-
-        if (place == null) {
-            $$$reportNull$$$0(14);
-        }
 
         if (o instanceof GnoVarDeclarationStatement) {
             return processor.execute(o, state);
         } else if (o instanceof GnoRangeStatement && PsiTreeUtil.isAncestor(o, place, false)) {
             GnoRangeVarDeclaration declaration = ((GnoRangeStatement)o).getRangeVarDeclaration();
             return declaration == null || processor.execute(declaration, state);
-        } else if (o instanceof GnoDeclarationOwner && (o instanceof GnoStatement || PsiTreeUtil.isAncestor(o, place, false))) {
+        } else if (o instanceof GnoDeclarationOwner) {
             GnoVarDeclaration declaration = ((GnoDeclarationOwner)o).getVarDeclaration();
             return declaration == null || processor.execute(declaration, state);
         } else {
@@ -127,34 +79,16 @@ public final class GnoImplUtil {
     }
 
     public static @NotNull PsiReference getReference(@NotNull GnoVariableExpr variableExpr) {
-        if (variableExpr == null) {
-            $$$reportNull$$$0(15);
-        }
 
         return new GnoVariableReference(variableExpr);
     }
 
     public static PsiReference @NotNull [] getReferences(@NotNull GnoStringLiteral literal) {
-        if (literal == null) {
-            $$$reportNull$$$0(16);
-        }
 
-        PsiReference[] var10000 = ReferenceProvidersRegistry.getReferencesFromProviders(literal);
-        if (var10000 == null) {
-            $$$reportNull$$$0(17);
-        }
-
-        return var10000;
+        return ReferenceProvidersRegistry.getReferencesFromProviders(literal);
     }
 
     public static @NotNull GnoStringLiteral updateText(@NotNull GnoStringLiteral o, @NotNull String text) {
-        if (o == null) {
-            $$$reportNull$$$0(18);
-        }
-
-        if (text == null) {
-            $$$reportNull$$$0(19);
-        }
 
         if (text.length() > 2 && o.getString() != null) {
             StringBuilder outChars = new StringBuilder("\"");
@@ -168,43 +102,27 @@ public final class GnoImplUtil {
         assert valueNode instanceof LeafElement;
 
         ((LeafElement)valueNode).replaceWithText(text);
-        if (o == null) {
-            $$$reportNull$$$0(20);
-        }
 
         return o;
     }
 
     public static GnoTokenType createIdentifierTokenType(@NotNull String name) {
-        if (name == null) {
-            $$$reportNull$$$0(21);
-        }
 
-        return (GnoTokenType)(!"IDENTIFIER".equals(name) && !"VARIABLE".equals(name) ? new GnoTokenType(name) : new GnoReferenceTokenType(name));
+        return !"IDENTIFIER".equals(name) && !"VARIABLE".equals(name) ? new GnoTokenType(name) : new GnoReferenceTokenType(name);
     }
 
     private static final class GnoReferenceTokenType extends GnoTokenType implements ILeafElementType {
         private GnoReferenceTokenType(@NotNull String debugName) {
-            if (debugName == null) {
-                $$$reportNull$$$0(0);
-            }
 
             super(debugName);
         }
 
         public @NotNull ASTNode createLeafNode(@NotNull CharSequence leafText) {
-            if (leafText == null) {
-                $$$reportNull$$$0(1);
-            }
 
             return new LeafPsiElement(this, leafText) {
                 public PsiReference @NotNull [] getReferences() {
-                    PsiReference[] var10000 = ReferenceProvidersRegistry.getReferencesFromProviders(this);
-                    if (var10000 == null) {
-                        $$$reportNull$$$0(0);
-                    }
 
-                    return var10000;
+                    return ReferenceProvidersRegistry.getReferencesFromProviders(this);
                 }
             };
         }

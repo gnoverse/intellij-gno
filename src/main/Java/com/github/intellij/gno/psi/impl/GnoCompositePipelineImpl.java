@@ -12,25 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class GnoCompositePipelineImpl extends GnoPipelineImpl implements GnoCompositePipeline {
     public GnoCompositePipelineImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitCompositePipeline(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -41,20 +32,12 @@ public class GnoCompositePipelineImpl extends GnoPipelineImpl implements GnoComp
     }
 
     public @NotNull List<GnoExpression> getExpressionList() {
-        List var10000 = PsiTreeUtil.getChildrenOfTypeAsList(this, GnoExpression.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, GnoExpression.class);
     }
 
     public @NotNull GnoPipeline getPipeline() {
-        GnoPipeline var10000 = (GnoPipeline)this.findNotNullChildByClass(GnoPipeline.class);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return this.findNotNullChildByClass(GnoPipeline.class);
     }
 }

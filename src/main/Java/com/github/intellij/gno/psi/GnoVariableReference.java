@@ -16,9 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class GnoVariableReference extends PsiPolyVariantReferenceBase<GnoVariableExpr> {
     public GnoVariableReference(@NotNull GnoVariableExpr psiElement) {
-        if (psiElement == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(psiElement, TextRange.create(0, psiElement.getTextLength()));
     }
@@ -59,18 +56,14 @@ public class GnoVariableReference extends PsiPolyVariantReferenceBase<GnoVariabl
                 return true;
             }
         };
-        PsiTreeUtil.treeWalkUp(processor, this.myElement, ((GnoVariableExpr)this.myElement).getContainingFile(), ResolveState.initial());
-        PsiElement resolve = (PsiElement)result.get();
-        ResolveResult[] var10000 = resolve != null ? new ResolveResult[]{new PsiElementResolveResult(resolve)} : ResolveResult.EMPTY_ARRAY;
-        if (var10000 == null) {
-            $$$reportNull$$$0(1);
-        }
+        PsiTreeUtil.treeWalkUp(processor, this.myElement, this.myElement.getContainingFile(), ResolveState.initial());
+        PsiElement resolve = result.get();
 
-        return var10000;
+        return resolve != null ? new ResolveResult[]{new PsiElementResolveResult(resolve)} : ResolveResult.EMPTY_ARRAY;
     }
 
     public Object @NotNull [] getVariants() {
-        List<PsiElement> result = new ArrayList();
+        List<PsiElement> result = new ArrayList<>();
         PsiScopeProcessor processor = (element, state) -> {
             if (PsiTreeUtil.isAncestor(element, this.myElement, false)) {
                 return true;
@@ -91,22 +84,15 @@ public class GnoVariableReference extends PsiPolyVariantReferenceBase<GnoVariabl
                 return true;
             }
         };
-        PsiTreeUtil.treeWalkUp(processor, this.myElement, ((GnoVariableExpr)this.myElement).getContainingFile(), ResolveState.initial());
-        Object[] var10000 = result.toArray(PsiElement.EMPTY_ARRAY);
-        if (var10000 == null) {
-            $$$reportNull$$$0(2);
-        }
+        PsiTreeUtil.treeWalkUp(processor, this.myElement, this.myElement.getContainingFile(), ResolveState.initial());
 
-        return var10000;
+        return result.toArray(PsiElement.EMPTY_ARRAY);
     }
 
     public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
-        if (newElementName == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        PsiElement variable = ((GnoVariableExpr)this.myElement).getVariable();
-        variable.replace(GnoElementFactory.createVar(((GnoVariableExpr)this.myElement).getProject(), newElementName));
+        PsiElement variable = this.myElement.getVariable();
+        variable.replace(GnoElementFactory.createVar(this.myElement.getProject(), newElementName));
         return this.myElement;
     }
 }

@@ -36,9 +36,8 @@ public final class GnoParserDefinition implements ParserDefinition {
     public @NotNull TokenSet getWhitespaceTokens() {
         TokenSet var10000 = GnoTokenSets.WHITESPACES;
         if (var10000 == null) {
-            $$$reportNull$$$0(1);
+            throw new NullPointerException("WHITESPACES is null");
         }
-        assert var10000 != null;
         return var10000;
     }
 

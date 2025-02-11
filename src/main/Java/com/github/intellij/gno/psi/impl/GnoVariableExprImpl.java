@@ -12,25 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class GnoVariableExprImpl extends GnoExpressionImpl implements GnoVariableExpr {
     public GnoVariableExprImpl(@NotNull ASTNode node) {
-        if (node == null) {
-            $$$reportNull$$$0(0);
-        }
 
         super(node);
     }
 
     public void accept(@NotNull GnoVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(1);
-        }
 
         visitor.visitVariableExpr(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor == null) {
-            $$$reportNull$$$0(2);
-        }
 
         if (visitor instanceof GnoVisitor) {
             this.accept((GnoVisitor)visitor);
@@ -41,20 +32,12 @@ public class GnoVariableExprImpl extends GnoExpressionImpl implements GnoVariabl
     }
 
     public @NotNull PsiElement getVariable() {
-        PsiElement var10000 = this.findNotNullChildByType(GnoTypes.VARIABLE);
-        if (var10000 == null) {
-            $$$reportNull$$$0(3);
-        }
 
-        return var10000;
+        return this.findNotNullChildByType(GnoTypes.VARIABLE);
     }
 
     public @NotNull PsiReference getReference() {
-        PsiReference var10000 = GnoImplUtil.getReference(this);
-        if (var10000 == null) {
-            $$$reportNull$$$0(4);
-        }
 
-        return var10000;
+        return GnoImplUtil.getReference(this);
     }
 }
