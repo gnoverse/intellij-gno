@@ -54,6 +54,18 @@
     <fileNamePatternMapping patterns="*.gno"
                             serverId="gnopls"
                             languageId="gno"/>
+    <fileNamePatternMapping patterns="gno.mod"
+                            serverId="gnopls"
+                            languageId="gno.mod"/>
+    <fileNamePatternMapping patterns="gno.work"
+                            serverId="gnopls"
+                            languageId="gno.work"/>
+    <fileNamePatternMapping patterns=".tmpl;gnotmpl"
+                            serverId="gnopls"
+                            languageId="gnotmpl"/>
+
+    <semanticTokensColorsProvider class="com.github.intellij.gno.colors.GnoSemanticTokensColorsProvider"
+                                  serverId="gnopls"/>
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -64,5 +76,4 @@
               language="Gno"
     />
   </extensions>
-
 </idea-plugin>
