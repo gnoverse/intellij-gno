@@ -22,7 +22,7 @@ intellij {
 
   plugins.set(
     providers.gradleProperty("platformPlugins")
-      .map { it.split(',') + "com.intellij.java" }
+      .map { it.split(',').map(String::trim).filter(String::isNotEmpty)}
   )
 }
 
