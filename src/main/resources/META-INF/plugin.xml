@@ -6,6 +6,7 @@
 
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
+  <depends>com.redhat.devtools.lsp4ij</depends>
 
   <!-- The "Overview" tab: -->
   <description>
@@ -31,9 +32,7 @@
   ]]>
   </change-notes>
 
-  <depends>com.redhat.devtools.lsp4ij</depends>
-
-<extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+  <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
     <server id="gnopls"
             name="Gno Language Server"
             factoryClass="com.github.intellij.gno.lsp.GnoLanguageServerFactory">
@@ -54,7 +53,19 @@
     <fileNamePatternMapping patterns="*.gno"
                             serverId="gnopls"
                             languageId="gno"/>
-</extensions>
+    <fileNamePatternMapping patterns="gno.mod"
+                            serverId="gnopls"
+                            languageId="gno.mod"/>
+    <fileNamePatternMapping patterns="gno.work"
+                            serverId="gnopls"
+                            languageId="gno.work"/>
+    <fileNamePatternMapping patterns=".tmpl;gnotmpl"
+                            serverId="gnopls"
+                            languageId="gnotmpl"/>
+
+    <semanticTokensColorsProvider class="com.github.intellij.gno.colors.GnoSemanticTokensColorsProvider"
+                                  serverId="gnopls"/>
+  </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
     <fileType name="Gno File"
@@ -73,5 +84,4 @@
             language="Gno"
             implementationClass="com.github.intellij.gno.highlighting.GnoAnnotator"/>
   </extensions>
-
 </idea-plugin>
