@@ -1,0 +1,35 @@
+{
+  parserClass='com.github.intellij.gno.parser.GnoParser'
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix='Gno'
+  psiImplClassSuffix='Impl'
+  psiPackage='com.github.intellij.gno.psi'
+  psiImplPackage='com.github.intellij.gno.psi.impl'
+
+  elementTypeHolderClass='com.github.intellij.gno.psi.GnoTypes'
+  elementTypeClass='com.github.intellij.gno.psi.GnoElementType'
+  tokenTypeClass='com.github.intellij.gno.psi.GnoTokenType'
+
+  tokens = [
+    COMMENT      = 'regexp://[^\n]*|/\\*.*?\\*/'
+    WHITE_SPACE  = 'regexp:[ \t]+'
+    EOL          = 'regexp:\r?\n+'
+    IDENTIFIER   = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+    DOT          = '.'
+    ANY_CHAR     = 'regexp:(?s:.)'
+  ]
+}
+
+File ::= Token* <EOF>
+
+Token ::=
+    Identifier
+  | WHITE_SPACE
+  | EOL
+  | COMMENT
+  | DOT
+  | ANY_CHAR
+
+Identifier ::= IDENTIFIER
