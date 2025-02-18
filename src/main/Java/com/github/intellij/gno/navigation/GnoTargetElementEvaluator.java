@@ -24,12 +24,10 @@ public class GnoTargetElementEvaluator extends TargetElementEvaluatorEx2 {
 
         String elementType = element.getNode().getElementType().toString();
 
-        // Exclure les espaces, commentaires, et chaînes de caractères
         if (elementType.contains("COMMENT") || elementType.contains("STRING") || elementType.contains("WHITE_SPACE")) {
             return false;
         }
 
-        // Vérifier si c'est une déclaration ou référence valable
         return elementType.equals("IDENTIFIER") && element.getReference() != null;
     }
 }

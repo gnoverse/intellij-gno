@@ -14,7 +14,6 @@ public class GnoSymbolReference extends PsiReferenceBase<PsiElement> {
 
     @Override
     public @Nullable PsiElement resolve() {
-        // Vérifie si l'élément référencé est un nom valide (fonction, variable, struct)
         if (myElement instanceof PsiNamedElement) {
             String name = ((PsiNamedElement) myElement).getName();
             if (name != null) {
@@ -29,7 +28,6 @@ public class GnoSymbolReference extends PsiReferenceBase<PsiElement> {
 
     @Override
     public @NotNull Object[] getVariants() {
-        // Fournit des suggestions d'auto-complétion (optionnel)
         return new Object[0];
     }
 }
