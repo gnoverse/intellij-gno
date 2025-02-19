@@ -2,9 +2,14 @@ package com.github.intellij.gno.lsp;
 
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
@@ -15,6 +20,14 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
     public GnoLanguageServer() {
         String gnoplsPath = findOrInstallGnopls();
+
+        if (gnoplsPath == null || gnoplsPath.equals(GNOPLS_BINARY)) {
+            Messages.showErrorDialog("Failed to install `gnopls`. Please install it manually using:\n" +
+                    "`go install github.com/gnoverse/gnopls@latest`", "Installation Error");
+            LOG.error("gnopls installation failed. Exiting GnoLanguageServer.");
+            return;
+        }
+
         LOG.info("Using gnopls at: " + gnoplsPath);
 
         GeneralCommandLine commandLine = new GeneralCommandLine(gnoplsPath);
@@ -32,37 +45,39 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
         return installGnopls();
     }
 
-
     private String installGnopls() {
-        String goPath = findGoBinary();
-        if (goPath == null) {
-            LOG.error("Go binary not found. Cannot install gnopls.");
-            return GNOPLS_BINARY;
-        }
+        return ProgressManager.getInstance().runProcessWithProgressSynchronously(() -> {
+            LOG.info("Downloading and installing gnopls...");
 
-        LOG.info("Installing gnopls using: " + goPath + " install github.com/gnoverse/gnopls@latest");
-
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(goPath, "install", "github.com/gnoverse/gnopls@latest");
-            processBuilder.environment().put("GOBIN", GO_BIN_DIR);
-            processBuilder.environment().put("PATH", System.getenv("PATH") + ":" + GO_BIN_DIR);
-            processBuilder.redirectErrorStream(true);
-
-            Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0 && Files.exists(Paths.get(GNOPLS_PATH))) {
-                LOG.info("gnopls successfully installed in: " + GNOPLS_PATH);
-                return GNOPLS_PATH;
-            } else {
-                LOG.error("Failed to install gnopls. Exit code: " + exitCode);
-                return GNOPLS_BINARY; // Fallback
+            String goPath = findGoBinary();
+            if (goPath == null) {
+                LOG.error("Go binary not found. Cannot install gnopls.");
+                return null;
             }
-        } catch (IOException | InterruptedException e) {
-            LOG.error("Error during gnopls installation", e);
-            Thread.currentThread().interrupt();
-            return GNOPLS_BINARY;
-        }
+
+            LOG.info("Installing gnopls using: " + goPath + " install github.com/gnoverse/gnopls@latest");
+
+            try {
+                ProcessBuilder processBuilder = new ProcessBuilder(goPath, "install", "github.com/gnoverse/gnopls@latest");
+                processBuilder.environment().put("PATH", System.getenv("PATH") + ":" + GO_BIN_DIR);
+                processBuilder.redirectErrorStream(true);
+
+                Process process = processBuilder.start();
+                int exitCode = process.waitFor();
+
+                if (exitCode == 0 && Files.exists(Paths.get(GNOPLS_PATH))) {
+                    LOG.info("gnopls successfully installed in: " + GNOPLS_PATH);
+                    return GNOPLS_PATH;
+                } else {
+                    LOG.error("Failed to install gnopls. Exit code: " + exitCode);
+                    return null;
+                }
+            } catch (IOException | InterruptedException e) {
+                LOG.error("Error during gnopls installation", e);
+                Thread.currentThread().interrupt();
+                return null;
+            }
+        }, "Installing Gno Language Server", true, null);
     }
 
     private String findGoBinary() {
@@ -80,13 +95,18 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
         for (String path : possiblePaths) {
             Path pathObj = Paths.get(path);
-
             if (Files.exists(pathObj) && Files.isExecutable(pathObj)) {
                 return path;
             }
         }
 
+        return null;
+    }
 
-        return null; // Go non trouvé
+    @Override
+    public Object getInitializationOptions(VirtualFile rootUri) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("ui.semanticTokens", true);
+        return options;
     }
 }

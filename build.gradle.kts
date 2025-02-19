@@ -25,7 +25,6 @@ intellij {
       .map { it.split(',').map(String::trim).filter(String::isNotEmpty)}
   )
 }
-
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib")
 }
