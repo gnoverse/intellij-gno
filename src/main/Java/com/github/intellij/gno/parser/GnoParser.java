@@ -1,4 +1,5 @@
 // This is a generated file. Not intended for manual editing.
+// I've added error ignoring to have only identifiers for hypertext, as the syntax is handled by gnopls
 package com.github.intellij.gno.parser;
 
 import com.github.intellij.gno.psi.GnoTypes;
@@ -106,11 +107,11 @@ public class GnoParser implements PsiParser, LightPsiParser {
     r = r && File_2(b, l + 1);
     r = r && File_3(b, l + 1);
 
-    // 🔥 Supprime l'exigence stricte de EOF
+    // Removes strict EOF requirement
     if (nextTokenIs(b, GnoTypes.EOF)) {
       consumeToken(b, GnoTypes.EOF);
     } else {
-      // 🔥 Ignore tous les tokens restants pour éviter le blocage
+      // Ignore all remaining tokens to avoid blocking
       while (!b.eof()) {
         b.advanceLexer();
       }
@@ -235,14 +236,14 @@ public class GnoParser implements PsiParser, LightPsiParser {
         if (nextTokenIs(b, GnoTypes.STRING_LITERAL)) {
           consumeToken(b, GnoTypes.STRING_LITERAL);
         } else {
-          // 🔥 Ignore les erreurs en avançant le lexer
+          // Ignores errors by advancing the lexer
           b.advanceLexer();
         }
       }
       r = r && consumeToken(b, ")");
     }
 
-    // 🔥 Suppression complète de `EOL`
+    // Remove all `EOL` content
     while (nextTokenIs(b, GnoTypes.EOL)) {
       consumeToken(b, GnoTypes.EOL);
     }
@@ -322,17 +323,17 @@ public class GnoParser implements PsiParser, LightPsiParser {
 
     r = consumeToken(b, "package");
 
-    // 🔥 Ignore toutes les erreurs après `package`
+    // Ignore all errors after `package`
     while (!b.eof() && !nextTokenIs(b, GnoTypes.IDENTIFIER)) {
       b.advanceLexer();
     }
 
-    // 🔥 Si aucun IDENTIFIER trouvé, on génère un token factice
+    // If no IDENTIFIER found, a dummy token is generated
     if (!consumeToken(b, GnoTypes.IDENTIFIER)) {
       consumeToken(b, "GeneratedIdentifier");
     }
 
-    // 🔥 Supprime complètement `EOL` et `EOF`
+    // Completely deletes `EOL` and `EOF`
     while (nextTokenIs(b, GnoTypes.EOL) || nextTokenIs(b, GnoTypes.EOF)) {
       consumeToken(b, b.getTokenType());
     }
