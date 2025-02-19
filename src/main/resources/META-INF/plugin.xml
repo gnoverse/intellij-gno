@@ -74,5 +74,10 @@
               extensions="gno"
               language="Gno"
     />
+
+    <lang.parserDefinition
+            language="Gno"
+            implementationClass="com.github.intellij.gno.parser.GnoParserDefinition"/>
+
   </extensions>
 </idea-plugin>
