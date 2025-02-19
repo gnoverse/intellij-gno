@@ -1,13 +1,14 @@
 // This is a generated file. Not intended for manual editing.
 package com.github.intellij.gno.psi;
 
+import com.github.intellij.gno.psi.impl.GnoIdentifierImpl;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 
 public class GnoVisitor extends PsiElementVisitor {
 
-  public void visitIdentifier(@NotNull GnoIdentifier o) {
+  public void visitPackageDecl(@NotNull GnoPackageDecl o) {
     visitPsiElement(o);
   }
 
@@ -19,4 +20,7 @@ public class GnoVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
+    public void visitIdentifier(GnoIdentifierImpl gnoIdentifier) {
+    visitPsiElement(gnoIdentifier);
+    }
 }

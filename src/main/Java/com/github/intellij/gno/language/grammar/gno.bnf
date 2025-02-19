@@ -14,22 +14,22 @@
 
   tokens = [
     COMMENT      = 'regexp://[^\n]*|/\\*.*?\\*/'
-    WHITE_SPACE  = 'regexp:[ \t]+'
+    WHITE_SPACE  = 'regexp:[ \t\r\n]+'
     EOL          = 'regexp:\r?\n+'
     IDENTIFIER   = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
     DOT          = '.'
-    ANY_CHAR     = 'regexp:(?s:.)'
+    ANY_CHAR     = 'regexp:[\u0000-\uFFFF]'
   ]
 }
 
-File ::= Token* <EOF>
+File ::= PackageDecl? Token* EOF
+
+PackageDecl ::= "package" WHITE_SPACE? IDENTIFIER
 
 Token ::=
-    Identifier
+    IDENTIFIER
   | WHITE_SPACE
   | EOL
   | COMMENT
   | DOT
   | ANY_CHAR
-
-Identifier ::= IDENTIFIER

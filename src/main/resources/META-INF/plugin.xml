@@ -75,15 +75,9 @@
               language="Gno"
     />
 
-<!--    <targetElementEvaluator-->
-<!--            language="Gno"-->
-<!--            implementationClass="com.github.intellij.gno.navigation.GnoTargetElementEvaluator"/>-->
-<!--    <psi.referenceContributor implementation="com.github.intellij.gno.navigation.GnoImplicitReferenceProvider"-->
-<!--                              language="Gno"/>-->
-
-<!--    <lang.parserDefinition-->
-<!--            language="Gno"-->
-<!--            implementationClass="com.github.intellij.gno.parser.GnoParserDefinition"/>-->
+    <lang.parserDefinition
+            language="Gno"
+            implementationClass="com.github.intellij.gno.parser.GnoParserDefinition"/>
 
   </extensions>
 </idea-plugin>

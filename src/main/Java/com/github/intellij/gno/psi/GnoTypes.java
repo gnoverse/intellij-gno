@@ -8,21 +8,22 @@ import com.github.intellij.gno.psi.impl.*;
 
 public interface GnoTypes {
 
-  IElementType IDENTIFIER = new GnoElementType("IDENTIFIER");
+  IElementType PACKAGE_DECL = new GnoElementType("PACKAGE_DECL");
   IElementType TOKEN = new GnoElementType("TOKEN");
 
   IElementType ANY_CHAR = new GnoTokenType("ANY_CHAR");
   IElementType COMMENT = new GnoTokenType("COMMENT");
   IElementType DOT = new GnoTokenType(".");
+  IElementType EOF = new GnoTokenType("EOF");
   IElementType EOL = new GnoTokenType("EOL");
+  IElementType IDENTIFIER = new GnoTokenType("IDENTIFIER");
   IElementType WHITE_SPACE = new GnoTokenType("WHITE_SPACE");
-  IElementType _EOF_ = new GnoTokenType("<EOF>");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == IDENTIFIER) {
-        return new GnoIdentifierImpl(node);
+      if (type == PACKAGE_DECL) {
+        return new GnoPackageDeclImpl(node);
       }
       else if (type == TOKEN) {
         return new GnoTokenImpl(node);

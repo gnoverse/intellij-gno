@@ -36,42 +36,58 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Token* <EOF>
+  // PackageDecl? Token* EOF
   static boolean File(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "File")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = File_0(b, l + 1);
-    r = r && consumeToken(b, _EOF_);
+    r = r && File_1(b, l + 1);
+    r = r && consumeToken(b, EOF);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // Token*
+  // PackageDecl?
   private static boolean File_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "File_0")) return false;
+    PackageDecl(b, l + 1);
+    return true;
+  }
+
+  // Token*
+  private static boolean File_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "File_1")) return false;
     while (true) {
       int c = current_position_(b);
       if (!Token(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "File_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "File_1", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
-  public static boolean Identifier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Identifier")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+  // "package" WHITE_SPACE? IDENTIFIER
+  public static boolean PackageDecl(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PackageDecl")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, IDENTIFIER, r);
+    Marker m = enter_section_(b, l, _NONE_, PACKAGE_DECL, "<package decl>");
+    r = consumeToken(b, "package");
+    r = r && PackageDecl_1(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
+  // WHITE_SPACE?
+  private static boolean PackageDecl_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PackageDecl_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
   /* ********************************************************** */
-  // Identifier
+  // IDENTIFIER
   //   | WHITE_SPACE
   //   | EOL
   //   | COMMENT
@@ -81,7 +97,7 @@ public class GnoParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "Token")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TOKEN, "<token>");
-    r = Identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     if (!r) r = consumeToken(b, WHITE_SPACE);
     if (!r) r = consumeToken(b, EOL);
     if (!r) r = consumeToken(b, COMMENT);
