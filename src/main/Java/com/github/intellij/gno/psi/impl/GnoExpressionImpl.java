@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoPackageDeclImpl extends ASTWrapperPsiElement implements GnoPackageDecl {
+public class GnoExpressionImpl extends ASTWrapperPsiElement implements GnoExpression {
 
-  public GnoPackageDeclImpl(@NotNull ASTNode node) {
+  public GnoExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitPackageDecl(this);
+    visitor.visitExpression(this);
   }
 
   @Override
@@ -28,15 +28,15 @@ public class GnoPackageDeclImpl extends ASTWrapperPsiElement implements GnoPacka
   }
 
   @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  @Nullable
+  public GnoFunctionCall getFunctionCall() {
+    return findChildByClass(GnoFunctionCall.class);
   }
 
   @Override
-  @NotNull
-  public PsiElement getWhiteSpace() {
-    return findNotNullChildByType(WHITE_SPACE);
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
   }
 
 }

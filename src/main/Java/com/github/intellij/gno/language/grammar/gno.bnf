@@ -12,24 +12,31 @@
   elementTypeClass='com.github.intellij.gno.psi.GnoElementType'
   tokenTypeClass='com.github.intellij.gno.psi.GnoTokenType'
 
-  tokens = [
-    COMMENT      = 'regexp://[^\n]*|/\\*.*?\\*/'
-    WHITE_SPACE  = 'regexp:[ \t\r\n]+'
-    EOL          = 'regexp:\r?\n+'
-    IDENTIFIER   = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
-    DOT          = '.'
-    ANY_CHAR     = 'regexp:[\u0000-\uFFFF]'
-  ]
-}
+   tokens = [
+      COMMENT      = 'regexp://[^\n]*|/\\*.*?\\*/'
+      WHITE_SPACE  = 'regexp:[ \t]+'
+      EOL          = 'regexp:\r?\n+'
+      IDENTIFIER   = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+      DOT          = '.'
+      ANY_CHAR     = 'regexp:[\u0000-\uFFFF]'
+    ]
+  }
 
-File ::= PackageDecl? Token* EOF
+// Le fichier doit commencer par un commentaire ou `package`
+File ::= (COMMENT | EOL)* PackageDecl ImportDecl* Statement* EOF
 
-PackageDecl ::= "package" WHITE_SPACE? IDENTIFIER
+// Déclaration du package avec gestion stricte de l'espace et du retour à la ligne
+PackageDecl ::= "package" WHITE_SPACE IDENTIFIER EOL+
 
-Token ::=
-    IDENTIFIER
-  | WHITE_SPACE
-  | EOL
-  | COMMENT
-  | DOT
-  | ANY_CHAR
+// Déclaration des imports avec gestion des retours à la ligne
+ImportDecl ::= "import" (StringLiteral | "(" ImportSpec* ")") EOL+
+ImportSpec ::= StringLiteral
+StringLiteral ::= '"' IDENTIFIER '"'
+
+// Ajout des déclarations et expressions pour éviter "<token> expected"
+Statement ::= Expression | Declaration | Assignment
+Expression ::= IDENTIFIER | FunctionCall
+FunctionCall ::= IDENTIFIER "(" (Expression ("," Expression)*)? ")"
+
+Declaration ::= "var" IDENTIFIER ("=" Expression)?
+Assignment ::= IDENTIFIER "=" Expression

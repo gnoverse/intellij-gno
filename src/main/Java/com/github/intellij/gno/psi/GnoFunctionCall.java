@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoPackageDecl extends PsiElement {
+public interface GnoFunctionCall extends PsiElement {
+
+  @NotNull
+  List<GnoExpression> getExpressionList();
 
   @NotNull
   PsiElement getIdentifier();
-
-  @NotNull
-  PsiElement getWhiteSpace();
 
 }

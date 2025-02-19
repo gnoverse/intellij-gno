@@ -5,21 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoToken extends PsiElement {
+public interface GnoStringLiteral extends PsiElement {
 
-  @Nullable
-  PsiElement getAnyChar();
-
-  @Nullable
-  PsiElement getComment();
-
-  @Nullable
-  PsiElement getEol();
-
-  @Nullable
+  @NotNull
   PsiElement getIdentifier();
-
-  @Nullable
-  PsiElement getWhiteSpace();
 
 }

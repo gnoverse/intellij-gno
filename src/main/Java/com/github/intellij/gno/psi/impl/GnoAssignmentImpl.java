@@ -11,14 +11,14 @@ import static com.github.intellij.gno.psi.GnoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.intellij.gno.psi.*;
 
-public class GnoTokenImpl extends ASTWrapperPsiElement implements GnoToken {
+public class GnoAssignmentImpl extends ASTWrapperPsiElement implements GnoAssignment {
 
-  public GnoTokenImpl(@NotNull ASTNode node) {
+  public GnoAssignmentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GnoVisitor visitor) {
-    visitor.visitToken(this);
+    visitor.visitAssignment(this);
   }
 
   @Override
@@ -28,33 +28,15 @@ public class GnoTokenImpl extends ASTWrapperPsiElement implements GnoToken {
   }
 
   @Override
-  @Nullable
-  public PsiElement getAnyChar() {
-    return findChildByType(ANY_CHAR);
+  @NotNull
+  public GnoExpression getExpression() {
+    return findNotNullChildByClass(GnoExpression.class);
   }
 
   @Override
-  @Nullable
-  public PsiElement getComment() {
-    return findChildByType(COMMENT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getEol() {
-    return findChildByType(EOL);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getWhiteSpace() {
-    return findChildByType(WHITE_SPACE);
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

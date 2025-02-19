@@ -5,7 +5,6 @@ import com.github.intellij.gno.lexer.GnoLexerAdapter;
 import com.github.intellij.gno.psi.GnoFile;
 import com.github.intellij.gno.psi.GnoTokenSets;
 import com.github.intellij.gno.psi.GnoTypes;
-import com.github.intellij.gno.psi.impl.GnoIdentifierImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
@@ -59,9 +58,6 @@ public final class GnoParserDefinition implements ParserDefinition {
 
     @Override
     public @NotNull PsiElement createElement(@NotNull ASTNode node) {
-        if (node.getElementType() == GnoTypes.IDENTIFIER) {
-            return new GnoIdentifierImpl(node);
-        }
         return GnoTypes.Factory.createElement(node);
     }
 }

@@ -26,7 +26,7 @@ EOL=\R
 WHITE_SPACE=\s+
 
 COMMENT="//"[^\n]*|"/"\\*.*?\\*"/"
-WHITE_SPACE=[ \t\r\n]+
+WHITE_SPACE=[ \t]+
 EOL=\r?\n+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ANY_CHAR=[\u0000-\uFFFF]

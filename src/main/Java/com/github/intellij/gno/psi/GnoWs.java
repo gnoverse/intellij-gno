@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface GnoPackageDecl extends PsiElement {
-
-  @NotNull
-  PsiElement getIdentifier();
-
-  @NotNull
-  PsiElement getWhiteSpace();
+public interface GnoWs extends PsiElement {
 
 }
