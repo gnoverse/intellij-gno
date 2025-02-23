@@ -78,6 +78,7 @@
     <lang.parserDefinition
             language="Gno"
             implementationClass="com.github.intellij.gno.parser.GnoParserDefinition"/>
-
+    <configurationType
+            implementation="com.github.intellij.gno.runConfiguration.GnoRunConfigurationType"/>
   </extensions>
 </idea-plugin>
