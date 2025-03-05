@@ -3,6 +3,10 @@
 
 This is an IntelliJ plugin that adds support for the Gno programming language. It allows IntelliJ to recognize `.gno` files and provides basic functionality for working with Gno files in the IDE.
 
+### **Requirements Version**
+IntelliJ or GoLand -> 2023.2+
+
+Gradle version -> 8.8+
 
 ## Installation
 
