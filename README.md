@@ -81,6 +81,10 @@ To contribute or modify this plugin, follow these steps:
 
 This will launch a new instance of IntelliJ IDEA with the plugin loaded in a sandbox environment for testing.
 
+If you want work directly with the IDE. Open the `Gradle` instruction
+
+<img width="290" alt="image" src="https://github.com/user-attachments/assets/1c1f36b1-0528-4576-940f-993d88ddc8d3" />
+
 ## Building the Plugin
 
 To build the plugin for distribution, use the following command:
