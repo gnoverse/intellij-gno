@@ -5,7 +5,9 @@ This is an IntelliJ plugin that adds support for the Gno programming language. I
 
 ### **Requirements Version**
 IntelliJ or GoLand -> 2023.2+
+
 Java -> 17+
+
 Gradle -> 8.8+
 
 ## Installation
