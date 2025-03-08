@@ -19,21 +19,22 @@
       IDENTIFIER   = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
       DOT          = '.'
       ANY_CHAR     = 'regexp:[\u0000-\uFFFF]'
+      STRINGCONTENT = 'regexp:[a-zA-Z0-9_./]+'
     ]
   }
 
-// Le fichier doit commencer par un commentaire ou `package`
+// The file must begin with a comment or `package`.
 File ::= (COMMENT | EOL)* PackageDecl ImportDecl* Statement* EOF
 
-// Déclaration du package avec gestion stricte de l'espace et du retour à la ligne
+// Package declaration with strict space and line break handling
 PackageDecl ::= "package" WHITE_SPACE IDENTIFIER EOL+
 
-// Déclaration des imports avec gestion des retours à la ligne
+// Import declaration with line break management
 ImportDecl ::= "import" (StringLiteral | "(" ImportSpec* ")") EOL+
 ImportSpec ::= StringLiteral
-StringLiteral ::= '"' IDENTIFIER '"'
+StringLiteral ::= '"'STRINGCONTENT'"'
 
-// Ajout des déclarations et expressions pour éviter "<token> expected"
+// Add declarations and expressions to avoid “<token> expected”
 Statement ::= Expression | Declaration | Assignment
 Expression ::= IDENTIFIER | FunctionCall
 FunctionCall ::= IDENTIFIER "(" (Expression ("," Expression)*)? ")"

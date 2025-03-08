@@ -24,6 +24,7 @@ public interface GnoTypes {
   IElementType EOF = new GnoTokenType("EOF");
   IElementType EOL = new GnoTokenType("EOL");
   IElementType IDENTIFIER = new GnoTokenType("IDENTIFIER");
+  IElementType STRINGCONTENT = new GnoTokenType("STRINGCONTENT");
   IElementType WHITE_SPACE = new GnoTokenType("WHITE_SPACE");
 
   class Factory {
