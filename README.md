@@ -6,9 +6,9 @@ This is an IntelliJ plugin that adds support for the Gno programming language. I
 ### **Requirements Version**
 IntelliJ or GoLand -> 2023.2+
 
-Java -> 17+
+Java -> 17+ (Linux - MacOS - Windows)
 
-Gradle -> 8.8+
+Gradle -> 8.8+ (just Windows)
 
 ## Installation
 
@@ -27,8 +27,14 @@ To install this plugin in IntelliJ IDEA, follow these steps:
    
 3. Build the plugin with Gradle:
 
+    *macOS and Linux*
     ```bash
     ./gradlew build
+    ```
+    
+    *Windows*
+    ```bash
+    gradle build
     ```
     
 4. Open [gno](https://github.com/gnolang/gno) repo in **IntelliJ IDEA** or **GoLand IDEA**.
