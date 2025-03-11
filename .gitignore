@@ -5,7 +5,7 @@
 !.idea/compiler.xml
 !.idea/LanguageServersSettings.xml
 
-# Exclure les fichiers inutiles
+# Exclude unnecessary files
 *.iml
 *.iws
 .idea_modules/
