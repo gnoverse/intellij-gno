@@ -220,6 +220,7 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // "import" (StringLiteral | "(" ImportSpec* ")") EOL+
   public static boolean ImportDecl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImportDecl")) return false;
     if (!nextTokenIs(b, "import")) return false;
@@ -374,13 +375,13 @@ public class GnoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '"' IDENTIFIER '"'
+  // '"'STRINGCONTENT'"'
   public static boolean StringLiteral(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StringLiteral")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRING_LITERAL, "<string literal>");
     r = consumeToken(b, "\"");
-    r = r && consumeToken(b, IDENTIFIER);
+    r = r && consumeToken(b, STRINGCONTENT);
     r = r && consumeToken(b, "\"");
     exit_section_(b, l, m, r, false, null);
     return r;
