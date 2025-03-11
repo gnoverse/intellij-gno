@@ -55,7 +55,7 @@
                             languageId="gno"/>
     <fileNamePatternMapping patterns="gno.mod"
                             serverId="gnopls"
-                            languageId="gno.mod"/>
+                            languageId="gno"/>
     <fileNamePatternMapping patterns="gno.work"
                             serverId="gnopls"
                             languageId="gno.work"/>
