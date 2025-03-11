@@ -24,4 +24,5 @@ build/
 # Generated files
 out/
 classes/
-.DS_Store
+.DS_STORE
+.qodo

@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.github.intellij.gno</id>
   <name>Gno</name>
-  <version>0.0.1</version>
+  <version>0.1.0</version>
   <vendor url="https://gno.land/">gnolang</vendor>
 
   <depends>com.intellij.modules.platform</depends>
@@ -11,13 +11,23 @@
   <!-- The "Overview" tab: -->
   <description>
     <![CDATA[
-    <a href="https://gno.land/">gno.land</a>
-    <br/>
-    A Gno plugin providing syntax highlighting, code completion, etc.<br/><br/>
+    <h2><a href="https://gno.land/">What is gno.land</a></h2>
+    <h3>0.1.0</h3>
+    This Gno plugin provides comprehensive support for editing Gno files in IntelliJ.
+    It offers advanced syntax highlighting, smart code completion, and integration with the Gno language server (gnopls) for an optimal development experience.
+    <br/><br/>
     <b>Main Features:</b>
     <ul>
-      <li>Test</li>
-      <li>Test</li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#gnopls"> Gnopls</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#highlighting">Highlighting</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#formatting">Formating</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#intellisense">Intellisense</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#navigation">Navigation</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#doc">Doc</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#rename-symbole">Rename-Symbole</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#find-reference">Find-Reference</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#find-implementation">Find-Implementation</a></li>
+      <li><a href="https://github.com/gnoverse/intellij-gno/wiki/Features#auto-install-import">Auto-Install-Import</a></li>
     </ul>
   ]]>
   </description>
@@ -25,9 +35,9 @@
   <!-- The "What’s New" tab: -->
   <change-notes>
     <![CDATA[
+    Next features in progress
     <ul>
-      <li>1</li>
-      <li>2</li>
+      <li>Run unit tests</li>
     </ul>
   ]]>
   </change-notes>
