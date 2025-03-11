@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface GnoStringLiteral extends PsiElement {
 
   @NotNull
-  PsiElement getIdentifier();
+  PsiElement getStringcontent();
 
 }

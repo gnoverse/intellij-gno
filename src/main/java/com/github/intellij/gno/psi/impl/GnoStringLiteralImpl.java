@@ -29,8 +29,8 @@ public class GnoStringLiteralImpl extends ASTWrapperPsiElement implements GnoStr
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public PsiElement getStringcontent() {
+    return findNotNullChildByType(STRINGCONTENT);
   }
 
 }

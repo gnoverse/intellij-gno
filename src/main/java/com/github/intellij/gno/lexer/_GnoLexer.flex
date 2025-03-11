@@ -30,19 +30,21 @@ WHITE_SPACE=[ \t]+
 EOL=\r?\n+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ANY_CHAR=[\u0000-\uFFFF]
+STRINGCONTENT=[a-zA-Z0-9_./]+
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}       { return WHITE_SPACE; }
+  {WHITE_SPACE}         { return WHITE_SPACE; }
 
-  "."                 { return DOT; }
-  "EOF"               { return EOF; }
+  "."                   { return DOT; }
+  "EOF"                 { return EOF; }
 
-  {COMMENT}           { return COMMENT; }
-  {WHITE_SPACE}       { return WHITE_SPACE; }
-  {EOL}               { return EOL; }
-  {IDENTIFIER}        { return IDENTIFIER; }
-  {ANY_CHAR}          { return ANY_CHAR; }
+  {COMMENT}             { return COMMENT; }
+  {WHITE_SPACE}         { return WHITE_SPACE; }
+  {EOL}                 { return EOL; }
+  {IDENTIFIER}          { return IDENTIFIER; }
+  {ANY_CHAR}            { return ANY_CHAR; }
+  {STRINGCONTENT}       { return STRINGCONTENT; }
 
 }
 
