@@ -81,39 +81,17 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
     }
 
     private String findGoBinary() {
-        String homeDir = System.getProperty("user.home");
-        String[] possiblePaths = {
-                "/usr/local/go/bin/go",
-                "/usr/bin/go",
-                "/usr/local/bin/go",
-                "/opt/homebrew/bin/go",
-                homeDir + "/go/bin/go"
-        };
+        String[] possiblePaths = {"/usr/local/go/bin/go", "/usr/bin/go", "/usr/local/bin/go", "/opt/homebrew/bin/go"};
 
-
-        boolean isWSL = false;
         try {
-            Process checkWSL = new ProcessBuilder("uname", "-r").start();
-            String output = new String(checkWSL.getInputStream().readAllBytes()).trim();
-            if (output.contains("Microsoft") || output.contains("WSL")) {
-                isWSL = true;
+            Process process = new ProcessBuilder("which", "go").start();
+            String output = new String(process.getInputStream().readAllBytes()).trim();
+            if (!output.isEmpty()) {
+                return output;
             }
         } catch (IOException e) {
-            LOG.warn("Error checking if system is WSL", e);
+            LOG.warn("Error checking 'which go'", e);
         }
-
-        if (isWSL) {
-            try {
-                Process process = new ProcessBuilder("which", "go").start();
-                String output = new String(process.getInputStream().readAllBytes()).trim();
-                if (!output.isEmpty()) {
-                    return output;
-                }
-            } catch (IOException e) {
-                LOG.warn("Error checking 'which go' in WSL", e);
-            }
-        }
-
 
         for (String path : possiblePaths) {
             Path pathObj = Paths.get(path);
@@ -124,7 +102,6 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
         return null;
     }
-
 
     @Override
     public Object getInitializationOptions(VirtualFile rootUri) {
