@@ -1,8 +1,17 @@
 # IntelliJ IDEA specific
-.idea/
+.idea/*
+!.idea/misc.xml
+!.idea/gradle.xml
+!.idea/compiler.xml
+!.idea/LanguageServersSettings.xml
+
+# Exclude unnecessary files
 *.iml
 *.iws
 .idea_modules/
+workspace.xml
+vcs.xml
+kotlinc.xml
 
 # Gradle specific
 .gradle/
