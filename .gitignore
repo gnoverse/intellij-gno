@@ -1,19 +1,25 @@
 # IntelliJ IDEA specific
-.idea/
+.idea/*
+!.idea/misc.xml
+!.idea/gradle.xml
+!.idea/compiler.xml
+!.idea/LanguageServersSettings.xml
+
+# Exclure les fichiers inutiles
 *.iml
 *.iws
 .idea_modules/
+workspace.xml
+vcs.xml
+kotlinc.xml
 
 # Gradle specific
 .gradle/
 build/
-
 # Log files
 *.log
 *.log.*
-
 # Generated files
 out/
 classes/
-.DS_STORE
-.qodo
+.DS_Store
