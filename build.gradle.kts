@@ -7,7 +7,7 @@ plugins {
 sourceSets["main"].java.srcDirs("src/main/java")
 
 group = "com.github.intellij.gno"
-version = "0.1.0-SNAPSHOT"
+version = "0.2.0"
 
 repositories {
   mavenCentral()
