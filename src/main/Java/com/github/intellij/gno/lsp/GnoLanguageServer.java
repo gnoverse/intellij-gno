@@ -81,38 +81,30 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
     }
 
     private String findGoBinary() {
-        String homeDir = System.getProperty("user.home");
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            String wslGoPath = findGoPathWithWSL();
+            if (wslGoPath != null) {
+                return wslGoPath;
+            }
+        }
+
         String[] possiblePaths = {
                 "/usr/local/go/bin/go",
                 "/usr/bin/go",
                 "/usr/local/bin/go",
-                "/opt/homebrew/bin/go",
-                homeDir + "/go/bin/go"
+                "/opt/homebrew/bin/go"
         };
 
-
-        boolean isWSL = false;
         try {
-            Process checkWSL = new ProcessBuilder("uname", "-r").start();
-            String output = new String(checkWSL.getInputStream().readAllBytes()).trim();
-            if (output.contains("Microsoft") || output.contains("WSL")) {
-                isWSL = true;
+            Process process = new ProcessBuilder("which", "go").start();
+            String output = new String(process.getInputStream().readAllBytes()).trim();
+            if (!output.isEmpty()) {
+                return output;
             }
         } catch (IOException e) {
-            LOG.warn("Error checking if system is WSL", e);
+            LOG.warn("Error checking 'which go'", e);
         }
 
-        if (isWSL) {
-            try {
-                Process process = new ProcessBuilder("which", "go").start();
-                String output = new String(process.getInputStream().readAllBytes()).trim();
-                if (!output.isEmpty()) {
-                    return output;
-                }
-            } catch (IOException e) {
-                LOG.warn("Error checking 'which go' in WSL", e);
-            }
-        }
 
         for (String path : possiblePaths) {
             Path pathObj = Paths.get(path);
@@ -123,6 +115,31 @@ public class GnoLanguageServer extends OSProcessStreamConnectionProvider {
 
         return null;
     }
+
+
+    private String findGoPathWithWSL() {
+        try {
+            Process whichProcess = new ProcessBuilder("wsl.exe", "which", "go").start();
+            String wslPath = new String(whichProcess.getInputStream().readAllBytes()).trim();
+            if (wslPath.isEmpty()) {
+                return null;
+            }
+
+            Process wslPathProcess = new ProcessBuilder("wsl.exe", "wslpath", "-m", wslPath).start();
+            String windowsPath = new String(wslPathProcess.getInputStream().readAllBytes()).trim();
+            if (!windowsPath.isEmpty()) {
+                Path p = Paths.get(windowsPath);
+                if (Files.exists(p) && Files.isExecutable(p)) {
+                    return windowsPath;
+                }
+                return windowsPath;
+            }
+        } catch (IOException e) {
+            LOG.warn("Error checking WSL 'which go' or 'wslpath'", e);
+        }
+        return null;
+    }
+
 
     @Override
     public Object getInitializationOptions(VirtualFile rootUri) {
